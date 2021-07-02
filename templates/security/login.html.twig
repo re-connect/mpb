@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+
+    <div class="jumbotron row">
+        <div class="col-8 col-sm-5 container text-center mt-4">
+            <h1 class="">Connexion</h1>
+            {{ form_start(form) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.password) }}
+            {{ form_row(form._remember_me) }}
+            <button type="submit" class="btn btn-primary">Se connecter</button>
+            {{ form_end(form) }}
+        </div>
+
+    </div>
+{% endblock %}

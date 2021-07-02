@@ -6,7 +6,7 @@
 
     <div class="jumbotron">
         <div class="container text-center mt-4">
-            <h1 class="">Hello {{ controller_name }}! ✅</h1>
+            <h1 class="">Hello {{ app.user ? app.user.firstName : '' }}! ✅</h1>
         </div>
 
     </div>
