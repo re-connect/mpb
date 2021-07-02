@@ -1,25 +1,45 @@
 security:
-    # https://symfony.com/doc/current/security/experimental_authenticators.html
-    enable_authenticator_manager: true
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
-    providers:
-        users_in_memory: { memory: null }
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            lazy: true
-            provider: users_in_memory
+  password_hashers:
+    App\Entity\User:
+      algorithm: auto
+  enable_authenticator_manager: true
+  providers:
+    app_user_provider:
+      entity:
+        class: 'App\Entity\User'
+        property: 'email'
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main:
+      lazy: true
+      provider: app_user_provider
+      custom_authenticators:
+        - App\Security\LoginFormAuthenticator
+      form_login:
+        login_path: app_login
+      logout:
+        path: app_logout
+        target: app_login
+      remember_me:
+        secret: '%kernel.secret%'
+        lifetime: 604800
+        remember_me_parameter: login_form[_remember_me]
 
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
+      # configure the form authentication as the entry point for unauthenticated users
+      entry_point: form_login
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+      # activate different ways to authenticate
+      # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+      # https://symfony.com/doc/current/security/impersonating_user.html
+      # switch_user: true
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
-    access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+    # access_control:
+    # allow unauthenticated users to access the login form
+    # - { path: ^/admin/login, roles: PUBLIC_ACCESS }
+    # but require authentication for all other admin routes
+    # - { path: ^/admin, roles: ROLE_ADMIN }

@@ -12,7 +12,16 @@
     {% endblock %}
 </head>
 <body>
-    {{ include('header.html.twig') }}
-    {% block body %}{% endblock %}
+{{ include('header.html.twig') }}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-dismissible alert-{{ label }} text-center">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>{{ message }}</strong>
+        </div>
+    {% endfor %}
+{% endfor %}
+
+{% block body %}{% endblock %}
 </body>
 </html>

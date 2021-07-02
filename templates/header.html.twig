@@ -1,14 +1,25 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="{{ path('app_home') }}">Mon Petit Bug</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarColor01">
+        <div class=" {{ not app.user ? 'd-none' : 'collapse navbar-collapse' }}" id="navbarColor01">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Home
-                        <span class="visually-hidden">(current)</span>
+                    <a class="nav-link" href="{{ path('app_home') }}">Home
+                        <span class="visually-hidden"></span>
+                    </a>
+                </li>
+                <li class="nav-item {{ app.user ? 'd-none' : '' }}">
+                    <a class="nav-link" href="{{ path('app_login') }}">Login
+                        <span class="visually-hidden"></span>
+                    </a>
+                </li>
+                <li class="nav-item {{ app.user ? '' : 'd-none' }}">
+                    <a class="nav-link" href="{{ path('app_logout') }}">Logout
+                        <span class="visually-hidden"></span>
                     </a>
                 </li>
             </ul>
