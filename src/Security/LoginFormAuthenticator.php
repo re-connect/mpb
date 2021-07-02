@@ -5,8 +5,8 @@ namespace App\Security;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -22,15 +22,17 @@ use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 class LoginFormAuthenticator extends AbstractAuthenticator
 {
     const PROVIDED_EMAIL = 'providedEmail';
+    private RequestStack $requestStack;
     private UserRepository $userRepository;
     private UrlGeneratorInterface $urlGenerator;
-    private Session $session;
+    private FlashBagInterface $flashbagInterface;
 
-    public function __construct(UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
+    public function __construct(RequestStack $requestStack, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator, FlashBagInterface $flashbagInterface)
     {
+        $this->requestStack = $requestStack;
         $this->userRepository = $userRepository;
         $this->urlGenerator = $urlGenerator;
-        $this->session = new Session();
+        $this->flashbagInterface = $flashbagInterface;
     }
 
     public function supports(Request $request): bool
@@ -43,7 +45,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
     {
         $providedEmail = $request->request->get('login_form')['email'];
         $foundUser = $this->userRepository->findOneBy(['email' => $providedEmail]);
-        $this->session->set(self::PROVIDED_EMAIL, $providedEmail);
+        $this->requestStack->getSession()->set(self::PROVIDED_EMAIL, $providedEmail);
         if (!$foundUser) {
             throw new UserNotFoundException;
         }
@@ -56,14 +58,14 @@ class LoginFormAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): RedirectResponse
     {
-        $this->session->remove('providedEmail');
+        $this->requestStack->getSession()->remove(self::PROVIDED_EMAIL);
 
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
     {
-        $this->session->getFlashBag()->add('danger', $exception->getMessage());
+        $this->flashbagInterface->set('danger', $exception->getMessage());
 
         return new RedirectResponse($this->urlGenerator->generate('app_login'));
     }

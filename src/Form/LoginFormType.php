@@ -9,24 +9,25 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LoginFormType extends AbstractType
 {
-    private SessionInterface $session;
+    private RequestStack $requestStack;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, ['data' => $this->session->get(LoginFormAuthenticator::PROVIDED_EMAIL)
+            ->add('email', EmailType::class, [
+                'data' => $this->requestStack->getSession()->get(LoginFormAuthenticator::PROVIDED_EMAIL)
             ])
-            ->add('password', PasswordType::class, [])
+            ->add('password', PasswordType::class)
             ->add('_remember_me', CheckboxType::class, [
                 'required' => false,
             ]);
@@ -35,7 +36,7 @@ class LoginFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-                                   'data_class' => User::class
-                               ]);
+           'data_class' => User::class,
+       ]);
     }
 }
