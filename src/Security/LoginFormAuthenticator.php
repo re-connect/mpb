@@ -33,7 +33,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
         $this->session = new Session();
     }
 
-    public function supports(Request $request): ?bool
+    public function supports(Request $request): bool
     {
         return $request->attributes->get('_route') === 'app_login'
             && $request->isMethod('POST');
@@ -61,7 +61,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
     {
         $this->session->getFlashBag()->add('danger', $exception->getMessage());
 
