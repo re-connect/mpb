@@ -19,7 +19,7 @@ class User
      */
     private $id;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", unique="true", length=255)
      */
     private $email;
     /**
@@ -279,5 +279,30 @@ class User
         }
 
         return $this;
+    }
+
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUsername()
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
+    public function isResolved(): bool
+    {
+        // TODO: Implement isResolved() method.
     }
 }
