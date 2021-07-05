@@ -16,6 +16,7 @@
         </div>
     </div>
     <div class="text-center">
-        <a target="_blank" href="https://127.0.0.1:8002/oauth/auth?response_type=code&client_id=2a9738974ed757e40d8c91f481194e7e&redirect_uri=https://127.0.0.1:8000/sso_login" class="btn btn-primary">Se connecter avec RP</a>
+        <a href="{{ path('sso_trigger') }}"
+           class="btn btn-primary">Se connecter avec RP</a>
     </div>
 {% endblock %}

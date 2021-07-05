@@ -6,6 +6,7 @@ use App\Form\LoginFormType;
 use App\Service\SecurityService;
 use Firebase\JWT\JWT;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,10 +37,26 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/sso_trigger", name="sso_trigger", methods={"GET"})
+     */
+    public function triggerSSOLogin(): RedirectResponse
+    {
+        $endPoint = $this->getParameter('loginEndpoint');
+        $cliendId = $this->getParameter('clientId');
+        $redirectUri = $this->getParameter('redirectUri');
+
+        return $this->redirect("{$endPoint}&{$cliendId}&{$redirectUri}");
+    }
+
+    /**
      * @Route("/sso_login", name="redirect_uri", methods={"GET", "POST"})
      */
-    public function SSOLogin(Request $request, SecurityService $service)
+    public function SSOLogin(Request $request, SecurityService $service): RedirectResponse
     {
-        $service->isSSOTokenValid($request->query->get('code'));
+        if ($service->isSSOTokenValid($request->query->get('code'))) {
+            return new RedirectResponse($this->generateUrl('app_home'));
+        } else {
+            return new RedirectResponse($this->generateUrl('app_login'));
+        }
     }
 }
