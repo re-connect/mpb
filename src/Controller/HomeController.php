@@ -30,7 +30,7 @@ class HomeController extends AbstractController
             ->setEmail('marco.malaspina@reconnect.fr')
             ->setFirstName('Marco')
             ->setLastLogin(new \DateTime('now'))
-            ->setRole('ADMIN')
+            ->setRole('ROLE_USER')
             ->setLastName('Malaspina');
         $user->setPassword($hasher->hashPassword($user, '280690'));
         $em->persist($user);

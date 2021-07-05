@@ -13,6 +13,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+    const ROLES = [
+        'ROLE_USER',
+        'ROLE_TECH_TEAM',
+        'ROLE_ADMIN'
+    ];
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -284,7 +289,12 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        $roles[] = $this->role;
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        return array_unique($roles);
     }
 
     public function getSalt()
