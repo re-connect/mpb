@@ -17,13 +17,17 @@ class AuthenticationTest extends WebTestCase
         $this->entityManager = $kernel->getContainer()
             ->get('doctrine')
             ->getManager();
-        $this->user = (new User())
-            ->setEmail('gandalf@gmail.com')
-            ->setFirstName('Gandalf')
-            ->setLastName('The Grey')
-            ->setLastLogin(new \DateTime('now'))
-            ->setPassword('testpassword')
-            ->setRole('ROLE_USER');
+        if (null === $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'gandalf@gmail.com'])) {
+            $this->user = (new User())
+                ->setEmail('gandalf@gmail.com')
+                ->setFirstName('Gandalf')
+                ->setLastName('The Grey')
+                ->setLastLogin(new \DateTime('now'))
+                ->setPassword('testpassword')
+                ->setRole('ROLE_USER');
+            $this->entityManager->persist($this->user);
+            $this->entityManager->flush();
+        }
         self::ensureKernelShutdown();
         $this->client = self::createClient();
     }
