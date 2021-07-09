@@ -39,7 +39,7 @@ class BugReport
      */
     private $status;
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bugReport")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bugReports")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

@@ -61,7 +61,7 @@ class User implements UserInterface
      */
     private $comments;
     /**
-     * @ORM\ManyToMany(targetEntity=Badge::class, mappedBy="user")
+     * @ORM\ManyToMany(targetEntity=Badge::class, mappedBy="users")
      */
     private $badges;
     /**
