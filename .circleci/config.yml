@@ -21,7 +21,9 @@ jobs:
 
       - run:
           name: "Install Dependencies"
-          command: composer install -n --prefer-dist
+          command:
+            - cp .env.ci .env && cp .env.ci .env.test
+            - composer install -n --prefer-dist
 
       - save_cache:
           key: v1-dependencies-{{ checksum "composer.json" }}
