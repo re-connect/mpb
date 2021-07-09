@@ -5,11 +5,20 @@ jobs:
       # Specify the version you desire here
       - image: circleci/php:7.4-node-browsers
 
+      - image: circleci/mysql:latest
+        environment:
+          MYSQL_DATABASE: monpetitbug_test
+          MYSQL_ROOT_PASSWORD: axel
+          MYSQL_USER: axel
+          MYSQL_PASSWORD: axel
+
     steps:
       - checkout
 
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
+      - run: sudo docker-php-ext-install zip bcmath pdo_mysql
+      - run: sudo apt install default-mysql-client --fix-missing
 
       # Download and cache dependencies
       - restore_cache:
@@ -21,8 +30,15 @@ jobs:
 
       - run:
           name: "Install Dependencies"
-          command:
-            - composer install -n --prefer-dist
+          command: composer install -n --prefer-dist
+
+      - run:
+          name: "Assets Install and Build"
+          command: yarn install && yarn build
+
+      - run:
+          name: "Migration"
+          command: php bin/console doctrine:migrations:migrate --env=test -q
 
       - save_cache:
           key: v1-dependencies-{{ checksum "composer.json" }}
