@@ -88,6 +88,9 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "test":  [
+            "./vendor/bin/simple-phpunit tests"
         ]
     },
     "conflict": {
