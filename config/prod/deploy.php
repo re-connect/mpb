@@ -14,7 +14,7 @@ return new class extends DefaultDeployer {
             ->repositoryUrl('git@github.com:re-connect/mpb.git')
             // the repository branch to deploy
             ->repositoryBranch('master')
-            ->remoteComposerBinaryPath('~/composer.phar')
+            ->remoteComposerBinaryPath('/var/www/mpb/composer.phar')
             ->useSshAgentForwarding(false)
             ->composerInstallFlags('--prefer-dist --no-interaction')
             ->sharedFilesAndDirs(
