@@ -28,11 +28,10 @@ return new class extends DefaultDeployer {
             );
     }
 
-    public function beforePreparing()
+    public function beforeStartingDeploy()
     {
-        $this->log('Remote yarn');
-        $this->runRemote('~/.yarn/bin/yarn install');
-        $this->runRemote('~/.yarn/bin/yarn build');
+        $this->runLocal('yarn install');
+        $this->runLocal('yarn build');
     }
 
     public function beforeFinishingDeploy()
