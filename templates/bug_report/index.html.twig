@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listing des Bug reports{% endblock %}
+
+{% block body %}
+    <a class="btn btn-primary float-end my-2"
+       href="{{ path('bug_report_new') }}">Créer un Bug report</a>
+    <h1>Liste des Bug report</h1>
+    <div class="container bg-light py-3 px-4 card">
+        {% for bug_report in bug_reports %}
+            <div class="row my-2 bg-white border rounded position-relative">
+                <div class="col-1">
+                    IMAGE
+                </div>
+                <div class="col-11">
+                    <div class="d-flex justify-content-between py-1">
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-danger p-2 me-2">{{ bug_report.category.name }}</span>
+                            <p class="h5 d-inline-block my-0">{{ bug_report.title }}</p>
+                        </div>
+                        <span class="badge text-warning border border-warning p-2">{{ bug_report.status }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span><small>Remonté par : {{ bug_report.user.firstName~' '~bug_report.user.lastName }}</small></span>
+                        <span><small>Traité par : Marco Malaspina</small></span>
+                    </div>
+                    <div class="py-1">
+                        <span><small>Le : {{ bug_report.createdAt|date("m/d/Y") }} à {{ bug_report.createdAt|date("H:i") }}</small></span>
+                    </div>
+                </div>
+                <a href="{{ path('bug_report_show', {'id': bug_report.id}) }}" class="stretched-link"></a>
+            </div>
+        {% else %}
+            Aucun Bug report n'a été ajouté
+        {% endfor %}
+    </div>
+{% endblock %}

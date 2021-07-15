@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit BugReport{% endblock %}
+
+{% block body %}
+    <h1>Edit BugReport</h1>
+
+    {{ include('bug_report/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-secondary"
+            href="{{ path('bug_report_index') }}">back to list</a>
+
+    {{ include('bug_report/_delete_form.html.twig') }}
+{% endblock %}

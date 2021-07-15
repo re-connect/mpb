@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New BugReport{% endblock %}
+
+{% block body %}
+    <a class="btn btn-secondary float-end" href="{{ path('bug_report_index') }}">Retour à la liste</a>
+    <h1>Créer un nouveau Bug report</h1>
+
+    {{ include('bug_report/_form.html.twig') }}
+
+{% endblock %}
