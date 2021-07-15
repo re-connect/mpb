@@ -3,11 +3,9 @@
 {% block title %}Hello MainController!{% endblock %}
 
 {% block body %}
-
     <div class="jumbotron">
-        <div class="container text-center mt-4">
+        <div class="container text-center">
             <h1 class="">Hello {{ app.user ? app.user.firstName : '' }}! ✅</h1>
         </div>
-
     </div>
 {% endblock %}
