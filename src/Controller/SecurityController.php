@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Form\LoginFormType;
 use App\Service\SecurityService;
-use Firebase\JWT\JWT;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
