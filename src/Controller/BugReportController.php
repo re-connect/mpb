@@ -5,19 +5,22 @@ namespace App\Controller;
 use App\Entity\BugReport;
 use App\Form\BugReportType;
 use App\Repository\BugReportRepository;
+use App\Repository\StatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/bug/report")
+ * @Route("/bug-report")
+ * @IsGranted ("ROLE_USER")
  */
 class BugReportController extends AbstractController
 {
     /**
-     * @Route("/", name="bug_report_index", methods={"GET"})
+     * @Route("/list", name="bug_report_index", methods={"GET"})
      */
     public function index(BugReportRepository $bugReportRepository): Response
     {
@@ -27,9 +30,9 @@ class BugReportController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="bug_report_new", methods={"GET","POST"})
+     * @Route("/create", name="bug_report_new", methods={"GET","POST"})
      */
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request, EntityManagerInterface $em, StatusRepository $statusRepository): Response
     {
         $bugReport = new BugReport();
         $form = $this->createForm(BugReportType::class, $bugReport);
@@ -37,7 +40,8 @@ class BugReportController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $bugReport->setUser($this->getUser())
-            ->setCreatedAt(new \DateTime('now'));
+            ->setCreatedAt(new \DateTime('now'))
+            ->setStatus($statusRepository->findOneBy(['name' => 'Pas encore pris en compte']));
             $em->persist($bugReport);
             $em->flush();
 
