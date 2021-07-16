@@ -35,10 +35,6 @@ class BugReport
      */
     private $updatedAt;
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $status;
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bugReports")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -56,6 +52,11 @@ class BugReport
      * @ORM\OneToMany(targetEntity=Attachment::class, mappedBy="bugReport", orphanRemoval=true)
      */
     private $attachments;
+    /**
+     * @ORM\ManyToOne(targetEntity=Status::class, inversedBy="bugReport")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $status;
 
     public function __construct()
     {
@@ -112,18 +113,6 @@ class BugReport
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
 
         return $this;
     }
@@ -208,6 +197,18 @@ class BugReport
                 $attachment->setBugReport(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?Status $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

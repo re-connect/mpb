@@ -6,6 +6,5 @@
     <a class="btn btn-secondary float-end" href="{{ path('bug_report_index') }}">Retour à la liste</a>
     <h1>Créer un nouveau Bug report</h1>
 
-    {{ include('bug_report/_form.html.twig') }}
-
+    {{ include('bug_report/_form.html.twig', {'button_label': 'Créer le Bug report'}) }}
 {% endblock %}

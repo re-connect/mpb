@@ -3,7 +3,8 @@
 {% block title %}BugReport{% endblock %}
 
 {% block body %}
-    <h1>BugReport</h1>
+    <a class="btn btn-secondary float-end" href="{{ path('bug_report_index') }}">Retour à la liste</a>
+    <h1>{{ bug_report.title }}</h1>
 
     <table class="table">
         <tbody>
@@ -29,14 +30,11 @@
             </tr>
             <tr>
                 <th>Status</th>
-                <td>{{ bug_report.status }}</td>
+                <td>{{ bug_report.status.name }}</td>
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('bug_report_index') }}">back to list</a>
-
-    <a href="{{ path('bug_report_edit', {'id': bug_report.id}) }}">edit</a>
+    <a class="btn btn-warning" href="{{ path('bug_report_edit', {'id': bug_report.id}) }}"><i class="fas fa-pencil-alt"></i></a>
 
     {{ include('bug_report/_delete_form.html.twig') }}
 {% endblock %}

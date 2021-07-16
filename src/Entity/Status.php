@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
+use App\Repository\StatusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @ORM\Entity(repositoryClass=StatusRepository::class)
  */
-class Category
+class Status
 {
     /**
      * @ORM\Id
@@ -23,14 +23,13 @@ class Category
      */
     private $name;
     /**
-     * @ORM\OneToMany(targetEntity=BugReport::class, mappedBy="category")
-     */
-    private $bugReport;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $color;
+    /**
+     * @ORM\OneToMany(targetEntity=BugReport::class, mappedBy="status")
+     */
+    private $bugReports;
 
     public function __construct()
     {
@@ -54,36 +53,6 @@ class Category
         return $this;
     }
 
-    /**
-     * @return Collection|bugReport[]
-     */
-    public function getBugReports(): Collection
-    {
-        return $this->bugReports;
-    }
-
-    public function addBugReport(bugReport $bugReport): self
-    {
-        if (!$this->bugReports->contains($bugReport)) {
-            $this->bugReports[] = $bugReport;
-            $bugReport->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBugReport(bugReport $bugReport): self
-    {
-        if ($this->bugReports->removeElement($bugReport)) {
-            // set the owning side to null (unless already changed)
-            if ($bugReport->getCategory() === $this) {
-                $bugReport->setCategory(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getColor(): ?string
     {
         return $this->color;
@@ -92,6 +61,36 @@ class Category
     public function setColor(string $color): self
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BugReport[]
+     */
+    public function getBugReports(): Collection
+    {
+        return $this->bugReports;
+    }
+
+    public function addBugReport(BugReport $bugReport): self
+    {
+        if (!$this->bugReports->contains($bugReport)) {
+            $this->bugReports[] = $bugReport;
+            $bugReport->setStatus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBugReport(BugReport $bugReport): self
+    {
+        if ($this->bugReports->removeElement($bugReport)) {
+            // set the owning side to null (unless already changed)
+            if ($bugReport->getStatus() === $this) {
+                $bugReport->setStatus(null);
+            }
+        }
 
         return $this;
     }

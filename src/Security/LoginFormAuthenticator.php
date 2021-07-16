@@ -60,7 +60,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
     {
         $this->requestStack->getSession()->remove(self::PROVIDED_EMAIL);
 
-        return new RedirectResponse($this->urlGenerator->generate('app_home'));
+        return new RedirectResponse($this->urlGenerator->generate('bug_report_index'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
