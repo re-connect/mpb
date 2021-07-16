@@ -34,7 +34,7 @@ class AuthenticationTest extends WebTestCase
 
     public function testUserNotLoggedIn()
     {
-        $this->client->request('GET', '/');
+        $this->client->request('GET', '/bug-report/list');
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
         $this->assertResponseRedirects($this->client->getResponse()->headers->get('Location'));
     }
@@ -45,7 +45,7 @@ class AuthenticationTest extends WebTestCase
         $this->client->request('GET', '/login');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->client->loginUser($user);
-        $this->client->request('GET', '/');
+        $this->client->request('GET', '/bug-report/list');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
