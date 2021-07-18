@@ -1,4 +1,9 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">{{ button_label }}</button>
+    {{ form_row(form.title) }}
+    {{ form_row(form.content) }}
+<div>
+    {{ form_row(form.category) }}
+</div>
+
+<button class="btn btn-primary">{{ button_label }}</button>
 {{ form_end(form) }}
