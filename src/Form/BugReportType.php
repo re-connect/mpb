@@ -35,8 +35,7 @@ class BugReportType extends AbstractType
                 'label' => 'Je considère ce bug comme...',
                 'class' => Category::class,
                 'choice_label' => 'name',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
