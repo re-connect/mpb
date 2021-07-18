@@ -33,8 +33,12 @@ class BugReportType extends AbstractType
             ])
             ->add('category', EntityType::class, [
                 'label' => 'Je considère ce bug comme...',
+                'label_attr' => ['class' => 'd-block'],
                 'class' => Category::class,
                 'choice_label' => 'name',
+                'attr' => [
+                    'class' => 'w-100'
+                ]
             ]);
     }
 
