@@ -69,6 +69,17 @@ class User implements UserInterface
      */
     private $attachments;
 
+    static public function getTechTeamUsers(UserRepository $repo): array
+    {
+        $foundUsers = $repo->findBy(['role' => 'ROLE_TECH_TEAM']);
+        $arr = [];
+        foreach ($foundUsers as $key => $value) {
+            $arr[$value->getFirstName()] = $value->getFirstName();
+        }
+
+        return $arr;
+    }
+
     public function __construct()
     {
         $this->bugReports = new ArrayCollection();

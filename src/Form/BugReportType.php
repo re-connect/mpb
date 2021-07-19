@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\BugReport;
 use App\Entity\Category;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -17,14 +19,23 @@ use Symfony\Component\Security\Core\Security;
 class BugReportType extends AbstractType
 {
     private Security $security;
+    private UserRepository $repo;
 
-    public function __construct(Security $security)
+    public function __construct(Security $security, UserRepository $repo)
     {
         $this->security = $security;
+        $this->repo = $repo;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if (in_array('ROLE_TECH_TEAM', $this->security->getUser()->getRoles())) {
+            $builder->add('userInCharge', ChoiceType::class, [
+                'label' => 'Responsable de la résolution du bug',
+                'choices' => User::getTechTeamUsers($this->repo),
+                'required' => false
+            ]);
+        }
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre du Bug Report'

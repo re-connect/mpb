@@ -2,12 +2,19 @@ security:
   password_hashers:
     App\Entity\User:
       algorithm: auto
+
   enable_authenticator_manager: true
+
+  role_hierarchy:
+    ROLE_TECH_TEAM: ROLE_USER
+    ROLE_ADMIN: ROLE_TECH_TEAM
+
   providers:
     app_user_provider:
       entity:
         class: 'App\Entity\User'
         property: 'email'
+
   firewalls:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
