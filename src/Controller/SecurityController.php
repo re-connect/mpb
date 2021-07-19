@@ -54,7 +54,7 @@ class SecurityController extends AbstractController
     public function SSOLogin(Request $request, SecurityService $service): RedirectResponse
     {
         if ($service->isSSOTokenValid($request->query->get('code'))) {
-            return new RedirectResponse($this->generateUrl('app_home'));
+            return new RedirectResponse($this->generateUrl('bug_report_index'));
         } else {
             return new RedirectResponse($this->generateUrl('app_login'));
         }
