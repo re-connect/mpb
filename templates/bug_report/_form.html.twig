@@ -1,8 +1,34 @@
 {{ form_start(form) }}
+<div class="text-center py-4">
     {{ form_row(form.title) }}
+    {{ form_row(form.application) }}
+</div>
+<hr class="text-primary">
+<div class="text-center py-4">
+    <h3>Ma configuration</h3>
+    {{ form_row(form.device) }}
+    {{ form_row(form.deviceLanguage) }}
+    {{ form_row(form.deviceOs) }}
+    {{ form_row(form.deviceOsVersion) }}
+    {{ form_row(form.browser) }}
+    {{ form_row(form.browserVersion) }}
+</div>
+<hr class="text-primary">
+<div class="text-center py-4">
+    <h3>Reproduction du bug</h3>
     {{ form_row(form.content) }}
-<div class="w-50">
+    {{ form_row(form.history) }}
+    {{ form_row(form.environment) }}
+    {{ form_row(form.url) }}
     {{ form_row(form.category) }}
+</div>
+<hr class="text-primary">
+<div class="text-center py-4">
+    <h3>Informations sur la session</h3>
+    {{ form_row(form.accountId) }}
+    {{ form_row(form.accountType) }}
+    {{ form_row(form.itemId) }}
+    {{ form_row(form.otherInfo) }}
 </div>
 
 <button class="btn btn-primary">{{ button_label }}</button>
