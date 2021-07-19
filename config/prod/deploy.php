@@ -36,6 +36,7 @@ return new class extends DefaultDeployer {
 
     public function beforeFinishingDeploy()
     {
+        $this->runRemote('php bin/console ckeditor:install && php bin/console assets:install public');
         $this->runRemote('{{ console_bin }} doctrine:migrations:migrate -q');
     }
 };
