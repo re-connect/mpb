@@ -136,6 +136,11 @@ class BugReport
      */
     private $other_info;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $user_in_charge;
+
     static public function getConstValues($array): array
     {
         $output = [];
@@ -465,6 +470,18 @@ class BugReport
     public function setOtherInfo(?string $other_info): self
     {
         $this->other_info = $other_info;
+
+        return $this;
+    }
+
+    public function getUserInCharge(): ?string
+    {
+        return $this->user_in_charge;
+    }
+
+    public function setUserInCharge(?string $user_in_charge): self
+    {
+        $this->user_in_charge = $user_in_charge;
 
         return $this;
     }

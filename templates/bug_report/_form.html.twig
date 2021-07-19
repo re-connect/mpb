@@ -1,5 +1,8 @@
 {{ form_start(form) }}
 <div class="text-center py-4">
+    {% if form.userInCharge is defined %}
+        {{ form_row(form.userInCharge) }}
+    {% endif %}
     {{ form_row(form.title) }}
     {{ form_row(form.application) }}
 </div>
@@ -30,6 +33,5 @@
     {{ form_row(form.itemId) }}
     {{ form_row(form.otherInfo) }}
 </div>
-
 <button class="btn btn-primary">{{ button_label }}</button>
 {{ form_end(form) }}
