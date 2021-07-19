@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Form\LoginFormType;
 use App\Service\SecurityService;
-use Firebase\JWT\JWT;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +12,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SecurityController extends AbstractController
 {
+    /**
+     * @Route("/", name="app_home")
+     */
+    public function redirectAction(): RedirectResponse
+    {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('bug_report_index');
+        } else {
+            return $this->redirectToRoute('app_login');
+        }
+    }
+
     /**
      * @Route("/login", name="app_login", methods={"GET", "POST"})
      */
