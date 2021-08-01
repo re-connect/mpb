@@ -2,7 +2,6 @@
 
 {% block title %}BugReport{% endblock %}
 
-
 {% block body %}
     {{ include('bug_report/_back_to_list_button.html.twig') }}
     <h1>{{ bug_report.title }}</h1>
@@ -10,23 +9,19 @@
     <table class="table">
         <tbody>
         <tr>
-            <th>Id</th>
-            <td>{{ bug_report.id }}</td>
-        </tr>
-        <tr>
-            <th>Title</th>
+            <th>Titre</th>
             <td>{{ bug_report.title }}</td>
         </tr>
         <tr>
-            <th>Content</th>
+            <th>Informations</th>
             <td>{{ bug_report.content|raw }}</td>
         </tr>
         <tr>
-            <th>CreatedAt</th>
+            <th>Date de création</th>
             <td>{{ bug_report.createdAt ? bug_report.createdAt|date('Y-m-d H:i:s') : '' }}</td>
         </tr>
         <tr>
-            <th>UpdatedAt</th>
+            <th>Date de dernière mise à jour</th>
             <td>{{ bug_report.updatedAt ? bug_report.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
         </tr>
         {% if bug_report.status %}
@@ -37,8 +32,14 @@
         {% endif %}
         </tbody>
     </table>
+    <div class="row">
+        <div class="col">
     <a class="btn btn-warning" href="{{ path('bug_report_edit', {'id': bug_report.id}) }}"><i
                 class="fas fa-pencil-alt"></i></a>
+    </div>
+    <div class="col">
 
-    {{ include('bug_report/_delete_form.html.twig') }}
+        {{ include('bug_report/_delete_form.html.twig') }}
+    </div>
+    </div>
 {% endblock %}

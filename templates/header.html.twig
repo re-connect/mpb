@@ -1,6 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ path('bug_report_index') }}">Mon Petit Bug</a>
+        <a class="navbar-brand" href="{{ path('bug_report_index') }}">
+            <img src="/favicon.png" alt="logo" class="img-fluid me-2" style="max-width: 35px;"/>
+            Mon Petit Bug
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
                 aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -8,7 +11,9 @@
         <div class="{{ not app.user ? 'd-none' : 'collapse navbar-collapse' }}" id="navbarColor01">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('bug_report_index') }}">Bug reports
+                    <a class="nav-link" href="{{ path('bug_report_index') }}">
+                        <i class="fas fa-table me-2"></i>
+                        Tous les bugs
                         <span class="visually-hidden"></span>
                     </a>
                 </li>
@@ -18,7 +23,14 @@
                     </a>
                 </li>
                 <li class="nav-item {{ app.user ? '' : 'd-none' }}">
-                    <a class="nav-link" href="{{ path('app_logout') }}">Logout
+                    <a class="nav-link" href="{{ path('app_logout') }}">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                        <span class="visually-hidden"></span>
+                    </a>
+                </li>
+                <li class="nav-item {{ is_granted('ROLE_ADMIN') ? '' : 'd-none' }}">
+                    <a class="nav-link" href="{{ path('admin') }}">
+                        <i class="fas fa-tools me-2"></i>Admin
                         <span class="visually-hidden"></span>
                     </a>
                 </li>

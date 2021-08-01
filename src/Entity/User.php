@@ -71,9 +71,9 @@ class User implements UserInterface
 
     static public function getTechTeamUsers(UserRepository $repo): array
     {
-        $foundUsers = $repo->findBy(['role' => 'ROLE_TECH_TEAM']);
+        $foundUsers = $repo->findBy(['role' => ['ROLE_TECH_TEAM', 'ROLE_ADMIN']]);
         $arr = [];
-        foreach ($foundUsers as $key => $value) {
+        foreach ($foundUsers as $value) {
             $arr[$value->getFirstName()] = $value->getFirstName();
         }
 

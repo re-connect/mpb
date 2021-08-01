@@ -127,7 +127,7 @@ class BugReport
     private $url;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $account_id;
 

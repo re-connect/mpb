@@ -5,3 +5,13 @@ $primary: #28AD7A;
 @import '~bootswatch/dist/zephyr/bootstrap.min.css';
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
+label.required {
+  position: relative;
+
+  &:before {
+    content: "*";
+    color: red;
+    position: absolute;
+    left: -10px;
+  }
+}

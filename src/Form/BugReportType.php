@@ -30,7 +30,7 @@ class BugReportType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (in_array('ROLE_TECH_TEAM', $this->security->getUser()->getRoles())) {
+        if ($this->security->isGranted('ROLE_TECH_TEAM', $this->security->getUser())) {
             $builder->add('userInCharge', ChoiceType::class, [
                 'label' => 'Responsable de la résolution du bug',
                 'choices' => User::getTechTeamUsers($this->repo),
@@ -84,7 +84,8 @@ class BugReportType extends AbstractType
                 'required' => false
             ])
             ->add('accountId', IntegerType::class, [
-                'label' => 'ID du compte concerné par le bug'
+                'label' => 'ID du compte concerné par le bug',
+                'required' => false,
             ])
             ->add('accountType', ChoiceType::class, [
                 'label' => 'Type de profil utilisé lors du bug',

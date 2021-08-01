@@ -4,8 +4,8 @@
 
 {% block body %}
     <a class="btn btn-primary float-end my-2"
-       href="{{ path('bug_report_new') }}">Créer un Bug report</a>
-    <h1>Liste des Bug report</h1>
+       href="{{ path('bug_report_new') }}">Déclarer un bug</a>
+    <h1>Liste des bugs</h1>
     <div class="container bg-light py-3 px-4 card">
         {% for bug_report in bug_reports %}
             <div class="row my-2 bg-white border rounded position-relative">
