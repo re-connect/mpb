@@ -1,37 +1,71 @@
 {{ form_start(form) }}
-<div class="text-center py-4">
+<div class="row py-4">
     {% if form.userInCharge is defined %}
-        {{ form_row(form.userInCharge) }}
+        <div class="col-12">
+            {{ form_row(form.userInCharge) }}
+        </div>
     {% endif %}
-    {{ form_row(form.title) }}
-    {{ form_row(form.application) }}
+    <div class="col-6">
+        {{ form_row(form.title) }}
+    </div>
+    <div class="col-6">
+        {{ form_row(form.application) }}
+    </div>
 </div>
 <hr class="text-primary">
-<div class="text-center py-4">
+<div class="row py-4">
     <h3>Ma configuration</h3>
-    {{ form_row(form.device) }}
-    {{ form_row(form.deviceLanguage) }}
-    {{ form_row(form.deviceOs) }}
-    {{ form_row(form.deviceOsVersion) }}
-    {{ form_row(form.browser) }}
-    {{ form_row(form.browserVersion) }}
+    <div class="col-12 col-sm-6 col-md-4">
+        {{ form_row(form.device) }}
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+        {{ form_row(form.deviceLanguage) }}
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+        {{ form_row(form.deviceOsVersion) }}
+    </div>
+    <div class="col-12 col-sm-6">
+        {{ form_row(form.browser) }}
+    </div>
+    <div class="col-12 col-sm-6">
+        {{ form_row(form.browserVersion) }}
+    </div>
 </div>
 <hr class="text-primary">
-<div class="text-center py-4">
-    <h3>Reproduction du bug</h3>
-    {{ form_row(form.content) }}
-    {{ form_row(form.history) }}
-    {{ form_row(form.environment) }}
-    {{ form_row(form.url) }}
-    {{ form_row(form.category) }}
-</div>
-<hr class="text-primary">
-<div class="text-center py-4">
+<div class="row py-4">
     <h3>Informations sur la session</h3>
-    {{ form_row(form.accountId) }}
-    {{ form_row(form.accountType) }}
-    {{ form_row(form.itemId) }}
-    {{ form_row(form.otherInfo) }}
+    <div class="col-12 col-sm-6 col-md-4">
+        {{ form_row(form.accountId) }}
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+        {{ form_row(form.accountType) }}
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+        {{ form_row(form.itemId) }}
+    </div>
 </div>
+<hr class="text-primary">
+<div class="row py-4">
+    <h3>Reproduction du bug</h3>
+    <div class="col-12 col-sm-6 col-md-4">
+        {{ form_row(form.environment) }}
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+        {{ form_row(form.url) }}
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+        {{ form_row(form.category) }}
+    </div>
+</div>
+<div class="row py-4">
+    <h3>Reproduction du bug</h3>
+    <div class="col-12 col-sm-6">
+        {{ form_row(form.content) }}
+    </div>
+    <div class="col-12 col-sm-6">
+        {{ form_row(form.history) }}
+    </div>
+</div>
+
 <button class="btn btn-primary">{{ button_label }}</button>
 {{ form_end(form) }}

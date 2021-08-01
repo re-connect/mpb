@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,39 +39,28 @@ class BugReportType extends AbstractType
         }
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre du Bug Report'
+                'label' => 'Titre du Bug'
             ])
             ->add('application', ChoiceType::class, [
                 'label' => 'Application concernée par le bug',
                 'choices' => BugReport::getConstValues(BugReport::APPLICATIONS)
             ])
-            ->add('device', TextType::class, [
+            ->add('device', ChoiceType::class, [
                 'label' => 'Appareil',
-                'attr' => [
-                    'placeholder' => 'Ordinateur, smartphone, tablette...'
-                ]
+                'choices' => BugReport::getConstValues(BugReport::DEVICES)
             ])
-            ->add('deviceLanguage', TextType::class, [
-                'label' => 'Langue de l\'appareil',
-                'attr' => [
-                    'placeholder' => 'Quelle est la langue configurée sur l\'appareil ?'
-                ]
-            ])
-            ->add('deviceOs', TextType::class, [
-                'label' => 'Système d\'exploitation de l\'appareil',
-                'attr' => [
-                    'placeholder' => 'Windows, MacOS, Android, iOS...'
-                ]
+            ->add('deviceLanguage', LanguageType::class, [
+                'label' => 'Langue Appareil',
+                'data' => 'fr',
+                'preferred_choices' => ['fr', 'en', 'es'],
             ])
             ->add('deviceOsVersion', TextType::class, [
-                'label' => 'Version du système d\'exploitation de l\'appareil',
+                'label' => 'Version OS',
                 'required' => false
             ])
-            ->add('browser', TextType::class, [
-                'label' => 'Navigateur internet utilisé',
-                'attr' => [
-                    'placeholder' => 'Chrome, Firefox, Internet Explorer, Safari, Navigateur du téléphone...'
-                ]
+            ->add('browser', ChoiceType::class, [
+                'label' => 'Navigateur',
+                'choices' => BugReport::getConstValues(BugReport::BROWSERS)
             ])
             ->add('browserVersion', TextType::class, [
                 'label' => 'Version du navigateur internet utilisé',
@@ -106,10 +96,6 @@ class BugReportType extends AbstractType
                     'placeholder' => 'exemple : id du bénéficiaire, id du ménage, id du document...'
                 ],
                 'required' => false
-            ])
-            ->add('otherInfo', TextType::class, [
-                'label' => 'Autre information pouvant aider à la reproduction du bug',
-                'required' => false,
             ])
             ->add('category', EntityType::class, [
                 'label' => 'Je considère ce bug comme...',

@@ -6,6 +6,7 @@ use App\Repository\BugReportRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BugReportRepository::class)
@@ -18,17 +19,31 @@ class BugReport
         2 => 'Application Mobile',
     ];
     const ENVIRONMENTS = [
-        0 => 'Pre-production',
-        1 => 'Production'
+        0 => 'Production',
+        1 => 'Pre-production'
     ];
     const ACCOUNT_TYPE = [
-        0 => 'CFN - Bénéficiaire',
-        1 => 'CFN - Membre',
-        2 => 'CFN - Gestionnaire',
-        3 => 'CFN - Admin',
-        4 => 'RP - Membre',
-        5 => 'RP - Admin',
+        0 => 'Bénéficiaire',
+        1 => 'TS',
+        2 => 'Gestionnaire',
+        3 => 'Admin',
     ];
+    const DEVICES = [
+        0 => 'Ordinateur Windows',
+        1 => 'Ordinateur MAC',
+        2 => 'Smartphone iOS',
+        3 => 'Smartphone Android',
+        4 => 'Tablette iOS',
+        5 => 'Tablette Android',
+    ];
+    const BROWSERS = [
+        'Internet Explorer',
+        'Chrome',
+        'Firefox',
+        'Safari',
+        'Autre',
+    ];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -41,6 +56,7 @@ class BugReport
     private $title;
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $content;
     /**
@@ -58,7 +74,6 @@ class BugReport
     private $user;
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bugReport")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $category;
     /**
@@ -71,7 +86,6 @@ class BugReport
     private $attachments;
     /**
      * @ORM\ManyToOne(targetEntity=Status::class, inversedBy="bugReport")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $status;
     /**
@@ -87,10 +101,6 @@ class BugReport
      */
     private $device_language;
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $device_os;
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $device_os_version;
@@ -103,7 +113,7 @@ class BugReport
      */
     private $browser_version;
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $history;
     /**
@@ -338,18 +348,6 @@ class BugReport
     public function setDeviceLanguage(string $device_language): self
     {
         $this->device_language = $device_language;
-
-        return $this;
-    }
-
-    public function getDeviceOs(): ?string
-    {
-        return $this->device_os;
-    }
-
-    public function setDeviceOs(string $device_os): self
-    {
-        $this->device_os = $device_os;
 
         return $this;
     }

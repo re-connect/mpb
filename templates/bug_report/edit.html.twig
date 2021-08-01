@@ -3,7 +3,7 @@
 {% block title %}Edit BugReport{% endblock %}
 
 {% block body %}
-    <a class="btn btn-secondary float-end" href="{{ path('bug_report_index') }}">Retour à la liste</a>
+    {{ include('bug_report/_back_to_list_button.html.twig') }}
     <h1>Éditer un Bug report</h1>
 
     {{ include('bug_report/_form.html.twig', {'button_label': 'Mettre à jour'}) }}

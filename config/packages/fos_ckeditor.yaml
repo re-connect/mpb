@@ -7,5 +7,5 @@ fos_ck_editor:
     configs:
         my_config:
             language: fr
-            uiColor: "#3459e6"
+            uiColor: "#28AD7A"
             toolbar: [ ["Bold", "Italic"]]

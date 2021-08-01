@@ -2,8 +2,9 @@
 
 {% block title %}BugReport{% endblock %}
 
+
 {% block body %}
-    <a class="btn btn-secondary float-end" href="{{ path('bug_report_index') }}">Retour à la liste</a>
+    {{ include('bug_report/_back_to_list_button.html.twig') }}
     <h1>{{ bug_report.title }}</h1>
 
     <table class="table">
@@ -28,10 +29,12 @@
             <th>UpdatedAt</th>
             <td>{{ bug_report.updatedAt ? bug_report.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
         </tr>
+        {% if bug_report.status %}
         <tr>
             <th>Status</th>
             <td>{{ bug_report.status.name }}</td>
         </tr>
+        {% endif %}
         </tbody>
     </table>
     <a class="btn btn-warning" href="{{ path('bug_report_edit', {'id': bug_report.id}) }}"><i
