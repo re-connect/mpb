@@ -12,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function get_browser;
+use function str_contains;
 
 /**
  * @Route("/bug-report")
@@ -35,7 +37,26 @@ class BugReportController extends AbstractController
     public function new(Request $request, EntityManagerInterface $em, StatusRepository $statusRepository): Response
     {
         $bugReport = new BugReport();
-        $form = $this->createForm(BugReportType::class, $bugReport);
+
+        $userAgent = $request->headers->get('User-Agent');
+        $os = str_contains($userAgent, 'Mac') ? 'Mac' : 'Windows';
+        $browser = 'Chrome';
+        if (str_contains($userAgent, 'Internet')) {
+            $browser = 'Internet Explorer';
+        } elseif (str_contains($userAgent, 'Firefox')) {
+            $browser = 'Firefox';
+        } elseif (str_contains($userAgent, 'Edge')) {
+            $browser = 'Edge';
+        } elseif (str_contains($userAgent, 'Safari')) {
+            $browser = 'Safari';
+        }
+        $bugReport
+            ->setDevice(array_search($os, BugReport::DEVICES))
+            ->setBrowser(array_search($browser, BugReport::BROWSERS));
+
+        $form = $this->createForm(BugReportType::class, $bugReport, [
+            'userAgent' => $userAgent,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -47,6 +68,7 @@ class BugReportController extends AbstractController
 
             return $this->redirectToRoute('bug_report_index');
         }
+
 
         return $this->render('bug_report/new.html.twig', [
             'bug_report' => $bugReport,

@@ -1,62 +1,48 @@
 {{ form_start(form) }}
 <div class="row py-4">
-    {% if form.userInCharge is defined %}
-        <div class="col-12">
-            {{ form_row(form.userInCharge) }}
-        </div>
-    {% endif %}
-    <div class="col-6">
+    {# {% if form.userInCharge is defined %} #}
+    {# <div class="col-12"> #}
+    {# {{ form_row(form.userInCharge) }} #}
+    {# </div> #}
+    {# {% endif %} #}
+    <div class="col-12">
         {{ form_row(form.title) }}
     </div>
-    <div class="col-6">
-        {{ form_row(form.application) }}
-    </div>
-</div>
-<hr class="text-primary">
-<div class="row py-4">
-    <h3>Ma configuration</h3>
-    <div class="col-12 col-sm-6 col-md-4">
-        {{ form_row(form.device) }}
-    </div>
-    <div class="col-12 col-sm-6 col-md-4">
-        {{ form_row(form.deviceLanguage) }}
-    </div>
-    <div class="col-12 col-sm-6 col-md-4">
-        {{ form_row(form.deviceOsVersion) }}
-    </div>
     <div class="col-12 col-sm-6">
-        {{ form_row(form.browser) }}
-    </div>
-    <div class="col-12 col-sm-6">
-        {{ form_row(form.browserVersion) }}
-    </div>
-</div>
-<hr class="text-primary">
-<div class="row py-4">
-    <h3>Informations sur la session</h3>
-    <div class="col-12 col-sm-6 col-md-4">
-        {{ form_row(form.accountId) }}
-    </div>
-    <div class="col-12 col-sm-6 col-md-4">
-        {{ form_row(form.accountType) }}
-    </div>
-    <div class="col-12 col-sm-6 col-md-4">
-        {{ form_row(form.itemId) }}
-    </div>
-</div>
-<hr class="text-primary">
-<div class="row py-4">
-    <h3>Reproduction du bug</h3>
-    <div class="col-12 col-sm-6 col-md-4">
-        {{ form_row(form.environment) }}
-    </div>
-    <div class="col-12 col-sm-6 col-md-4">
+        <div class="row">
+            <div class="col-12 col-sm-6">
+                {{ form_row(form.application) }}
+            </div>
+            <div class="col-12 col-sm-6">
+                {{ form_row(form.environment) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-6">
+                {{ form_row(form.accountType) }}
+            </div>
+            <div class="col-12 col-sm-6">
+                {{ form_row(form.accountId) }}
+            </div>
+        </div>
         {{ form_row(form.url) }}
+
     </div>
-    <div class="col-12 col-sm-6 col-md-4">
-        {{ form_row(form.category) }}
+    <div class="col-12 col-sm-6">
+        {{ form_row(form.device) }}
+        {{ form_row(form.browser) }}
+        <div class="row">
+            <div class="col-12 col-sm-6">
+                {{ form_row(form.deviceLanguage) }}
+            </div>
+            <div class="col-12 col-sm-6">
+                {{ form_row(form.deviceOsVersion) }}
+                {{ form_row(form.browserVersion) }}
+            </div>
+        </div>
     </div>
 </div>
+<hr class="text-primary">
 <div class="row py-4">
     <h3>Description du bug</h3>
     <div class="col-12 col-sm-6">
@@ -67,5 +53,7 @@
     </div>
 </div>
 
-<button class="btn btn-primary">{{ button_label }}</button>
+<div class="row">
+    <button class="btn btn-primary">{{ button_label }}</button>
+</div>
 {{ form_end(form) }}

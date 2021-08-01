@@ -35,13 +35,16 @@ class BugReport
         3 => 'Smartphone Android',
         4 => 'Tablette iOS',
         5 => 'Tablette Android',
+        6 => 'Mac',
+        7 => 'Windows',
     ];
     const BROWSERS = [
-        'Internet Explorer',
         'Chrome',
         'Firefox',
-        'Safari',
+        'Edge',
+        'Internet Explorer',
         'Autre',
+        'Safari',
     ];
 
     /**
