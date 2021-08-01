@@ -9,7 +9,9 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
-/var/
+/var/cache
+/var/log
+/var/oauth/*
 /vendor/
 /node_modules/
 
