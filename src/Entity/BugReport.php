@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use function array_key_exists;
 
 /**
  * @ORM\Entity(repositoryClass=BugReportRepository::class)
@@ -39,12 +40,12 @@ class BugReport
         7 => 'Windows',
     ];
     const BROWSERS = [
-        'Chrome',
-        'Firefox',
-        'Edge',
-        'Internet Explorer',
-        'Autre',
-        'Safari',
+        0 => 'Chrome',
+        1 => 'Firefox',
+        2 => 'Edge',
+        3 => 'Internet Explorer',
+        4 => 'Autre',
+        5 => 'Safari',
     ];
 
     /**
@@ -485,5 +486,21 @@ class BugReport
         $this->user_in_charge = $user_in_charge;
 
         return $this;
+    }
+
+    public function getReadableBrowser(): string
+    {
+        if (!array_key_exists($this->getBrowser(), self::BROWSERS)) {
+            return '';
+        }
+        return self::BROWSERS[$this->getBrowser()];
+    }
+
+    public function getReadableDevice(): string
+    {
+        if (!array_key_exists($this->getDevice(), self::DEVICES)) {
+            return '';
+        }
+        return self::DEVICES[$this->getDevice()];
     }
 }

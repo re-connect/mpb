@@ -52,7 +52,9 @@ class BugReportController extends AbstractController
         }
         $bugReport
             ->setDevice(array_search($os, BugReport::DEVICES))
-            ->setBrowser(array_search($browser, BugReport::BROWSERS));
+            ->setBrowser(array_search($browser, BugReport::BROWSERS))
+            ->setDeviceLanguage('fr');
+        ;
 
         $form = $this->createForm(BugReportType::class, $bugReport, [
             'userAgent' => $userAgent,
@@ -68,7 +70,6 @@ class BugReportController extends AbstractController
 
             return $this->redirectToRoute('bug_report_index');
         }
-
 
         return $this->render('bug_report/new.html.twig', [
             'bug_report' => $bugReport,

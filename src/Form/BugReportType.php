@@ -40,7 +40,6 @@ class BugReportType extends AbstractType
             ])
             ->add('deviceLanguage', LanguageType::class, [
                 'label' => 'Langue Appareil',
-                'data' => 'fr',
                 'preferred_choices' => ['fr', 'en', 'es'],
             ])
             ->add('deviceOsVersion', TextType::class, [

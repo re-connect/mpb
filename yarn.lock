@@ -4380,6 +4380,11 @@ stackframe@^1.1.1:
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
 
+stimulus-reveal-controller@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/stimulus-reveal-controller/-/stimulus-reveal-controller-3.0.0.tgz#1765c7bf51f8da88543a26c87302d3e650919ef6"
+  integrity sha512-DEHSKz5X7Qdy01sEnqyoftAy2PXS6JaZMCy5ZEivn8c+Pz5QDXuavVfCJ0AbrotOfQrtv8mEIW/fwiL2SUIMng==
+
 stimulus@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/stimulus/-/stimulus-2.0.0.tgz#713c8b91a72ef90914b90955f0e705f004403047"
