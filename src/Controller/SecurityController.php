@@ -15,27 +15,17 @@ class SecurityController extends AbstractController
     #[Route(path: '/', name: 'app_home')]
     public function redirectAction(): RedirectResponse
     {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('bug_report_index');
-        } else {
-            return $this->redirectToRoute('app_login');
-        }
+        $redirectRoute = $this->getUser() ? 'bug_report_index' : 'app_login';
+
+        return $this->redirectToRoute($redirectRoute);
     }
 
     #[Route(path: '/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-        if ($this->getUser()) {
-            return $this->redirectToRoute('app_home');
-        }
-
         return $this->renderForm('security/login.html.twig', [
-            'error' => $error,
-            'last_username' => $lastUsername,
+            'error' => $authenticationUtils->getLastAuthenticationError(),
+            'last_username' => $authenticationUtils->getLastUsername(),
         ]);
     }
 
@@ -54,10 +44,10 @@ class SecurityController extends AbstractController
     #[Route(path: '/sso_login', name: 'redirect_uri', methods: ['GET', 'POST'])]
     public function SSOLogin(Request $request, SecurityService $service): RedirectResponse
     {
-        if ($service->isSSOTokenValid($request->query->get('code'))) {
-            return new RedirectResponse($this->generateUrl('bug_report_index'));
-        } else {
-            return new RedirectResponse($this->generateUrl('app_login'));
-        }
+        $redirectUrl = $service->isSSOTokenValid($request->query->get('code'))
+            ? $this->generateUrl('bug_report_index')
+            : $this->generateUrl('app_login');
+
+        return new RedirectResponse($redirectUrl);
     }
 }

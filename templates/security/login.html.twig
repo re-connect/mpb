@@ -3,32 +3,45 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3 text-center">
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3 text-center my-4">
+                <div class="card text-white bg-primary my-3 ">
+                    <div class="card-header">Connexion</div>
+                    <div class="card-body text-primary">
+                        <form action="{{ path('app_login') }}" method="post">
+                            <div class="form-floating mb-3">
+                                <input type="email" id="username" name="_username" class="form-control"
+                                       placeholder="name@example.com" value={{ last_username }}>
+                                <label for="username">Email</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="password" name="_password"
+                                       placeholder="Password">
+                                <label for="password">Password</label>
+                            </div>
 
-    <div class="jumbotron row">
-        <div class="col-8 col-sm-5 container text-center my-4">
-            <h1>Connexion</h1>
-            {% if error %}
-                <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            {% endif %}
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <form action="{{ path('app_login') }}" method="post">
-                <label for="username">Email:</label>
-                <input type="text" id="username" name="_username" value="{{ last_username }}"/>
-
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="_password"/>
-
-                {# If you want to control the URL the user is redirected to on success
-                <input type="hidden" name="_target_path" value="/account"/> #}
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                <button type="submit">login</button>
-            </form>
-
+                            <div class="d-grid gap-2 mt-5">
+                                <button type="submit" class="btn btn-light btn-lg shadow-lg text-primary">Se connecter
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="text-center">
-        <a href="{{ path('sso_trigger') }}"
-           class="btn btn-primary">Se connecter avec RP</a>
+        {#    <div class="text-center"> #}
+        {#        <a href="{{ path('sso_trigger') }}" #}
+        {#           class="btn btn-primary">Se connecter avec RP</a> #}
+        {#    </div> #}
     </div>
 {% endblock %}
