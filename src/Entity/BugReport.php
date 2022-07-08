@@ -3,15 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\BugReportRepository;
-use function array_key_exists;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use function array_key_exists;
 
-/**
- * @ORM\Entity(repositoryClass=BugReportRepository::class)
- */
+#[ORM\Entity(repositoryClass: BugReportRepository::class)]
 class BugReport
 {
     final public const APPLICATIONS = [
@@ -48,112 +46,81 @@ class BugReport
         5 => 'Safari',
     ];
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $title = '';
+
     #[Assert\NotBlank]
-    private $content;
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $updatedAt;
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bugReports")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="bugReport")
-     */
-    private $category;
-    /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="bugReport", orphanRemoval=true)
-     */
-    private $comments;
-    /**
-     * @ORM\OneToMany(targetEntity=Attachment::class, mappedBy="bugReport", orphanRemoval=true)
-     */
-    private $attachments;
-    /**
-     * @ORM\ManyToOne(targetEntity=Status::class, inversedBy="bugReport")
-     */
-    private $status;
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $application;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $device;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $device_language;
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $device_os_version;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $browser;
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $browser_version;
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $history;
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $environment;
+    #[ORM\Column(type: 'text')]
+    private ?string $content = '';
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $url;
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $account_id;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $account_type;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bugReports')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $item_id;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'bugReports')]
+    private ?Category $category = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $other_info;
+    #[ORM\OneToMany(mappedBy: 'bugReport', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $user_in_charge;
+    #[ORM\OneToMany(mappedBy: 'bugReport', targetEntity: Attachment::class, orphanRemoval: true)]
+    private Collection $attachments;
+
+    #[ORM\ManyToOne(targetEntity: Status::class, inversedBy: 'bugReport')]
+    private ?Status $status = null;
+
+    #[ORM\Column(type: 'integer')]
+    private ?int $application = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $device = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $device_language = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $device_os_version = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $browser = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $browser_version = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $history = null;
+
+    #[ORM\Column(type: 'integer')]
+    private ?int $environment = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $url = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $account_id = null;
+
+    #[ORM\Column(type: 'integer')]
+    private ?int $account_type = null;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $item_id = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $other_info = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $user_in_charge = null;
 
     public static function getConstValues($array): array
     {
@@ -249,7 +216,7 @@ class BugReport
     }
 
     /**
-     * @return Collection|Comment[]
+     * @return Collection<int, Comment>
      */
     public function getComments(): Collection
     {
@@ -279,7 +246,7 @@ class BugReport
     }
 
     /**
-     * @return Collection|Attachment[]
+     * @return Collection<int, Attachment>
      */
     public function getAttachments(): Collection
     {

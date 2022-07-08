@@ -7,32 +7,22 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=BadgeRepository::class)
- */
+#[ORM\Entity(repositoryClass: BadgeRepository::class)]
 class Badge
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $title = '';
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $url;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $url = '';
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="badges")
-     */
-    private $users;
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'badges')]
+    private Collection $users;
 
     public function __construct()
     {
@@ -69,7 +59,7 @@ class Badge
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection<int, User>
      */
     public function getUsers(): Collection
     {

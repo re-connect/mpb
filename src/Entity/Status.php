@@ -7,29 +7,22 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=StatusRepository::class)
- */
+#[ORM\Entity(repositoryClass: StatusRepository::class)]
 class Status
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $color;
-    /**
-     * @ORM\OneToMany(targetEntity=BugReport::class, mappedBy="status")
-     */
-    private $bugReports;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $name = '';
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $color = '';
+
+    #[ORM\OneToMany(mappedBy: 'status', targetEntity: BugReport::class)]
+    private Collection $bugReports;
 
     public function __construct()
     {
@@ -66,7 +59,7 @@ class Status
     }
 
     /**
-     * @return Collection|BugReport[]
+     * @return Collection<int, BugReport>
      */
     public function getBugReports(): Collection
     {

@@ -3,13 +3,14 @@
 namespace App\Tests\Security;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AuthenticationTest extends WebTestCase
 {
-    private ?EntityManager $entityManager;
-    private $client;
+    private ?EntityManagerInterface $entityManager;
+    private ?KernelBrowser $client;
 
     protected function setUp(): void
     {
@@ -18,14 +19,14 @@ class AuthenticationTest extends WebTestCase
             ->get('doctrine')
             ->getManager();
         if (null === $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'gandalf@gmail.com'])) {
-            $this->user = (new User())
+            $user = (new User())
                 ->setEmail('gandalf@gmail.com')
                 ->setFirstName('Gandalf')
                 ->setLastName('The Grey')
                 ->setLastLogin(new \DateTime('now'))
                 ->setPassword('testpassword')
                 ->setRole('ROLE_USER');
-            $this->entityManager->persist($this->user);
+            $this->entityManager->persist($user);
             $this->entityManager->flush();
         }
         self::ensureKernelShutdown();

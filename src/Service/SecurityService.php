@@ -25,7 +25,10 @@ class SecurityService
             $key = file_get_contents(dirname(__DIR__).'/../var/oauth/public.key');
             $decodedToken = (array) JWT::decode($token, $key);
             $user = $this->userRepository->findOneBy(['email' => $decodedToken['user_id']]);
-            if (null === $user || time() > (int) $decodedToken['expire_time']) {
+            if (!$user) {
+                throw new UserNotFoundException();
+            }
+            if (time() > (int) $decodedToken['expire_time']) {
                 throw new AuthenticationException();
             }
             $this->authenticateUser($user);
@@ -36,12 +39,9 @@ class SecurityService
         return false;
     }
 
-    private function authenticateUser(User $user)
+    private function authenticateUser(User $user): void
     {
-        if (!$user) {
-            throw new UserNotFoundException();
-        }
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token); // now the user is logged in
         // now dispatch the login event
         $request = $this->requestStack->getCurrentRequest();

@@ -8,66 +8,51 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface
 {
     final public const ROLES = [
         'ROLE_USER',
         'ROLE_TECH_TEAM',
+        'ROLE_TEAM',
         'ROLE_ADMIN',
     ];
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-    /**
-     * @ORM\Column(type="string", unique="true", length=255)
-     */
-    private $email;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $firstName;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lastName;
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $lastLogin = null;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $password;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $role;
-    /**
-     * @ORM\OneToMany(targetEntity=BugReport::class, mappedBy="user", orphanRemoval=true)
-     */
-    private $bugReports;
-    /**
-     * @ORM\OneToOne(targetEntity=Preference::class, mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $preference;
-    /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user", orphanRemoval=true)
-     */
-    private $comments;
-    /**
-     * @ORM\ManyToMany(targetEntity=Badge::class, mappedBy="users")
-     */
-    private $badges;
-    /**
-     * @ORM\OneToMany(targetEntity=Attachment::class, mappedBy="uploadedBy", orphanRemoval=true)
-     */
-    private $attachments;
+
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
+
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    private string $email = '';
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $firstName = '';
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $lastName = '';
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $lastLogin = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $password = '';
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: BugReport::class, orphanRemoval: true)]
+    private Collection $bugReports;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Preference::class, cascade: ['persist', 'remove'])]
+    private Preference $preference;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
+
+    #[ORM\ManyToMany(targetEntity: Badge::class, mappedBy: 'users')]
+    private Collection $badges;
+
+    #[ORM\OneToMany(mappedBy: 'uploadedBy', targetEntity: Attachment::class, orphanRemoval: true)]
+    private Collection $attachments;
 
     public static function getTechTeamUsers(UserRepository $repo): array
     {
@@ -153,20 +138,8 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|BugReport[]
+     * @return Collection<int, BugReport>
      */
     public function getBugReports(): Collection
     {
@@ -212,7 +185,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Comment[]
+     * @return Collection<int, Comment>
      */
     public function getComments(): Collection
     {
@@ -242,7 +215,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Badge[]
+     * @return Collection<int, Badge>
      */
     public function getBadges(): Collection
     {
@@ -269,7 +242,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Attachment[]
+     * @return Collection<int, Attachment>
      */
     public function getAttachments(): Collection
     {
@@ -300,8 +273,9 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
-        $roles = [];
-        $roles[] = $this->role;
+        $roles = $this->roles;
+
+        // guarantees that a user always has at least one role for security
         if (empty($roles)) {
             $roles[] = 'ROLE_USER';
         }
@@ -309,10 +283,6 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    public function getSalt()
-    {
-        // TODO: Implement getSalt() method.
-    }
 
     public function eraseCredentials()
     {
@@ -327,10 +297,5 @@ class User implements UserInterface
     public function getUserIdentifier(): string
     {
         return $this->email;
-    }
-
-    public function isResolved(): bool
-    {
-        // TODO: Implement isResolved() method.
     }
 }
