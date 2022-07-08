@@ -8,22 +8,15 @@ use App\Repository\BugReportRepository;
 use App\Repository\StatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use function get_browser;
-use function str_contains;
 
-/**
- * @Route("/bug-report")
- * @IsGranted ("ROLE_USER")
- */
+#[IsGranted('ROLE_USER')]
+#[Route(path: '/bug-report')]
 class BugReportController extends AbstractController
 {
-    /**
-     * @Route("/list", name="bug_report_index", methods={"GET"})
-     */
+    #[Route(path: '/list', name: 'bug_report_index', methods: ['GET'])]
     public function index(BugReportRepository $bugReportRepository): Response
     {
         return $this->render('bug_report/index.html.twig', [
@@ -31,14 +24,11 @@ class BugReportController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/create", name="bug_report_new", methods={"GET","POST"})
-     */
+    #[Route(path: '/create', name: 'bug_report_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em, StatusRepository $statusRepository): Response
     {
         $bugReport = new BugReport();
-
-        $userAgent = $request->headers->get('User-Agent');
+        $userAgent = $request->headers->get('User-Agent', '');
         $os = str_contains($userAgent, 'Mac') ? 'Mac' : 'Windows';
         $browser = 'Chrome';
         if (str_contains($userAgent, 'Internet')) {
@@ -50,21 +40,20 @@ class BugReportController extends AbstractController
         } elseif (str_contains($userAgent, 'Safari')) {
             $browser = 'Safari';
         }
+        $deviceId = array_search($os, BugReport::DEVICES);
+        $browserId = array_search($browser, BugReport::BROWSERS);
         $bugReport
-            ->setDevice(array_search($os, BugReport::DEVICES))
-            ->setBrowser(array_search($browser, BugReport::BROWSERS))
+            ->setDevice(false === $deviceId ? '' : (string) $deviceId)
+            ->setBrowser(false === $browserId ? '' : (string) $browserId)
             ->setDeviceLanguage('fr');
-        ;
-
         $form = $this->createForm(BugReportType::class, $bugReport, [
             'userAgent' => $userAgent,
         ]);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $bugReport->setUser($this->getUser())
-            ->setCreatedAt(new \DateTime('now'))
-            ->setStatus($statusRepository->findOneBy(['name' => 'Pas encore pris en compte']));
+                ->setCreatedAt(new \DateTime('now'))
+                ->setStatus($statusRepository->findOneBy(['name' => 'Pas encore pris en compte']));
             $em->persist($bugReport);
             $em->flush();
 
@@ -77,9 +66,7 @@ class BugReportController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="bug_report_show", methods={"GET"})
-     */
+    #[Route(path: '/{id}', name: 'bug_report_show', methods: ['GET'])]
     public function show(BugReport $bugReport): Response
     {
         return $this->render('bug_report/show.html.twig', [
@@ -87,16 +74,13 @@ class BugReportController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="bug_report_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, BugReport $bugReport): Response
+    #[Route(path: '/{id}/edit', name: 'bug_report_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, BugReport $bugReport, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(BugReportType::class, $bugReport);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em->flush();
 
             return $this->redirectToRoute('bug_report_index');
         }
@@ -107,15 +91,13 @@ class BugReportController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="bug_report_delete", methods={"POST"})
-     */
-    public function delete(Request $request, BugReport $bugReport): Response
+    #[Route(path: '/{id}', name: 'bug_report_delete', methods: ['POST'])]
+    public function delete(Request $request, BugReport $bugReport, EntityManagerInterface $em): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$bugReport->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($bugReport);
-            $entityManager->flush();
+        $csrfTokenName = sprintf('delete%d', $bugReport->getId());
+        if ($this->isCsrfTokenValid($csrfTokenName, (string) $request->request->get('_token', ''))) {
+            $em->remove($bugReport);
+            $em->flush();
         }
 
         return $this->redirectToRoute('bug_report_index');

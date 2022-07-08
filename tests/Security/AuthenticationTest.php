@@ -3,47 +3,49 @@
 namespace App\Tests\Security;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AuthenticationTest extends WebTestCase
 {
-    private ?EntityManager $entityManager;
-    private $client;
+    private EntityManagerInterface $entityManager;
+    private KernelBrowser $client;
 
     protected function setUp(): void
     {
         $kernel = self::bootKernel();
-        $this->entityManager = $kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
+        /* @phpstan-ignore-next-line */
+        $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
+
         if (null === $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'gandalf@gmail.com'])) {
-            $this->user = (new User())
+            $user = (new User())
                 ->setEmail('gandalf@gmail.com')
                 ->setFirstName('Gandalf')
                 ->setLastName('The Grey')
                 ->setLastLogin(new \DateTime('now'))
                 ->setPassword('testpassword')
-                ->setRole('ROLE_USER');
-            $this->entityManager->persist($this->user);
+                ->addRole('ROLE_USER');
+            $this->entityManager->persist($user);
             $this->entityManager->flush();
         }
         self::ensureKernelShutdown();
         $this->client = self::createClient();
     }
 
-    public function testUserNotLoggedIn()
+    public function testUserNotLoggedIn(): void
     {
         $this->client->request('GET', '/bug-report/list');
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
         $this->assertResponseRedirects($this->client->getResponse()->headers->get('Location'));
     }
 
-    public function testUserLogin()
+    public function testUserLogin(): void
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'gandalf@gmail.com']);
         $this->client->request('GET', '/login');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertNotNull($user);
         $this->client->loginUser($user);
         $this->client->request('GET', '/bug-report/list');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
@@ -53,6 +55,5 @@ class AuthenticationTest extends WebTestCase
     {
         parent::tearDown();
         $this->entityManager->close();
-        $this->entityManager = null;
     }
 }

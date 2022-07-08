@@ -5,23 +5,21 @@ namespace App\Command;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:create-categories',
+    description: 'Création des 3 catégories',
+)]
 class CategoryCreationCommand extends Command
 {
-    protected static $defaultName = 'app:create-categories';
-    protected static $defaultDescription = 'Création des 3 catégories';
-    private EntityManagerInterface $em;
-    private CategoryRepository $repository;
-
-    public function __construct(EntityManagerInterface $em, CategoryRepository $repository, string $name = null)
+    public function __construct(private readonly EntityManagerInterface $em, private readonly CategoryRepository $repository, string $name = null)
     {
         parent::__construct($name);
-        $this->em = $em;
-        $this->repository = $repository;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -51,4 +49,3 @@ class CategoryCreationCommand extends Command
         }
     }
 }
-

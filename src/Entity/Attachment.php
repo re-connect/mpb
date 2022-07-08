@@ -5,39 +5,30 @@ namespace App\Entity;
 use App\Repository\AttachmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=AttachmentRepository::class)
- */
+#[ORM\Entity(repositoryClass: AttachmentRepository::class)]
 class Attachment
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $size;
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="attachments")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $uploadedBy;
-    /**
-     * @ORM\ManyToOne(targetEntity=BugReport::class, inversedBy="attachments")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $bugReport;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $url;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $name = '';
+
+    #[ORM\Column(type: 'integer')]
+    private int $size = 0;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'attachments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $uploadedBy = null;
+
+    #[ORM\ManyToOne(targetEntity: BugReport::class, inversedBy: 'attachments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?BugReport $bugReport = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $url = null;
 
     public function getId(): ?int
     {

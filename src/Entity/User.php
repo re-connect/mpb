@@ -6,79 +6,72 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- */
-class User implements UserInterface
+#[ORM\Table(name: 'users')]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    const ROLES = [
+    final public const ROLES = [
         'ROLE_USER',
         'ROLE_TECH_TEAM',
-        'ROLE_ADMIN'
+        'ROLE_TEAM',
+        'ROLE_ADMIN',
     ];
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-    /**
-     * @ORM\Column(type="string", unique="true", length=255)
-     */
-    private $email;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $firstName;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lastName;
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $lastLogin = null;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $password;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $role;
-    /**
-     * @ORM\OneToMany(targetEntity=BugReport::class, mappedBy="user", orphanRemoval=true)
-     */
-    private $bugReports;
-    /**
-     * @ORM\OneToOne(targetEntity=Preference::class, mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $preference;
-    /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user", orphanRemoval=true)
-     */
-    private $comments;
-    /**
-     * @ORM\ManyToMany(targetEntity=Badge::class, mappedBy="users")
-     */
-    private $badges;
-    /**
-     * @ORM\OneToMany(targetEntity=Attachment::class, mappedBy="uploadedBy", orphanRemoval=true)
-     */
-    private $attachments;
 
-    static public function getTechTeamUsers(UserRepository $repo): array
-    {
-        $foundUsers = $repo->findBy(['role' => ['ROLE_TECH_TEAM', 'ROLE_ADMIN']]);
-        $arr = [];
-        foreach ($foundUsers as $value) {
-            $arr[$value->getFirstName()] = $value->getFirstName();
-        }
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-        return $arr;
-    }
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    private string $email = '';
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $firstName = '';
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $lastName = '';
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $lastLogin = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $password = '';
+
+    /**
+     * @var string[]
+     */
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
+
+    /**
+     * @var Collection<int, BugReport>
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: BugReport::class, orphanRemoval: true)]
+    private Collection $bugReports;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Preference::class, cascade: ['persist', 'remove'])]
+    private Preference $preference;
+
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
+
+    /**
+     * @var Collection<int, Badge>
+     */
+    #[ORM\ManyToMany(targetEntity: Badge::class, mappedBy: 'users')]
+    private Collection $badges;
+
+    /**
+     * @var Collection<int, Attachment>
+     */
+    #[ORM\OneToMany(mappedBy: 'uploadedBy', targetEntity: Attachment::class, orphanRemoval: true)]
+    private Collection $attachments;
 
     public function __construct()
     {
@@ -153,20 +146,8 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|BugReport[]
+     * @return Collection<int, BugReport>
      */
     public function getBugReports(): Collection
     {
@@ -212,7 +193,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Comment[]
+     * @return Collection<int, Comment>
      */
     public function getComments(): Collection
     {
@@ -242,7 +223,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Badge[]
+     * @return Collection<int, Badge>
      */
     public function getBadges(): Collection
     {
@@ -269,7 +250,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Attachment[]
+     * @return Collection<int, Attachment>
      */
     public function getAttachments(): Collection
     {
@@ -300,7 +281,9 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
-        $roles[] = $this->role;
+        $roles = $this->roles;
+
+        // guarantees that a user always has at least one role for security
         if (empty($roles)) {
             $roles[] = 'ROLE_USER';
         }
@@ -308,28 +291,35 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    public function getSalt()
+    /**
+     * @param string[] $roles
+     */
+    public function setRoles(array $roles): self
     {
-        // TODO: Implement getSalt() method.
+        $this->roles = $roles;
+
+        return $this;
     }
 
-    public function eraseCredentials()
+    public function addRole(string $role): self
+    {
+        $this->roles = array_unique([...$this->roles, $role]);
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
     {
         // TODO: Implement eraseCredentials() method.
     }
 
     public function getUsername(): string
     {
-        return $this->firstName . ' ' . $this->lastName;
+        return $this->firstName.' '.$this->lastName;
     }
 
     public function getUserIdentifier(): string
     {
         return $this->email;
-    }
-
-    public function isResolved(): bool
-    {
-        // TODO: Implement isResolved() method.
     }
 }

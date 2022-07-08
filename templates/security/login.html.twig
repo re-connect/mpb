@@ -3,20 +3,45 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3 text-center">
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3 text-center my-4">
+                <div class="card text-white bg-primary my-3 ">
+                    <div class="card-header">Connexion</div>
+                    <div class="card-body text-primary">
+                        <form action="{{ path('app_login') }}" method="post">
+                            <div class="form-floating mb-3">
+                                <input type="email" id="username" name="_username" class="form-control"
+                                       placeholder="name@example.com" value={{ last_username }}>
+                                <label for="username">Email</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="password" name="_password"
+                                       placeholder="Password">
+                                <label for="password">Password</label>
+                            </div>
 
-    <div class="jumbotron row">
-        <div class="col-8 col-sm-5 container text-center my-4">
-            <h1 class="">Connexion</h1>
-            {{ form_start(form) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.password) }}
-            {{ form_row(form._remember_me) }}
-            <button type="submit" class="btn btn-primary mt-3">Se connecter</button>
-            {{ form_end(form) }}
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                            <div class="d-grid gap-2 mt-5">
+                                <button type="submit" class="btn btn-light btn-lg shadow-lg text-primary">Se connecter
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="text-center">
-        <a href="{{ path('sso_trigger') }}"
-           class="btn btn-primary">Se connecter avec RP</a>
+        {#    <div class="text-center"> #}
+        {#        <a href="{{ path('sso_trigger') }}" #}
+        {#           class="btn btn-primary">Se connecter avec RP</a> #}
+        {#    </div> #}
     </div>
 {% endblock %}

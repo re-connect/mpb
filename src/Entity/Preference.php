@@ -5,30 +5,23 @@ namespace App\Entity;
 use App\Repository\PreferenceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=PreferenceRepository::class)
- */
+#[ORM\Entity(repositoryClass: PreferenceRepository::class)]
 class Preference
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="preference", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $hasAcceptedSlack;
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $hasAcceptedEmail;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
+
+    #[ORM\OneToOne(inversedBy: 'preference', targetEntity: User::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $hasAcceptedSlack = false;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $hasAcceptedEmail = false;
 
     public function getId(): ?int
     {

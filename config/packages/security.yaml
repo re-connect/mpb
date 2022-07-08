@@ -1,14 +1,16 @@
 security:
-    password_hashers:
-        App\Entity\User:
-            algorithm: auto
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_TECH_TEAM
+        ROLE_TECH_TEAM: ROLE_TEAM
+        ROLE_TEAM: ROLE_USER
 
     enable_authenticator_manager: true
 
-    role_hierarchy:
-        ROLE_TECH_TEAM: ROLE_USER
-        ROLE_ADMIN: ROLE_TECH_TEAM
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        App\Entity\User: auto
 
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         app_user_provider:
             entity:
@@ -20,25 +22,34 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            lazy: true
             provider: app_user_provider
-            custom_authenticators:
-                - App\Security\LoginFormAuthenticator
             form_login:
+                enable_csrf: true
                 login_path: app_login
+                check_path: app_login
+                default_target_path: app_home
+
             logout:
+                # The route name the user can go to in order to logout
                 path: app_logout
-                target: app_login
+                # The name of the route to redirect to after logging out
+                target: app_home
+
+            # needed because in tests we redefine the 'main' firewall to use
+            # HTTP Basic instead of the login form, so this firewall has
+            # multiple authenticators
+            # See https://symfony.com/doc/current/security/experimental_authenticators.html#configuring-the-authentication-entry-point
+            entry_point: form_login
+
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
-                remember_me_parameter: login_form[_remember_me]
+                always_remember_me: true
 
             # configure the form authentication as the entry point for unauthenticated users
-            entry_point: form_login
 
             # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
+            # https://symfony.com/doc/current/security.html#the-firewall
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
@@ -52,3 +63,16 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
+
+when@test:
+    security:
+        password_hashers:
+            # By default, password hashers are resource intensive and take time. This is
+            # important to generate secure password hashes. In tests however, secure hashes
+            # are not important, waste resources and increase test times. The following
+            # reduces the work factor to the lowest possible values.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon
