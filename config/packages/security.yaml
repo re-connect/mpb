@@ -1,15 +1,16 @@
 security:
-    password_hashers:
-        App\Entity\User:
-            algorithm: auto
-
-    enable_authenticator_manager: true
-
     role_hierarchy:
         ROLE_ADMIN: ROLE_TECH_TEAM
         ROLE_TECH_TEAM: ROLE_TEAM
         ROLE_TEAM: ROLE_USER
 
+    enable_authenticator_manager: true
+
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        App\Entity\User: auto
+
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         app_user_provider:
             entity:
@@ -48,7 +49,7 @@ security:
             # configure the form authentication as the entry point for unauthenticated users
 
             # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
+            # https://symfony.com/doc/current/security.html#the-firewall
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
@@ -62,3 +63,16 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
+
+when@test:
+    security:
+        password_hashers:
+            # By default, password hashers are resource intensive and take time. This is
+            # important to generate secure password hashes. In tests however, secure hashes
+            # are not important, waste resources and increase test times. The following
+            # reduces the work factor to the lowest possible values.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon
