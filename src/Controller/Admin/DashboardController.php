@@ -13,14 +13,13 @@ use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
     #[Route(path: '/admin', name: 'admin')]
-    public function index() : Response
+    public function index(): Response
     {
         return parent::index();
     }
@@ -34,8 +33,8 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
-         yield MenuItem::linkToCrud('BugReport', 'fas fa-bug', BugReport::class);
-         yield MenuItem::linkToCrud('User', 'fas fa-users', User::class);
+        yield MenuItem::linkToCrud('BugReport', 'fas fa-bug', BugReport::class);
+        yield MenuItem::linkToCrud('User', 'fas fa-users', User::class);
 //         yield MenuItem::linkToCrud('Attachment', 'fas fa-list', Attachment::class);
 //         yield MenuItem::linkToCrud('Badge', 'fas fa-list', Badge::class);
 //         yield MenuItem::linkToCrud('Category', 'fas fa-list', Category::class);

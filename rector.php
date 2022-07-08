@@ -11,9 +11,6 @@ return static function (RectorConfig $rectorConfig): void {
         __DIR__.'/src'
     ]);
 
-    // register a single rule
-//    $rectorConfig->rule(InlineConstructorDefaultToPropertyRector::class);
-
     // define sets of rules
     $rectorConfig->sets([
         LevelSetList::UP_TO_PHP_81,

@@ -3,33 +3,33 @@
 namespace App\Entity;
 
 use App\Repository\BugReportRepository;
+use function array_key_exists;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use function array_key_exists;
 
 /**
  * @ORM\Entity(repositoryClass=BugReportRepository::class)
  */
 class BugReport
 {
-    final const APPLICATIONS = [
+    final public const APPLICATIONS = [
         0 => 'Coffre-fort Numérique',
         1 => 'Reconnect Pro',
         2 => 'Application Mobile',
     ];
-    final const ENVIRONMENTS = [
+    final public const ENVIRONMENTS = [
         0 => 'Production',
-        1 => 'Pre-production'
+        1 => 'Pre-production',
     ];
-    final const ACCOUNT_TYPE = [
+    final public const ACCOUNT_TYPE = [
         0 => 'Bénéficiaire',
         1 => 'TS',
         2 => 'Gestionnaire',
         3 => 'Admin',
     ];
-    final const DEVICES = [
+    final public const DEVICES = [
         0 => 'Ordinateur Windows',
         1 => 'Ordinateur MAC',
         2 => 'Smartphone iOS',
@@ -39,7 +39,7 @@ class BugReport
         6 => 'Mac',
         7 => 'Windows',
     ];
-    final const BROWSERS = [
+    final public const BROWSERS = [
         0 => 'Chrome',
         1 => 'Firefox',
         2 => 'Edge',
@@ -155,7 +155,7 @@ class BugReport
      */
     private $user_in_charge;
 
-    static public function getConstValues($array): array
+    public static function getConstValues($array): array
     {
         $output = [];
         foreach ($array as $key => $value) {
@@ -493,6 +493,7 @@ class BugReport
         if (!array_key_exists($this->getBrowser(), self::BROWSERS)) {
             return '';
         }
+
         return self::BROWSERS[$this->getBrowser()];
     }
 
@@ -501,6 +502,7 @@ class BugReport
         if (!array_key_exists($this->getDevice(), self::DEVICES)) {
             return '';
         }
+
         return self::DEVICES[$this->getDevice()];
     }
 }

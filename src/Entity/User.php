@@ -13,10 +13,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
-    final const ROLES = [
+    final public const ROLES = [
         'ROLE_USER',
         'ROLE_TECH_TEAM',
-        'ROLE_ADMIN'
+        'ROLE_ADMIN',
     ];
     /**
      * @ORM\Id
@@ -69,7 +69,7 @@ class User implements UserInterface
      */
     private $attachments;
 
-    static public function getTechTeamUsers(UserRepository $repo): array
+    public static function getTechTeamUsers(UserRepository $repo): array
     {
         $foundUsers = $repo->findBy(['role' => ['ROLE_TECH_TEAM', 'ROLE_ADMIN']]);
         $arr = [];
@@ -321,7 +321,7 @@ class User implements UserInterface
 
     public function getUsername(): string
     {
-        return $this->firstName . ' ' . $this->lastName;
+        return $this->firstName.' '.$this->lastName;
     }
 
     public function getUserIdentifier(): string

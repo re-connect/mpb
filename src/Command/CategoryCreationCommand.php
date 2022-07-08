@@ -47,4 +47,3 @@ class CategoryCreationCommand extends Command
         }
     }
 }
-

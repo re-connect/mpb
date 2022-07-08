@@ -22,7 +22,7 @@ class UserCrudController extends AbstractCrudController
             TextField::new('firstName'),
             TextField::new('lastName'),
             DateTimeField::new('lastLogin'),
-            ChoiceField::new('role')->setChoices(array_combine(User::ROLES,User::ROLES)),
+            ChoiceField::new('role')->setChoices(array_combine(User::ROLES, User::ROLES)),
         ];
     }
 }

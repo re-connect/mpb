@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\BugReport;
-use App\Repository\UserRepository;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,7 +15,6 @@ use Symfony\Component\Security\Core\Security;
 
 class BugReportType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 //        if ($this->security->isGranted('ROLE_TECH_TEAM', $this->security->getUser())) {
@@ -28,11 +26,11 @@ class BugReportType extends AbstractType
 //        }
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre du Bug'
+                'label' => 'Titre du Bug',
             ])
             ->add('application', ChoiceType::class, [
                 'label' => 'Application',
-                'choices' => BugReport::getConstValues(BugReport::APPLICATIONS)
+                'choices' => BugReport::getConstValues(BugReport::APPLICATIONS),
             ])
             ->add('device', ChoiceType::class, [
                 'label' => 'Appareil',
@@ -44,7 +42,7 @@ class BugReportType extends AbstractType
             ])
             ->add('deviceOsVersion', TextType::class, [
                 'label' => 'Version OS',
-                'required' => false
+                'required' => false,
             ])
             ->add('browser', ChoiceType::class, [
                 'label' => 'Navigateur',
@@ -52,25 +50,25 @@ class BugReportType extends AbstractType
             ])
             ->add('browserVersion', TextType::class, [
                 'label' => 'Version Navigateur',
-                'required' => false
+                'required' => false,
             ])
             ->add('content', CKEditorType::class, [
                 'label' => 'Description du bug rencontré',
             ])
             ->add('history', CKEditorType::class, [
                 'label' => 'Historique des actions éxécutées menant au bug (1 ligne = 1 action)',
-                'required' => false
+                'required' => false,
             ])
             ->add('environment', ChoiceType::class, [
                 'label' => 'Environnement',
-                'choices' => BugReport::getConstValues(BugReport::ENVIRONMENTS)
+                'choices' => BugReport::getConstValues(BugReport::ENVIRONMENTS),
             ])
             ->add('url', TextType::class, [
                 'label' => 'URL sur laquelle a lieu le bug',
                 'attr' => [
-                    'placeholder' => 'exemple : https://pro.reconnect.fr/families'
+                    'placeholder' => 'exemple : https://pro.reconnect.fr/families',
                 ],
-                'required' => false
+                'required' => false,
             ])
             ->add('accountId', IntegerType::class, [
                 'label' => 'ID du compte connecté',
@@ -78,7 +76,7 @@ class BugReportType extends AbstractType
             ])
             ->add('accountType', ChoiceType::class, [
                 'label' => "Type d'utilisateur",
-                'choices' => BugReport::getConstValues(BugReport::ACCOUNT_TYPE)
+                'choices' => BugReport::getConstValues(BugReport::ACCOUNT_TYPE),
             ])
 //            ->add('itemId', IntegerType::class, [
 //                'label' => 'Si pertinent, ID de l\'item problématique',

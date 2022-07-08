@@ -22,10 +22,10 @@ class SecurityService
     public function isSSOTokenValid(?string $token): bool
     {
         if (null !== $token) {
-            $key = file_get_contents(dirname(__DIR__) . '/../var/oauth/public.key');
-            $decodedToken = (array)JWT::decode($token, $key);
+            $key = file_get_contents(dirname(__DIR__).'/../var/oauth/public.key');
+            $decodedToken = (array) JWT::decode($token, $key);
             $user = $this->userRepository->findOneBy(['email' => $decodedToken['user_id']]);
-            if (null === $user || time() > (int)$decodedToken['expire_time']) {
+            if (null === $user || time() > (int) $decodedToken['expire_time']) {
                 throw new AuthenticationException();
             }
             $this->authenticateUser($user);
@@ -42,8 +42,8 @@ class SecurityService
             throw new UserNotFoundException();
         }
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->tokenStorage->setToken($token); //now the user is logged in
-        //now dispatch the login event
+        $this->tokenStorage->setToken($token); // now the user is logged in
+        // now dispatch the login event
         $request = $this->requestStack->getCurrentRequest();
         if (null !== $request) {
             $event = new InteractiveLoginEvent($request, $token);
