@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
-    const ROLES = [
+    final const ROLES = [
         'ROLE_USER',
         'ROLE_TECH_TEAM',
         'ROLE_ADMIN'
@@ -300,6 +300,7 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
+        $roles = [];
         $roles[] = $this->role;
         if (empty($roles)) {
             $roles[] = 'ROLE_USER';

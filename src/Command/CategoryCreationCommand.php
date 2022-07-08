@@ -14,14 +14,10 @@ class CategoryCreationCommand extends Command
 {
     protected static $defaultName = 'app:create-categories';
     protected static $defaultDescription = 'Création des 3 catégories';
-    private EntityManagerInterface $em;
-    private CategoryRepository $repository;
 
-    public function __construct(EntityManagerInterface $em, CategoryRepository $repository, string $name = null)
+    public function __construct(private readonly EntityManagerInterface $em, private readonly CategoryRepository $repository, string $name = null)
     {
         parent::__construct($name);
-        $this->em = $em;
-        $this->repository = $repository;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

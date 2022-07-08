@@ -14,22 +14,22 @@ use function array_key_exists;
  */
 class BugReport
 {
-    const APPLICATIONS = [
+    final const APPLICATIONS = [
         0 => 'Coffre-fort Numérique',
         1 => 'Reconnect Pro',
         2 => 'Application Mobile',
     ];
-    const ENVIRONMENTS = [
+    final const ENVIRONMENTS = [
         0 => 'Production',
         1 => 'Pre-production'
     ];
-    const ACCOUNT_TYPE = [
+    final const ACCOUNT_TYPE = [
         0 => 'Bénéficiaire',
         1 => 'TS',
         2 => 'Gestionnaire',
         3 => 'Admin',
     ];
-    const DEVICES = [
+    final const DEVICES = [
         0 => 'Ordinateur Windows',
         1 => 'Ordinateur MAC',
         2 => 'Smartphone iOS',
@@ -39,7 +39,7 @@ class BugReport
         6 => 'Mac',
         7 => 'Windows',
     ];
-    const BROWSERS = [
+    final const BROWSERS = [
         0 => 'Chrome',
         1 => 'Firefox',
         2 => 'Edge',

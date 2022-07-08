@@ -14,14 +14,10 @@ class StatusCreationCommand extends Command
 {
     protected static $defaultName = 'app:create-status';
     protected static $defaultDescription = 'Création des 4 status';
-    private EntityManagerInterface $em;
-    private StatusRepository $repository;
 
-    public function __construct(EntityManagerInterface $em, StatusRepository $repository, string $name = null)
+    public function __construct(private readonly EntityManagerInterface $em, private readonly StatusRepository $repository, string $name = null)
     {
         parent::__construct($name);
-        $this->em = $em;
-        $this->repository = $repository;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

@@ -15,14 +15,10 @@ class UserCreationCommand extends Command
 {
     protected static $defaultName = 'app:create-user';
     protected static $defaultDescription = 'Add a short description for your command';
-    private EntityManagerInterface $em;
-    private UserPasswordHasherInterface $hasher;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordHasherInterface $hasher, string $name = null)
+    public function __construct(private readonly EntityManagerInterface $em, private readonly UserPasswordHasherInterface $hasher, string $name = null)
     {
         parent::__construct($name);
-        $this->em = $em;
-        $this->hasher = $hasher;
     }
 
     protected function configure(): void

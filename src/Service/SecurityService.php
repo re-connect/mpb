@@ -15,29 +15,15 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class SecurityService
 {
-    private RequestStack $requestStack;
-    private EventDispatcherInterface $eventDispatcher;
-    private UserRepository $userRepository;
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(
-        RequestStack $requestStack,
-        EventDispatcherInterface $eventDispatcher,
-        UserRepository $userRepository,
-        TokenStorageInterface $tokenStorage
-    )
+    public function __construct(private readonly RequestStack $requestStack, private readonly EventDispatcherInterface $eventDispatcher, private readonly UserRepository $userRepository, private readonly TokenStorageInterface $tokenStorage)
     {
-        $this->requestStack = $requestStack;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->userRepository = $userRepository;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function isSSOTokenValid(?string $token): bool
     {
         if (null !== $token) {
             $key = file_get_contents(dirname(__DIR__) . '/../var/oauth/public.key');
-            $decodedToken = (array)JWT::decode($token, $key, ['RS256']);
+            $decodedToken = (array)JWT::decode($token, $key);
             $user = $this->userRepository->findOneBy(['email' => $decodedToken['user_id']]);
             if (null === $user || time() > (int)$decodedToken['expire_time']) {
                 throw new AuthenticationException();
