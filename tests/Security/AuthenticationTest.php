@@ -25,7 +25,7 @@ class AuthenticationTest extends WebTestCase
                 ->setLastName('The Grey')
                 ->setLastLogin(new \DateTime('now'))
                 ->setPassword('testpassword')
-                ->setRole('ROLE_USER');
+                ->addRole('ROLE_USER');
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }

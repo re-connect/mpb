@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\User;
 
 class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
-    /**
-     * @return \App\Entity\User|null
-     */
-    protected function getUser(): ?UserInterface
+    protected function getUser(): ?User
     {
-        return parent::getUser();
+        $user = parent::getUser();
+        if ($user instanceof User) {
+            return $user;
+        }
+
+        return null;
     }
 }

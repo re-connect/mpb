@@ -40,9 +40,11 @@ class BugReportController extends AbstractController
         } elseif (str_contains($userAgent, 'Safari')) {
             $browser = 'Safari';
         }
+        $deviceId = !in_array($os, BugReport::DEVICES) ? null : array_search($os, BugReport::DEVICES);
+        $browserId = !in_array($browser, BugReport::BROWSERS) ? null : array_search($browser, BugReport::BROWSERS);
         $bugReport
-            ->setDevice(array_search($os, BugReport::DEVICES))
-            ->setBrowser(array_search($browser, BugReport::BROWSERS))
+            ->setDevice($deviceId ?? '')
+            ->setBrowser($browserId ?? '')
             ->setDeviceLanguage('fr');
         $form = $this->createForm(BugReportType::class, $bugReport, [
             'userAgent' => $userAgent,

@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -23,7 +24,7 @@ class SecurityService
     {
         if (null !== $token) {
             $key = file_get_contents(dirname(__DIR__).'/../var/oauth/public.key');
-            $decodedToken = (array) JWT::decode($token, $key);
+            $decodedToken = (array) JWT::decode($token, new Key($key, 'RS256'));
             $user = $this->userRepository->findOneBy(['email' => $decodedToken['user_id']]);
             if (!$user) {
                 throw new UserNotFoundException();

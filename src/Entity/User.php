@@ -6,10 +6,11 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     final public const ROLES = [
         'ROLE_USER',
@@ -18,6 +19,8 @@ class User implements UserInterface
         'ROLE_ADMIN',
     ];
 
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
@@ -31,7 +34,7 @@ class User implements UserInterface
     private string $lastName = '';
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTime $lastLogin = null;
+    private ?\DateTimeInterface $lastLogin = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $password = '';
@@ -281,6 +284,20 @@ class User implements UserInterface
         }
 
         return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function addRole(string $role): self
+    {
+        $this->roles = array_unique([...$this->roles, $role]);;
+
+        return $this;
     }
 
 

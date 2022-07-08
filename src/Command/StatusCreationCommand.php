@@ -5,16 +5,18 @@ namespace App\Command;
 use App\Entity\Status;
 use App\Repository\StatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'app:create-status',
+    description: 'Création des 4 status',
+)]
 class StatusCreationCommand extends Command
 {
-    protected static $defaultName = 'app:create-status';
-    protected static $defaultDescription = 'Création des 4 status';
-
     public function __construct(private readonly EntityManagerInterface $em, private readonly StatusRepository $repository, string $name = null)
     {
         parent::__construct($name);
