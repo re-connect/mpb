@@ -33,14 +33,14 @@ class AuthenticationTest extends WebTestCase
         $this->client = self::createClient();
     }
 
-    public function testUserNotLoggedIn()
+    public function testUserNotLoggedIn(): void
     {
         $this->client->request('GET', '/bug-report/list');
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
         $this->assertResponseRedirects($this->client->getResponse()->headers->get('Location'));
     }
 
-    public function testUserLogin()
+    public function testUserLogin(): void
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'gandalf@gmail.com']);
         $this->client->request('GET', '/login');

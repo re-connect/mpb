@@ -21,6 +21,9 @@ class Badge
     #[ORM\Column(type: 'string', length: 255)]
     private string $url = '';
 
+    /**
+     * @var Collection<int, User>
+     */
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'badges')]
     private Collection $users;
 

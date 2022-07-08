@@ -15,15 +15,8 @@ use Symfony\Component\Security\Core\Security;
 
 class BugReportType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-//        if ($this->security->isGranted('ROLE_TECH_TEAM', $this->security->getUser())) {
-//            $builder->add('userInCharge', ChoiceType::class, [
-//                'label' => 'Responsable de la résolution du bug',
-//                'choices' => User::getTechTeamUsers($this->repo),
-//                'required' => false
-//            ]);
-//        }
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre du Bug',
@@ -78,26 +71,10 @@ class BugReportType extends AbstractType
                 'label' => "Type d'utilisateur",
                 'choices' => BugReport::getConstValues(BugReport::ACCOUNT_TYPE),
             ])
-//            ->add('itemId', IntegerType::class, [
-//                'label' => 'Si pertinent, ID de l\'item problématique',
-//                'attr' => [
-//                    'placeholder' => 'exemple : id du bénéficiaire, id du ménage, id du document...'
-//                ],
-//                'required' => false
-//            ])
-//            ->add('category', EntityType::class, [
-//                'label' => 'Je considère ce bug comme...',
-//                'label_attr' => ['class' => 'd-block'],
-//                'class' => Category::class,
-//                'choice_label' => 'name',
-//                'attr' => [
-//                    'class' => 'w-100'
-//                ]
-//            ])
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver):  void
     {
         $resolver->setDefaults([
             'data_class' => BugReport::class,

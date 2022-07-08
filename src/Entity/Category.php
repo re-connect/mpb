@@ -18,6 +18,9 @@ class Category
     #[ORM\Column(type: 'string', length: 255)]
     private string $name = '';
 
+    /**
+     * @var Collection<int, BugReport>
+     */
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: BugReport::class)]
     private Collection $bugReports;
 

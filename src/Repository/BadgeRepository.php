@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Badge|null findOneBy(array $criteria, array $orderBy = null)
  * @method Badge[]    findAll()
  * @method Badge[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends ServiceEntityRepository<Badge>
  */
 class BadgeRepository extends ServiceEntityRepository
 {

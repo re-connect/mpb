@@ -21,6 +21,9 @@ class Status
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $color = '';
 
+    /**
+     * @var Collection<int, BugReport>
+     */
     #[ORM\OneToMany(mappedBy: 'status', targetEntity: BugReport::class)]
     private Collection $bugReports;
 

@@ -39,34 +39,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255)]
     private string $password = '';
 
+    /**
+     * @var string[]
+     */
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
+    /**
+     * @var Collection<int, BugReport>
+     */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: BugReport::class, orphanRemoval: true)]
     private Collection $bugReports;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Preference::class, cascade: ['persist', 'remove'])]
     private Preference $preference;
 
+    /**
+     * @var Collection<int, Comment>
+     */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
+    /**
+     * @var Collection<int, Badge>
+     */
     #[ORM\ManyToMany(targetEntity: Badge::class, mappedBy: 'users')]
     private Collection $badges;
 
+    /**
+     * @var Collection<int, Attachment>
+     */
     #[ORM\OneToMany(mappedBy: 'uploadedBy', targetEntity: Attachment::class, orphanRemoval: true)]
     private Collection $attachments;
-
-    public static function getTechTeamUsers(UserRepository $repo): array
-    {
-        $foundUsers = $repo->findBy(['role' => ['ROLE_TECH_TEAM', 'ROLE_ADMIN']]);
-        $arr = [];
-        foreach ($foundUsers as $value) {
-            $arr[$value->getFirstName()] = $value->getFirstName();
-        }
-
-        return $arr;
-    }
 
     public function __construct()
     {
@@ -286,6 +290,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param string[] $roles
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -295,13 +302,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function addRole(string $role): self
     {
-        $this->roles = array_unique([...$this->roles, $role]);;
+        $this->roles = array_unique([...$this->roles, $role]);
 
         return $this;
     }
 
-
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // TODO: Implement eraseCredentials() method.
     }

@@ -70,9 +70,15 @@ class BugReport
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'bugReports')]
     private ?Category $category = null;
 
+    /**
+     * @var Collection<int, Comment>
+     */
     #[ORM\OneToMany(mappedBy: 'bugReport', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
+    /**
+     * @var Collection<int, Attachment>
+     */
     #[ORM\OneToMany(mappedBy: 'bugReport', targetEntity: Attachment::class, orphanRemoval: true)]
     private Collection $attachments;
 
@@ -121,7 +127,11 @@ class BugReport
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $user_in_charge = null;
 
-    public static function getConstValues($array): array
+    /**
+     * @param string[] $array
+     * @return string[]
+     */
+    public static function getConstValues(array $array): array
     {
         $output = [];
         foreach ($array as $key => $value) {
