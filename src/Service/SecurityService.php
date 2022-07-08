@@ -24,6 +24,9 @@ class SecurityService
     {
         if (null !== $token) {
             $key = file_get_contents(dirname(__DIR__).'/../var/oauth/public.key');
+            if (false === $key) {
+                throw new \Exception('Could not read cryptographic key');
+            }
             $decodedToken = (array) JWT::decode($token, new Key($key, 'RS256'));
             $user = $this->userRepository->findOneBy(['email' => $decodedToken['user_id']]);
             if (!$user) {

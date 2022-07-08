@@ -40,11 +40,11 @@ class BugReportController extends AbstractController
         } elseif (str_contains($userAgent, 'Safari')) {
             $browser = 'Safari';
         }
-        $deviceId = !in_array($os, BugReport::DEVICES) ? null : array_search($os, BugReport::DEVICES);
-        $browserId = !in_array($browser, BugReport::BROWSERS) ? null : array_search($browser, BugReport::BROWSERS);
+        $deviceId = array_search($os, BugReport::DEVICES);
+        $browserId = array_search($browser, BugReport::BROWSERS);
         $bugReport
-            ->setDevice($deviceId ?? '')
-            ->setBrowser($browserId ?? '')
+            ->setDevice(false === $deviceId ? '' : (string) $deviceId)
+            ->setBrowser(false === $browserId ? '' : (string) $browserId)
             ->setDeviceLanguage('fr');
         $form = $this->createForm(BugReportType::class, $bugReport, [
             'userAgent' => $userAgent,
@@ -94,7 +94,8 @@ class BugReportController extends AbstractController
     #[Route(path: '/{id}', name: 'bug_report_delete', methods: ['POST'])]
     public function delete(Request $request, BugReport $bugReport, EntityManagerInterface $em): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$bugReport->getId(), $request->request->get('_token'))) {
+        $csrfTokenName = sprintf('delete%d', $bugReport->getId());
+        if ($this->isCsrfTokenValid($csrfTokenName, (string) $request->request->get('_token', ''))) {
             $em->remove($bugReport);
             $em->flush();
         }
