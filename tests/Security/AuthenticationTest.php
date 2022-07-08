@@ -15,9 +15,8 @@ class AuthenticationTest extends WebTestCase
     protected function setUp(): void
     {
         $kernel = self::bootKernel();
-        $this->entityManager = $kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
+        /* @var \Doctrine\ORM\EntityManagerInterface $this- >entityManager */
+        $this->entityManager = $kernel->getContainer()->get('doctrine.orm.default_entity_manager');
         if (null === $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'gandalf@gmail.com'])) {
             $user = (new User())
                 ->setEmail('gandalf@gmail.com')

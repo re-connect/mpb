@@ -2,32 +2,30 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Attachment;
-use App\Entity\Badge;
 use App\Entity\BugReport;
-use App\Entity\Category;
-use App\Entity\Comment;
-use App\Entity\Preference;
-use App\Entity\Status;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
+    public function __construct(private readonly AdminUrlGenerator $urlGenerator)
+    {
+    }
+
     #[Route(path: '/admin', name: 'admin')]
     public function index(): Response
     {
-        return parent::index();
+        return $this->redirect($this->urlGenerator->setController(UserCrudController::class)->generateUrl());
     }
 
     public function configureDashboard(): Dashboard
     {
-        return Dashboard::new()
-            ->setTitle('Mpb');
+        return Dashboard::new()->setTitle('Mpb');
     }
 
     public function configureMenuItems(): iterable

@@ -40,7 +40,7 @@ class UserCreationCommand extends Command
             ->setFirstName($input->getArgument('firstName'))
             ->setLastName($input->getArgument('lastName'))
             ->setLastLogin(new \DateTime('now'))
-            ->addRole('ROLE_USER');
+            ->addRole('ROLE_ADMIN');
         $user->setPassword($this->hasher->hashPassword($user, $input->getArgument('password')));
         try {
             $this->em->persist($user);

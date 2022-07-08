@@ -26,9 +26,24 @@ security:
                 enable_csrf: true
                 login_path: app_login
                 check_path: app_login
+                default_target_path: app_home
+
+            logout:
+                # The route name the user can go to in order to logout
+                path: app_logout
+                # The name of the route to redirect to after logging out
+                target: app_home
+
+            # needed because in tests we redefine the 'main' firewall to use
+            # HTTP Basic instead of the login form, so this firewall has
+            # multiple authenticators
+            # See https://symfony.com/doc/current/security/experimental_authenticators.html#configuring-the-authentication-entry-point
+            entry_point: form_login
+
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
+                always_remember_me: true
 
             # configure the form authentication as the entry point for unauthenticated users
 
