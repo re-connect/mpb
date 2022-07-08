@@ -9,14 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AuthenticationTest extends WebTestCase
 {
-    private ?EntityManagerInterface $entityManager;
-    private ?KernelBrowser $client;
+    private EntityManagerInterface $entityManager;
+    private KernelBrowser $client;
 
     protected function setUp(): void
     {
         $kernel = self::bootKernel();
-
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
 
         if (null === $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'gandalf@gmail.com'])) {
@@ -46,6 +45,7 @@ class AuthenticationTest extends WebTestCase
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'gandalf@gmail.com']);
         $this->client->request('GET', '/login');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertNotNull($user);
         $this->client->loginUser($user);
         $this->client->request('GET', '/bug-report/list');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
@@ -55,6 +55,5 @@ class AuthenticationTest extends WebTestCase
     {
         parent::tearDown();
         $this->entityManager->close();
-        $this->entityManager = null;
     }
 }

@@ -28,7 +28,7 @@ class BugReportController extends AbstractController
     public function new(Request $request, EntityManagerInterface $em, StatusRepository $statusRepository): Response
     {
         $bugReport = new BugReport();
-        $userAgent = $request->headers->get('User-Agent');
+        $userAgent = $request->headers->get('User-Agent', '');
         $os = str_contains($userAgent, 'Mac') ? 'Mac' : 'Windows';
         $browser = 'Chrome';
         if (str_contains($userAgent, 'Internet')) {

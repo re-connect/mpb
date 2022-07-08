@@ -25,7 +25,7 @@ class Attachment
 
     #[ORM\ManyToOne(targetEntity: BugReport::class, inversedBy: 'attachments')]
     #[ORM\JoinColumn(nullable: false)]
-    private BugReport $bugReport;
+    private ?BugReport $bugReport = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $url = null;

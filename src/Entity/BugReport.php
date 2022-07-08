@@ -466,7 +466,7 @@ class BugReport
 
     public function getReadableBrowser(): string
     {
-        if (!array_key_exists($this->getBrowser(), self::BROWSERS)) {
+        if (!array_key_exists($this->getBrowser() ?? '', self::BROWSERS)) {
             return '';
         }
 
@@ -475,7 +475,7 @@ class BugReport
 
     public function getReadableDevice(): string
     {
-        if (!array_key_exists($this->getDevice(), self::DEVICES)) {
+        if (!array_key_exists($this->getDevice() ?? '', self::DEVICES)) {
             return '';
         }
 
