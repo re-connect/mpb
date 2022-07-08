@@ -6,8 +6,9 @@ security:
     enable_authenticator_manager: true
 
     role_hierarchy:
-        ROLE_TECH_TEAM: ROLE_USER
         ROLE_ADMIN: ROLE_TECH_TEAM
+        ROLE_TECH_TEAM: ROLE_TEAM
+        ROLE_TEAM: ROLE_USER
 
     providers:
         app_user_provider:
@@ -20,22 +21,16 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            lazy: true
             provider: app_user_provider
-            custom_authenticators:
-                - App\Security\LoginFormAuthenticator
             form_login:
+                enable_csrf: true
                 login_path: app_login
-            logout:
-                path: app_logout
-                target: app_login
+                check_path: app_login
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
-                remember_me_parameter: login_form[_remember_me]
 
             # configure the form authentication as the entry point for unauthenticated users
-            entry_point: form_login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

@@ -60,8 +60,8 @@ class BugReport
     private $title;
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $content;
     /**
      * @ORM\Column(type="datetime")

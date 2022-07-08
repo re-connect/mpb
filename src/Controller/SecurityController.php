@@ -9,13 +9,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @Route("/", name="app_home")
-     */
-    public function redirectAction(): RedirectResponse
+    #[Route(path: '/', name: 'app_home')]
+    public function redirectAction() : RedirectResponse
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('bug_report_index');
@@ -24,45 +23,39 @@ class SecurityController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/login", name="app_login", methods={"GET", "POST"})
-     */
-    public function login(): Response
+    #[Route(path: '/login', name: 'app_login', methods: ['GET', 'POST'])]
+    public function index(AuthenticationUtils $authenticationUtils) : Response
     {
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
         if ($this->getUser()) {
-            return $this->redirectToRoute('bug_report_index');
+            return $this->redirectToRoute('app_home');
         }
-        $form = $this->createForm(LoginFormType::class);
-
         return $this->renderForm('security/login.html.twig', [
-            'form' => $form,
+            'error' => $error,
+            'last_username' => $lastUsername
         ]);
     }
 
-    /**
-     * @Route("/logout", name="app_logout", methods={"GET"})
-     */
-    public function logout(): Response
+    #[Route(path: '/logout', name: 'app_logout', methods: ['GET'])]
+    public function logout() : Response
     {
         throw new \LogicException('This methods can be blank - it will be intercepted by the logout key on your firewall');
     }
 
-    /**
-     * @Route("/sso_trigger", name="sso_trigger", methods={"GET"})
-     */
-    public function triggerSSOLogin(): RedirectResponse
+    #[Route(path: '/sso_trigger', name: 'sso_trigger', methods: ['GET'])]
+    public function triggerSSOLogin() : RedirectResponse
     {
         $endPoint = $this->getParameter('loginEndpoint');
         $cliendId = $this->getParameter('clientId');
         $redirectUri = $this->getParameter('redirectUri');
-
         return $this->redirect("{$endPoint}&{$cliendId}&{$redirectUri}");
     }
 
-    /**
-     * @Route("/sso_login", name="redirect_uri", methods={"GET", "POST"})
-     */
-    public function SSOLogin(Request $request, SecurityService $service): RedirectResponse
+    #[Route(path: '/sso_login', name: 'redirect_uri', methods: ['GET', 'POST'])]
+    public function SSOLogin(Request $request, SecurityService $service) : RedirectResponse
     {
         if ($service->isSSOTokenValid($request->query->get('code'))) {
             return new RedirectResponse($this->generateUrl('bug_report_index'));
