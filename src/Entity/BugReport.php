@@ -129,6 +129,7 @@ class BugReport
 
     /**
      * @param string[] $array
+     *
      * @return string[]
      */
     public static function getConstValues(array $array): array

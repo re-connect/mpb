@@ -3,22 +3,20 @@
 namespace App\Service;
 
 use App\Entity\BugReport;
+use App\Repository\BugReportRepository;
 use App\Repository\StatusRepository;
 use App\Traits\UserAwareTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
 
 class BugReportService
 {
-    private EntityManagerInterface $em;
-    private StatusRepository $statusRepository;
     use UserAwareTrait;
 
-    public function __construct(EntityManagerInterface $em, StatusRepository $statusRepository, Security $security)
+    public function __construct(private readonly EntityManagerInterface $em, private readonly BugReportRepository $repository, private readonly StatusRepository $statusRepository, Security $security, private readonly AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->em = $em;
-        $this->statusRepository = $statusRepository;
         $this->security = $security;
     }
 
@@ -54,5 +52,15 @@ class BugReportService
             ->setStatus($this->statusRepository->findOneBy(['name' => 'Pas encore pris en compte']));
         $this->em->persist($bugReport);
         $this->em->flush();
+    }
+
+    /**
+     * @return BugReport[]
+     */
+    public function getAccessible(): array
+    {
+        return $this->authorizationChecker->isGranted('ROLE_TEAM')
+            ? $this->repository->findAll()
+            : $this->repository->findByUser($this->getUser());
     }
 }

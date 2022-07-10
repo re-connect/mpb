@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\BugReport;
 use App\Form\BugReportType;
-use App\Repository\BugReportRepository;
 use App\Service\BugReportService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -17,10 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class BugReportController extends AbstractController
 {
     #[Route(path: '/list', name: 'bug_report_index', methods: ['GET'])]
-    public function index(BugReportRepository $bugReportRepository): Response
+    public function index(BugReportService $service): Response
     {
         return $this->render('bug_report/index.html.twig', [
-            'bug_reports' => $bugReportRepository->findAll(),
+            'bug_reports' => $service->getAccessible(),
         ]);
     }
 
