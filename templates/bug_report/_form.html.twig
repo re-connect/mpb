@@ -8,7 +8,7 @@
             <div class="col-12 col-sm-6">
                 {{ form_row(form.application) }}
             </div>
-            <div class="col-12 col-sm-6">
+            <div class="col-12 col-sm-6 {{ is_granted('ROLE_TEAM') ? '' : 'd-none' }}">
                 {{ form_row(form.environment) }}
             </div>
         </div>

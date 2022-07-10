@@ -129,6 +129,7 @@ class BugReport
 
     /**
      * @param string[] $array
+     *
      * @return string[]
      */
     public static function getConstValues(array $array): array
@@ -169,7 +170,7 @@ class BugReport
         return $this->content;
     }
 
-    public function setContent(string $content): self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 
