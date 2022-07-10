@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
 
 class BugReportType extends AbstractType
 {
@@ -74,11 +73,10 @@ class BugReportType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver):  void
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => BugReport::class,
-            'userAgent' => '',
         ]);
     }
 }

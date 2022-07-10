@@ -1,21 +1,18 @@
 <?php
 
+use EasyCorp\Bundle\EasyDeployBundle\Configuration\DefaultConfiguration;
 use EasyCorp\Bundle\EasyDeployBundle\Deployer\DefaultDeployer;
 
-return new class extends DefaultDeployer {
-    public function configure()
+return new class() extends DefaultDeployer {
+    public function configure(): DefaultConfiguration
     {
         return $this->getConfigBuilder()
-            // SSH connection string to connect to the remote server (format: user@host-or-IP:port-number)
             ->server('www-data@155.133.130.39')
-            // the absolute path of the remote server directory where the project is deployed
             ->deployDir('/var/www/mpb/www')
-            // the URL of the Git repository where the project code is hosted
             ->repositoryUrl('git@github.com:re-connect/mpb.git')
-            // the repository branch to deploy
             ->repositoryBranch('master')
             ->remoteComposerBinaryPath('/var/www/mpb/composer.phar')
-            ->useSshAgentForwarding(false)
+            ->useSshAgentForwarding(true)
             ->composerInstallFlags('--prefer-dist --no-interaction')
             ->sharedFilesAndDirs(
                 [
@@ -28,13 +25,13 @@ return new class extends DefaultDeployer {
             );
     }
 
-    public function beforePreparing()
+    public function beforePreparing(): void
     {
         $this->runRemote('yarn install');
         $this->runRemote('yarn build');
     }
 
-    public function beforeFinishingDeploy()
+    public function beforeFinishingDeploy(): void
     {
         $this->runRemote('php bin/console ckeditor:install && php bin/console assets:install public');
         $this->runRemote('{{ console_bin }} doctrine:migrations:migrate -q');

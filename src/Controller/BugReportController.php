@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\BugReport;
 use App\Form\BugReportType;
 use App\Repository\BugReportRepository;
-use App\Repository\StatusRepository;
+use App\Service\BugReportService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,37 +25,12 @@ class BugReportController extends AbstractController
     }
 
     #[Route(path: '/create', name: 'bug_report_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em, StatusRepository $statusRepository): Response
+    public function new(Request $request, BugReportService $service): Response
     {
-        $bugReport = new BugReport();
-        $userAgent = $request->headers->get('User-Agent', '');
-        $os = str_contains($userAgent, 'Mac') ? 'Mac' : 'Windows';
-        $browser = 'Chrome';
-        if (str_contains($userAgent, 'Internet')) {
-            $browser = 'Internet Explorer';
-        } elseif (str_contains($userAgent, 'Firefox')) {
-            $browser = 'Firefox';
-        } elseif (str_contains($userAgent, 'Edge')) {
-            $browser = 'Edge';
-        } elseif (str_contains($userAgent, 'Safari')) {
-            $browser = 'Safari';
-        }
-        $deviceId = array_search($os, BugReport::DEVICES);
-        $browserId = array_search($browser, BugReport::BROWSERS);
-        $bugReport
-            ->setDevice(false === $deviceId ? '' : (string) $deviceId)
-            ->setBrowser(false === $browserId ? '' : (string) $browserId)
-            ->setDeviceLanguage('fr');
-        $form = $this->createForm(BugReportType::class, $bugReport, [
-            'userAgent' => $userAgent,
-        ]);
-        $form->handleRequest($request);
+        $bugReport = $service->initBugReport($request);
+        $form = $this->createForm(BugReportType::class, $bugReport)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $bugReport->setUser($this->getUser())
-                ->setCreatedAt(new \DateTime('now'))
-                ->setStatus($statusRepository->findOneBy(['name' => 'Pas encore pris en compte']));
-            $em->persist($bugReport);
-            $em->flush();
+            $service->create($bugReport);
 
             return $this->redirectToRoute('bug_report_index');
         }
