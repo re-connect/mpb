@@ -37,15 +37,7 @@ jobs:
         mkdir -p data
         touch data/database.sqlite   
     - name: Run Doctrine Migrations
-      # You may pin to the exact commit or the version.
-      # uses: everphone-gmbh/doctrine-migrations-action@603d3443ee5d2885c475078fa18b5bcd26f4c07b
-      uses: everphone-gmbh/doctrine-migrations-action@v0.9
-      with:
-        command: migrations:migrate
-        db name: mpb
-        db user: mpb
-        db pass: mpb
-        db port: 5432
+      run: php bin/console doctrine:migrations:migrate -q
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DATABASE_URL: sqlite:///%kernel.project_dir%/data/database.sqlite
