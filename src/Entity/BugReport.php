@@ -35,6 +35,7 @@ class BugReport
         5 => 'Tablette Android',
         6 => 'Mac',
         7 => 'Windows',
+        8 => 'Linux',
     ];
     final public const BROWSERS = [
         0 => 'Chrome',
@@ -86,19 +87,19 @@ class BugReport
     private ?Status $status = null;
 
     #[ORM\Column(type: 'integer')]
-    private ?int $application = null;
+    private ?int $application = 0;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $device = null;
+    private ?string $device = BugReport::DEVICES[0];
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $device_language = null;
+    private ?string $device_language = 'fr';
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $device_os_version = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $browser = null;
+    private ?string $browser = BugReport::BROWSERS[0];
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $browser_version = null;
@@ -107,7 +108,7 @@ class BugReport
     private ?string $history = null;
 
     #[ORM\Column(type: 'integer')]
-    private ?int $environment = null;
+    private ?int $environment = 0;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $url = null;
@@ -116,7 +117,7 @@ class BugReport
     private ?int $account_id = null;
 
     #[ORM\Column(type: 'integer')]
-    private ?int $account_type = null;
+    private ?int $account_type = 0;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $item_id = null;
@@ -126,6 +127,9 @@ class BugReport
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $user_in_charge = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $userAgent = null;
 
     /**
      * @param string[] $array
@@ -481,5 +485,17 @@ class BugReport
         }
 
         return self::DEVICES[$this->getDevice()];
+    }
+
+    public function getUserAgent(): ?string
+    {
+        return $this->userAgent;
+    }
+
+    public function setUserAgent(?string $userAgent): self
+    {
+        $this->userAgent = $userAgent;
+
+        return $this;
     }
 }
