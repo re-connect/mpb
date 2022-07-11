@@ -26,7 +26,7 @@ class BugReportController extends AbstractController
     #[Route(path: '/create', name: 'bug_report_new', methods: ['GET', 'POST'])]
     public function new(Request $request, BugReportService $service): Response
     {
-        $bugReport = $service->initBugReport($request);
+        $bugReport = $service->initBugReport($request->headers->get('User-Agent', ''));
         $form = $this->createForm(BugReportType::class, $bugReport)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $service->create($bugReport);
