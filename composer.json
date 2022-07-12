@@ -17,6 +17,7 @@
     "firebase/php-jwt": "^6.2",
     "friendsofphp/php-cs-fixer": "^3.8",
     "friendsofsymfony/ckeditor-bundle": "^2.3",
+    "knpuniversity/oauth2-client-bundle": "^2.10",
     "phpdocumentor/reflection-docblock": "^5.2",
     "sensio/framework-extra-bundle": "^6.1",
     "symfony/asset": "6.1.*",
