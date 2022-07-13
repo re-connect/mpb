@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Service\SecurityService;
+use KnpU\OAuth2ClientBundle\Client\OAuth2Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -31,5 +34,20 @@ class SecurityController extends AbstractController
     public function logout(): never
     {
         throw new \LogicException('This methods can be blank - it will be intercepted by the logout key on your firewall');
+    }
+
+    #[Route(path: '/reconnect-pro-login-trigger', name: 'reconnect_pro_login_trigger', methods: ['GET'])]
+    public function reconnectProLoginTrigger(OAuth2Client $client): mixed
+    {
+        return $client->getOAuth2Provider()->authorize();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    #[Route(path: '/reconnect-pro-check', name: 'reconnect_pro_login_check', methods: ['GET'])]
+    public function reconnectProLoginCheck(Request $request, SecurityService $service): Response
+    {
+        return $this->redirect($service->authenticateUserFromReconnectPro($request));
     }
 }
