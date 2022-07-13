@@ -1,0 +1,10 @@
+knpu_oauth2_client:
+    clients:
+        reconnect_pro_oauth:
+            type: generic
+            provider_class: App\Security\ReconnectProProvider
+            client_id: '%env(RECONNECT_PRO_CLIENT_ID)%'
+            client_secret: '%env(RECONNECT_PRO_CLIENT_SECRET)%'
+            redirect_route: reconnect_pro_login_check
+            redirect_params: { }
+            use_state: false
