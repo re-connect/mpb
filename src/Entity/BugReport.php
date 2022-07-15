@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: BugReportRepository::class)]
 class BugReport
 {
@@ -52,9 +53,6 @@ class BugReport
     #[ORM\OneToMany(mappedBy: 'bugReport', targetEntity: Attachment::class, orphanRemoval: true)]
     private Collection $attachments;
 
-    #[ORM\ManyToOne(targetEntity: Status::class, inversedBy: 'bugReport')]
-    private ?Status $status = null;
-
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $url = null;
 
@@ -68,9 +66,6 @@ class BugReport
     private ?int $item_id = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $user_in_charge = null;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $userAgent = null;
 
     #[ORM\ManyToOne(targetEntity: Application::class, inversedBy: 'bugReports')]
@@ -78,6 +73,9 @@ class BugReport
 
     #[ORM\Column(type: 'boolean')]
     private bool $done = false;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'getBugReportsAssignedToMe')]
+    private ?User $assignee = null;
 
     /**
      * @param string[] $array
@@ -134,23 +132,9 @@ class BugReport
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 
     public function getUser(): ?User
@@ -225,18 +209,6 @@ class BugReport
         return $this;
     }
 
-    public function getStatus(): ?Status
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?Status $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
     public function getUrl(): ?string
     {
         return $this->url;
@@ -285,18 +257,6 @@ class BugReport
         return $this;
     }
 
-    public function getUserInCharge(): ?string
-    {
-        return $this->user_in_charge;
-    }
-
-    public function setUserInCharge(?string $user_in_charge): self
-    {
-        $this->user_in_charge = $user_in_charge;
-
-        return $this;
-    }
-
     public function getUserAgent(): ?string
     {
         return $this->userAgent;
@@ -329,6 +289,31 @@ class BugReport
     public function setDone(bool $done): self
     {
         $this->done = $done;
+
+        return $this;
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAt(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAt(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
+    public function getAssignee(): ?User
+    {
+        return $this->assignee;
+    }
+
+    public function setAssignee(?User $assignee): self
+    {
+        $this->assignee = $assignee;
 
         return $this;
     }

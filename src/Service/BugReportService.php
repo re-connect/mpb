@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Entity\BugReport;
 use App\Repository\BugReportRepository;
-use App\Repository\StatusRepository;
 use App\Traits\UserAwareTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -14,7 +13,7 @@ class BugReportService
 {
     use UserAwareTrait;
 
-    public function __construct(private readonly EntityManagerInterface $em, private readonly BugReportRepository $repository, private readonly StatusRepository $statusRepository, Security $security, private readonly AuthorizationCheckerInterface $authorizationChecker)
+    public function __construct(private readonly EntityManagerInterface $em, private readonly BugReportRepository $repository, Security $security, private readonly AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->security = $security;
     }
@@ -26,10 +25,7 @@ class BugReportService
 
     public function create(BugReport $bugReport): void
     {
-        $bugReport
-            ->setUser($this->getUser())
-            ->setCreatedAt(new \DateTime('now'))
-            ->setStatus($this->statusRepository->findOneBy(['name' => 'Pas encore pris en compte']));
+        $bugReport->setUser($this->getUser());
         $this->em->persist($bugReport);
         $this->em->flush();
     }

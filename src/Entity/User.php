@@ -75,12 +75,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'uploadedBy', targetEntity: Attachment::class, orphanRemoval: true)]
     private Collection $attachments;
 
+    /**
+     * @var Collection<int, BugReport>
+     */
+    #[ORM\OneToMany(mappedBy: 'assignee', targetEntity: BugReport::class)]
+    private Collection $getBugReportsAssignedToMe;
+
     public function __construct()
     {
         $this->bugReports = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->badges = new ArrayCollection();
         $this->attachments = new ArrayCollection();
+        $this->getBugReportsAssignedToMe = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -338,6 +345,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BugReport>
+     */
+    public function getGetBugReportsAssignedToMe(): Collection
+    {
+        return $this->getBugReportsAssignedToMe;
+    }
+
+    public function addGetBugReportsAssignedToMe(BugReport $getBugReportsAssignedToMe): self
+    {
+        if (!$this->getBugReportsAssignedToMe->contains($getBugReportsAssignedToMe)) {
+            $this->getBugReportsAssignedToMe[] = $getBugReportsAssignedToMe;
+            $getBugReportsAssignedToMe->setAssignee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGetBugReportsAssignedToMe(BugReport $getBugReportsAssignedToMe): self
+    {
+        if ($this->getBugReportsAssignedToMe->removeElement($getBugReportsAssignedToMe)) {
+            // set the owning side to null (unless already changed)
+            if ($getBugReportsAssignedToMe->getAssignee() === $this) {
+                $getBugReportsAssignedToMe->setAssignee(null);
+            }
+        }
 
         return $this;
     }
