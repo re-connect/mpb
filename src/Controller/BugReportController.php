@@ -76,4 +76,13 @@ class BugReportController extends AbstractController
 
         return $this->redirectToRoute('bug_report_index');
     }
+
+    #[Route(path: '/{id}/take-over', name: 'bug_report_take_over', methods: ['GET'])]
+    public function takeOver(BugReport $bugReport, EntityManagerInterface $em): Response
+    {
+        $bugReport->setUserInCharge($this->getUser()->getUserIdentifier());
+        $em->flush();
+
+        return $this->redirectToRoute('bug_report_index');
+    }
 }

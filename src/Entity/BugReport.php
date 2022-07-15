@@ -40,9 +40,6 @@ class BugReport
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'bugReports')]
-    private ?Category $category = null;
-
     /**
      * @var Collection<int, Comment>
      */
@@ -78,6 +75,9 @@ class BugReport
 
     #[ORM\ManyToOne(targetEntity: Application::class, inversedBy: 'bugReports')]
     private ?Application $application = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $done = false;
 
     /**
      * @param string[] $array
@@ -161,18 +161,6 @@ class BugReport
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
 
         return $this;
     }
@@ -329,6 +317,18 @@ class BugReport
     public function setApplication(?Application $application): self
     {
         $this->application = $application;
+
+        return $this;
+    }
+
+    public function isDone(): ?bool
+    {
+        return $this->done;
+    }
+
+    public function setDone(bool $done): self
+    {
+        $this->done = $done;
 
         return $this;
     }

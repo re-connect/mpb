@@ -1,0 +1,19 @@
+{% if bug.userInCharge %}
+    <span class="badge bg-success">{{ 'Traité par : '~bug.userInCharge }}</span>
+{% else %}
+    <div>
+        {% if is_granted('ROLE_TECH_TEAM') %}
+            <a
+                    class="btn btn-sm btn-outline-info position-absolute"
+                    style="z-index: 2; right: 1em; bottom: 1em"
+                    href="{{ path('bug_report_take_over', { 'id': bug.id }) }}"
+            >
+                Prendre en charge
+            </a>
+        {% else %}
+            <span class="badge badge-warning">
+                {{ 'En attente d\'assignation' }}
+            </span>
+        {% endif %}
+    </div>
+{% endif %}

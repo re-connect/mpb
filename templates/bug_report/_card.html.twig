@@ -1,24 +1,31 @@
-<div class="row my-2 bg-white border rounded position-relative">
-    {{ app_icon(bug_report.application) }}
-    <div class="col-11">
-        <div class="d-flex justify-content-between py-1">
-            <div class="d-flex align-items-center">
-                {% if bug_report.category %}
-                    <span class="badge bg-{{ bug_report.category.color }} p-2 me-2">{{ bug_report.category.name }}</span>
+<div class="col-12 my-2 rounded position-relative shadow-lg btn btn-outline-light text-dark"
+     xmlns="http://www.w3.org/1999/html">
+    <div class="row">
+        <div class="col-1 d-flex justify-content-center align-items-center">
+            {{ app_icon(bug_report.application) }}
+        </div>
+        <div class="col-11">
+            <p class="text-start">
+                <span class="h5">{{ bug_report.title }}</span>
+                {% if bug_report.done %}
+                    <span class="float-end badge text-success border border-success p-2">{{ 'Résolu' }}</span>
+                {% else %}
+                    <span class="float-end badge text-warning border border-warning p-2">{{ 'En cours' }}</span>
                 {% endif %}
-                <p class="h5 d-inline-block my-0">{{ bug_report.title }}</p>
+            </p>
+            <div class="d-flex pt-1 align-items-start">
+                <div>
+                    <span class="fw-bolder text-decoration-underline">Remonté par :</span>
+                </div>
+                <div class="flex-grow-1 text-start ps-3">
+                    <small>{{ bug_report.user.userIdentifier }}</small>
+                    <br/>
+                    <small>Le {{ bug_report.createdAt|date("d/m/Y") }}
+                        à {{ bug_report.createdAt|date("H:i") }}</small>
+                </div>
+                {{ include('bug_report/_assignee_section.html.twig', {'bug': bug_report}) }}
             </div>
-            {% if bug_report.status %}
-                <span class="badge text-{{ bug_report.status.color }} border border-{{ bug_report.status.color }} p-2">{{ bug_report.status.name }}</span>
-            {% endif %}
         </div>
-        <div class="d-flex justify-content-between pt-1">
-            <span><small>Remonté par : {{ bug_report.user.userIdentifier }}</small></span>
-            <span><small> {{ bug_report.userInCharge ? 'Traité par : '~bug_report.userInCharge.userIdentifier : 'En attente d\'assignation' }}</small></span>
-        </div>
-        <div class="pb-1">
-            <span><small>Le {{ bug_report.createdAt|date("d/m/Y") }} à {{ bug_report.createdAt|date("H:i") }}</small></span>
-        </div>
+        <a href="{{ path('bug_report_show', {'id': bug_report.id}) }}" class="stretched-link"></a>
     </div>
-    <a href="{{ path('bug_report_show', {'id': bug_report.id}) }}" class="stretched-link"></a>
 </div>

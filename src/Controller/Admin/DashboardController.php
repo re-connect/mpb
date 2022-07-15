@@ -35,10 +35,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('BugReport', 'fas fa-bug', BugReport::class);
         yield MenuItem::linkToCrud('User', 'fas fa-users', User::class);
         yield MenuItem::linkToCrud('Application', 'fas fa-computer', Application::class);
-//         yield MenuItem::linkToCrud('Badge', 'fas fa-list', Badge::class);
-//         yield MenuItem::linkToCrud('Category', 'fas fa-list', Category::class);
 //         yield MenuItem::linkToCrud('Comment', 'fas fa-list', Comment::class);
-//         yield MenuItem::linkToCrud('Preference', 'fas fa-list', Preference::class);
-//         yield MenuItem::linkToCrud('Status', 'fas fa-list', Status::class);
     }
 }
