@@ -48,6 +48,7 @@ class BugReportController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/edit', name: 'bug_report_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, BugReport $bugReport, EntityManagerInterface $em): Response
     {
@@ -77,6 +78,7 @@ class BugReportController extends AbstractController
         return $this->redirectToRoute('bug_report_index');
     }
 
+    #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/take-over', name: 'bug_report_take_over', methods: ['GET'])]
     public function takeOver(BugReport $bugReport, EntityManagerInterface $em): Response
     {
@@ -86,6 +88,7 @@ class BugReportController extends AbstractController
         return $this->redirectToRoute('bug_report_index');
     }
 
+    #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/mark-done', name: 'bug_report_mark_done', methods: ['GET'])]
     public function markDone(BugReport $bugReport, EntityManagerInterface $em): Response
     {
