@@ -6,11 +6,13 @@
     <a class="btn btn-primary float-end my-2"
        href="{{ path('bug_report_new') }}">Déclarer un bug</a>
     <h1>Liste des bugs</h1>
-    <div class="container bg-light py-3 px-4 card">
-        {% for bug_report in bug_reports %}
-            {{ include('bug_report/_card.html.twig', { bug_report }) }}
-        {% else %}
-            Aucun Bug report n'a été ajouté
-        {% endfor %}
+    <div class="container py-3 px-4">
+        <div class="row">
+            {% for bug_report in bug_reports %}
+                {{ include('bug_report/_card.html.twig', { bug_report }) }}
+            {% else %}
+                Aucun Bug report n'a été ajouté
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

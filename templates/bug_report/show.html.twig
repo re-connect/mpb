@@ -5,7 +5,6 @@
 {% block body %}
     {{ include('bug_report/_back_to_list_button.html.twig') }}
     <h1>{{ bug_report.title }}</h1>
-
     <table class="table">
         <tbody>
         <tr>
@@ -24,22 +23,17 @@
             <th>Date de dernière mise à jour</th>
             <td>{{ bug_report.updatedAt ? bug_report.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
         </tr>
-        {% if bug_report.status %}
-        <tr>
-            <th>Status</th>
-            <td>{{ bug_report.status.name }}</td>
-        </tr>
-        {% endif %}
         </tbody>
     </table>
     <div class="row">
+        {% if is_granted('ROLE_TECH_TEAM') %}
+            <div class="col">
+                <a class="btn btn-warning" href="{{ path('bug_report_edit', {'id': bug_report.id}) }}"><i
+                            class="fas fa-pencil-alt"></i></a>
+            </div>
+        {% endif %}
         <div class="col">
-    <a class="btn btn-warning" href="{{ path('bug_report_edit', {'id': bug_report.id}) }}"><i
-                class="fas fa-pencil-alt"></i></a>
-    </div>
-    <div class="col">
-
-        {{ include('bug_report/_delete_form.html.twig') }}
-    </div>
+            {{ include('bug_report/_delete_form.html.twig') }}
+        </div>
     </div>
 {% endblock %}

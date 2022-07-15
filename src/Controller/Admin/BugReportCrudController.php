@@ -28,7 +28,7 @@ class BugReportCrudController extends AbstractCrudController
             TextEditorField::new('content'),
             AssociationField::new('application')->setCrudController(Application::class),
             AssociationField::new('user')->setCrudController(User::class),
-            TextField::new('userInCharge'),
+            AssociationField::new('assignee')->setCrudController(User::class),
             TextField::new('url'),
             IntegerField::new('accountId'),
             IntegerField::new('accountType'),

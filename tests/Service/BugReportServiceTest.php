@@ -39,12 +39,8 @@ class BugReportServiceTest extends KernelTestCase
 
         $this->assertIsObject($bugReport);
         $this->assertEquals($a, $bugReport->getUserAgent());
-        $this->assertEquals('fr', $bugReport->getDeviceLanguage());
         $this->assertEquals(0, $bugReport->getApplication());
         $this->assertEquals(0, $bugReport->getAccountType());
-        $this->assertEquals(0, $bugReport->getEnvironment());
-        $this->assertEquals('Ordinateur Windows', $bugReport->getDevice());
-        $this->assertEquals('Chrome', $bugReport->getBrowser());
     }
 
     public function testCreate(): void
@@ -54,13 +50,11 @@ class BugReportServiceTest extends KernelTestCase
         $bugReport = $this->service->initBugReport('');
 
         $this->assertNull($bugReport->getCreatedAt());
-        $this->assertNull($bugReport->getStatus());
 
         $this->service->create($bugReport);
 
         $this->assertNotNull($bugReport->getCreatedAt());
-        $this->assertEquals('Pas encore pris en compte', $bugReport->getStatus()?->getName());
-        $this->assertEquals('danger', $bugReport->getStatus()?->getColor());
+        $this->assertFalse($bugReport->isDone());
     }
 
     public function testGetAccessible(): void
