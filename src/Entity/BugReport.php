@@ -16,34 +16,12 @@ class BugReport
         1 => 'RP',
         2 => 'Appli',
     ];
-    final public const ENVIRONMENTS = [
-        0 => 'Production',
-        1 => 'Pre-production',
-    ];
+
     final public const ACCOUNT_TYPE = [
         0 => 'Bénéficiaire',
         1 => 'TS',
         2 => 'Gestionnaire',
         3 => 'Admin',
-    ];
-    final public const DEVICES = [
-        0 => 'Ordinateur Windows',
-        1 => 'Ordinateur MAC',
-        2 => 'Smartphone iOS',
-        3 => 'Smartphone Android',
-        4 => 'Tablette iOS',
-        5 => 'Tablette Android',
-        6 => 'Mac',
-        7 => 'Windows',
-        8 => 'Linux',
-    ];
-    final public const BROWSERS = [
-        0 => 'Chrome',
-        1 => 'Firefox',
-        2 => 'Edge',
-        3 => 'Internet Explorer',
-        4 => 'Autre',
-        5 => 'Safari',
     ];
 
     #[ORM\Id]
@@ -86,30 +64,6 @@ class BugReport
     #[ORM\ManyToOne(targetEntity: Status::class, inversedBy: 'bugReport')]
     private ?Status $status = null;
 
-    #[ORM\Column(type: 'integer')]
-    private ?int $application = 0;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $device = BugReport::DEVICES[0];
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $device_language = 'fr';
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $device_os_version = null;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $browser = BugReport::BROWSERS[0];
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $browser_version = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $history = null;
-
-    #[ORM\Column(type: 'integer')]
-    private ?int $environment = 0;
-
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $url = null;
 
@@ -123,13 +77,13 @@ class BugReport
     private ?int $item_id = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $other_info = null;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $user_in_charge = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $userAgent = null;
+
+    #[ORM\ManyToOne(targetEntity: Application::class, inversedBy: 'bugReports')]
+    private ?Application $application = null;
 
     /**
      * @param string[] $array
@@ -301,102 +255,6 @@ class BugReport
         return $this;
     }
 
-    public function getApplication(): ?int
-    {
-        return $this->application;
-    }
-
-    public function setApplication(int $application): self
-    {
-        $this->application = $application;
-
-        return $this;
-    }
-
-    public function getDevice(): ?string
-    {
-        return $this->device;
-    }
-
-    public function setDevice(string $device): self
-    {
-        $this->device = $device;
-
-        return $this;
-    }
-
-    public function getDeviceLanguage(): ?string
-    {
-        return $this->device_language;
-    }
-
-    public function setDeviceLanguage(string $device_language): self
-    {
-        $this->device_language = $device_language;
-
-        return $this;
-    }
-
-    public function getDeviceOsVersion(): ?string
-    {
-        return $this->device_os_version;
-    }
-
-    public function setDeviceOsVersion(?string $device_os_version): self
-    {
-        $this->device_os_version = $device_os_version;
-
-        return $this;
-    }
-
-    public function getBrowser(): ?string
-    {
-        return $this->browser;
-    }
-
-    public function setBrowser(string $browser): self
-    {
-        $this->browser = $browser;
-
-        return $this;
-    }
-
-    public function getBrowserVersion(): ?string
-    {
-        return $this->browser_version;
-    }
-
-    public function setBrowserVersion(?string $browser_version): self
-    {
-        $this->browser_version = $browser_version;
-
-        return $this;
-    }
-
-    public function getHistory(): ?string
-    {
-        return $this->history;
-    }
-
-    public function setHistory(string $history): self
-    {
-        $this->history = $history;
-
-        return $this;
-    }
-
-    public function getEnvironment(): ?int
-    {
-        return $this->environment;
-    }
-
-    public function setEnvironment(int $environment): self
-    {
-        $this->environment = $environment;
-
-        return $this;
-    }
-
     public function getUrl(): ?string
     {
         return $this->url;
@@ -445,18 +303,6 @@ class BugReport
         return $this;
     }
 
-    public function getOtherInfo(): ?string
-    {
-        return $this->other_info;
-    }
-
-    public function setOtherInfo(?string $other_info): self
-    {
-        $this->other_info = $other_info;
-
-        return $this;
-    }
-
     public function getUserInCharge(): ?string
     {
         return $this->user_in_charge;
@@ -469,24 +315,6 @@ class BugReport
         return $this;
     }
 
-    public function getReadableBrowser(): string
-    {
-        if (!array_key_exists($this->getBrowser() ?? '', self::BROWSERS)) {
-            return '';
-        }
-
-        return self::BROWSERS[$this->getBrowser()];
-    }
-
-    public function getReadableDevice(): string
-    {
-        if (!array_key_exists($this->getDevice() ?? '', self::DEVICES)) {
-            return '';
-        }
-
-        return self::DEVICES[$this->getDevice()];
-    }
-
     public function getUserAgent(): ?string
     {
         return $this->userAgent;
@@ -495,6 +323,18 @@ class BugReport
     public function setUserAgent(?string $userAgent): self
     {
         $this->userAgent = $userAgent;
+
+        return $this;
+    }
+
+    public function getApplication(): ?Application
+    {
+        return $this->application;
+    }
+
+    public function setApplication(?Application $application): self
+    {
+        $this->application = $application;
 
         return $this;
     }

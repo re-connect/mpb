@@ -8,32 +8,7 @@
     <h1>Liste des bugs</h1>
     <div class="container bg-light py-3 px-4 card">
         {% for bug_report in bug_reports %}
-            <div class="row my-2 bg-white border rounded position-relative">
-                <div class="col-1 text-center align-items-center justify-content-center d-flex">
-                    <i class="fas fa-bug text-primary" style="font-size: 50px"></i>
-                </div>
-                <div class="col-11">
-                    <div class="d-flex justify-content-between py-1">
-                        <div class="d-flex align-items-center">
-                            {% if bug_report.category %}
-                            <span class="badge bg-{{ bug_report.category.color }} p-2 me-2">{{ bug_report.category.name }}</span>
-                            {% endif %}
-                            <p class="h5 d-inline-block my-0">{{ bug_report.title }}</p>
-                        </div>
-                        {% if bug_report.status %}
-                        <span class="badge text-{{ bug_report.status.color }} border border-{{ bug_report.status.color }} p-2">{{ bug_report.status.name }}</span>
-                        {% endif %}
-                    </div>
-                    <div class="d-flex justify-content-between pt-1">
-                        <span><small>Remonté par : {{ bug_report.user.firstName~' '~bug_report.user.lastName }}</small></span>
-                        <span><small> {{ bug_report.userInCharge ? 'Traité par : '~bug_report.userInCharge : 'En attente d\'assignation' }}</small></span>
-                    </div>
-                    <div class="pb-1">
-                        <span><small>Le {{ bug_report.createdAt|date("d/m/Y") }} à {{ bug_report.createdAt|date("H:i") }}</small></span>
-                    </div>
-                </div>
-                <a href="{{ path('bug_report_show', {'id': bug_report.id}) }}" class="stretched-link"></a>
-            </div>
+            {{ include('bug_report/_card.html.twig', { bug_report }) }}
         {% else %}
             Aucun Bug report n'a été ajouté
         {% endfor %}
