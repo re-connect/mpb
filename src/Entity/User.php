@@ -83,6 +83,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->attachments = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->getUserIdentifier();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

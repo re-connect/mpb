@@ -1,62 +1,33 @@
 {{ form_start(form) }}
-<div class="row">
-    <div class="col-12 mb-4">
-        {{ form_row(form.title) }}
-    </div>
-    <div class="col-12 col-sm-6">
-        <div class="row">
-            <div class="col-12 col-sm-6">
-                {{ form_row(form.application) }}
-            </div>
-            <div class="col-12 col-sm-6 {{ is_granted('ROLE_TEAM') ? '' : 'd-none' }}">
-                {{ form_row(form.environment) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-sm-6">
-                {{ form_row(form.accountType) }}
-            </div>
-            <div class="col-12 col-sm-6">
-                {{ form_row(form.accountId) }}
-            </div>
-        </div>
-        {{ form_row(form.url) }}
 
-    </div>
-    <div class="col-12 col-sm-6 mt-2" data-controller="reveal" data-reveal-hidden-class="hidden">
-        <span><b>Appareil</b> : {{ bug_report.readableDevice() }}</span>
-        <span>| <b>Navigateur</b> : {{ bug_report.readableBrowser() }}</span>
-        <span>| <b>Langue</b> : {{ bug_report.deviceLanguage|language_name }}</span>
-        <button data-action="click->reveal#toggle" type="button" class="btn btn-primary btn-sm">
-            Modifier
-        </button>
-
-        <div class=" hidden" data-reveal-target="item">
-            {{ form_row(form.device) }}
-            {{ form_row(form.browser) }}
-            <div class="row">
-                <div class="col-12 col-sm-6">
-                    {{ form_row(form.deviceLanguage) }}
-                </div>
-                <div class="col-12 col-sm-6">
-                    {{ form_row(form.deviceOsVersion) }}
-                    {{ form_row(form.browserVersion) }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<hr class="text-primary">
 <div class="row">
-    <div class="col-12 col-sm-6">
+    <div class="col-12">
+        <div class="form-floating">
+            {{ form_widget(form.title) }}
+            {{ form_label(form.title) }}
+        </div>
+        <hr class="text-primary my-3">
+    </div>
+    <div class="col-12 my-3">
         {{ form_row(form.content) }}
     </div>
-    <div class="col-12 col-sm-6">
-        {{ form_row(form.history) }}
+    <div class="col-12 col-sm-6 col-md-8">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                {{ form_row(form.application) }}
+            </div>
+            <div class="col-12 col-md-6">
+                {{ form_row(form.accountType) }}
+            </div>
+            <div class="col-12 col-md-4">
+                {{ form_row(form.accountId) }}
+            </div>
+            <div class="col-12 col-md-8">
+                {{ form_row(form.url) }}
+            </div>
+        </div>
     </div>
-</div>
-
-<div class="row mt-4">
-    <button class="btn btn-primary">{{ button_label }}</button>
-</div>
-{{ form_end(form) }}
+    <div class="col-12 col-sm-6 col-md-4 mt-3 d-flex">
+        <button class="btn btn-primary btn-lg flex-grow-1">{{ button_label }}</button>
+    </div>
+    {{ form_end(form) }}

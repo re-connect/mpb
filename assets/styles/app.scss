@@ -2,6 +2,7 @@ $primary: #8e44ad;
 $success: #27ae60;
 $danger: #e74c3c;
 $warning: #f39c12;
+$info: #3498db;
 
 @import "~bootswatch/dist/zephyr/variables";
 @import "~bootstrap/scss/bootstrap";
@@ -21,4 +22,8 @@ label.required {
 
 .hidden {
   display: none;
+}
+
+.ts-wrapper.form-control .ts-control {
+  border: none;
 }
