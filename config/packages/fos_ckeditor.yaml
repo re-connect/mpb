@@ -8,4 +8,9 @@ fos_ck_editor:
         my_config:
             language: fr
             uiColor: "#9b59b6"
-            toolbar: [ [ "Bold", "Italic" ] ]
+            lineHeight: 1px
+            toolbar: [
+                [ 'Bold', 'Italic', 'Underline', 'TextColor', '-',  'RemoveFormat' ],
+                [ 'NumberedList', 'BulletedList', 'Blockquote', ],
+                [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', ]
+            ]

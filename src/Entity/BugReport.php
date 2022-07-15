@@ -12,9 +12,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BugReport
 {
     final public const APPLICATIONS = [
-        0 => 'Coffre-fort Numérique',
-        1 => 'Reconnect Pro',
-        2 => 'Application Mobile',
+        0 => 'CFN',
+        1 => 'RP',
+        2 => 'Appli',
     ];
     final public const ENVIRONMENTS = [
         0 => 'Production',
