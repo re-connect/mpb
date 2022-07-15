@@ -11,12 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: BugReportRepository::class)]
 class BugReport
 {
-    final public const APPLICATIONS = [
-        0 => 'CFN',
-        1 => 'RP',
-        2 => 'Appli',
-    ];
-
     final public const ACCOUNT_TYPE = [
         0 => 'Bénéficiaire',
         1 => 'TS',

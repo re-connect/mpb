@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Application;
 use App\Entity\BugReport;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -23,9 +25,13 @@ class BugReportType extends AbstractType
                     'placeholder' => 'sdasd',
                 ],
             ])
-            ->add('application', ChoiceType::class, [
+            ->add('application', EntityType::class, [
                 'label' => 'Application',
-                'choices' => BugReport::getConstValues(BugReport::APPLICATIONS),
+                'class' => Application::class,
+                'attr' => [
+                    'data-controller' => 'tomselect',
+                    'data-tomselect-target' => 'select',
+                ],
             ])
             ->add('content', CKEditorType::class, [
                 'label' => 'Description du bug rencontré',
@@ -44,6 +50,10 @@ class BugReportType extends AbstractType
             ->add('accountType', ChoiceType::class, [
                 'label' => "Type d'utilisateur",
                 'choices' => BugReport::getConstValues(BugReport::ACCOUNT_TYPE),
+                'attr' => [
+                    'data-controller' => 'tomselect',
+                    'data-tomselect-target' => 'select',
+                ],
             ]);
     }
 

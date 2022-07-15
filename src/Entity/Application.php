@@ -13,23 +13,31 @@ class Application
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    private string $name = '';
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $icon;
+    private string $icon = '';
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $color;
+    private string $color = '';
 
+    /**
+     * @var Collection<int, BugReport> $bugReports
+     */
     #[ORM\OneToMany(mappedBy: 'application', targetEntity: BugReport::class)]
-    private $bugReports;
+    private Collection $bugReports;
 
     public function __construct()
     {
         $this->bugReports = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 
     public function getId(): ?int

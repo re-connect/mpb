@@ -23,3 +23,7 @@ label.required {
 .hidden {
   display: none;
 }
+
+.ts-wrapper.form-control .ts-control {
+  border: none;
+}
