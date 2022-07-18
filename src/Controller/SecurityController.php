@@ -50,4 +50,10 @@ class SecurityController extends AbstractController
     {
         return $this->redirect($service->authenticateUserFromReconnectPro($request));
     }
+
+    #[Route(path: '/slack-chat', name: 'slack_chat', methods: ['POST'])]
+    public function slackChat(): Response
+    {
+        return new Response(null, 200);
+    }
 }

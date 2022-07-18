@@ -90,10 +90,9 @@ class BugReportController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/mark-done', name: 'bug_report_mark_done', methods: ['GET'])]
-    public function markDone(BugReport $bugReport, EntityManagerInterface $em): Response
+    public function markDone(BugReport $bugReport, BugReportService $service): Response
     {
-        $bugReport->setDone(true);
-        $em->flush();
+        $service->markAsDone($bugReport);
 
         return $this->redirectToRoute('bug_report_index');
     }
