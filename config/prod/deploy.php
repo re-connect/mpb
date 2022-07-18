@@ -19,6 +19,7 @@ return new class() extends DefaultDeployer {
                     '.env',
                     'var/log',
                     'var/oauth',
+                    'config/secrets/prod/prod.decrypt.private.php',
                     'vendor/',
                     'node_modules/',
                 ]
