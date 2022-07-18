@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\BugReport;
 use App\Repository\BugReportRepository;
 use App\Traits\UserAwareTrait;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -42,7 +43,7 @@ class BugReportService
     public function getAccessible(): array
     {
         return $this->authorizationChecker->isGranted('ROLE_TEAM')
-            ? $this->repository->findAll()
+            ? $this->repository->findBy([], ['done' => Criteria::ASC, 'createdAt' => Criteria::DESC])
             : $this->repository->findByUser($this->getUser());
     }
 
