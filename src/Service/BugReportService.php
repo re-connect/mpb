@@ -13,8 +13,13 @@ class BugReportService
 {
     use UserAwareTrait;
 
-    public function __construct(private readonly EntityManagerInterface $em, private readonly BugReportRepository $repository, Security $security, private readonly AuthorizationCheckerInterface $authorizationChecker)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly BugReportRepository $repository,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly NotificationService $notificator,
+        Security $security,
+    ) {
         $this->security = $security;
     }
 
@@ -23,11 +28,12 @@ class BugReportService
         return (new BugReport())->setUserAgent($userAgent);
     }
 
-    public function create(BugReport $bugReport): void
+    public function create(BugReport $bug): void
     {
-        $bugReport->setUser($this->getUser());
-        $this->em->persist($bugReport);
+        $bug->setUser($this->getUser());
+        $this->em->persist($bug);
         $this->em->flush();
+        $this->notificator->notifyBug($bug);
     }
 
     /**
@@ -38,5 +44,12 @@ class BugReportService
         return $this->authorizationChecker->isGranted('ROLE_TEAM')
             ? $this->repository->findAll()
             : $this->repository->findByUser($this->getUser());
+    }
+
+    public function markAsDone(BugReport $bug): void
+    {
+        $bug->setDone(true);
+        $this->em->flush();
+        $this->notificator->notifyBug($bug);
     }
 }
