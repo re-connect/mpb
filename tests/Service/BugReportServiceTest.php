@@ -40,7 +40,6 @@ class BugReportServiceTest extends KernelTestCase
         $this->assertIsObject($bugReport);
         $this->assertEquals($a, $bugReport->getUserAgent());
         $this->assertEquals(0, $bugReport->getApplication());
-        $this->assertEquals(0, $bugReport->getAccountType());
     }
 
     public function testCreate(): void

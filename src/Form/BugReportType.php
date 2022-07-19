@@ -4,14 +4,14 @@ namespace App\Form;
 
 use App\Entity\Application;
 use App\Entity\BugReport;
+use App\Entity\UserKind;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\Dropzone\Form\DropzoneType;
 
 class BugReportType extends AbstractType
 {
@@ -25,27 +25,14 @@ class BugReportType extends AbstractType
                     'placeholder' => 'sdasd',
                 ],
             ])
-            ->add('application', EntityType::class, [
+            ->add('application', StyledEntityType::class, [
+                'required' => true,
                 'class' => Application::class,
                 'placeholder' => 'Application',
-                'choice_attr' => function (Application $choice) {
-                    return [
-                        'data-color' => $choice->getColor(),
-                        'data-icon' => $choice->getIcon(),
-                    ];
-                },
-                'attr' => [
-                    'data-controller' => 'tomselect',
-                    'data-tomselect-target' => 'select',
-                ],
             ])
-            ->add('accountType', ChoiceType::class, [
-                'choices' => BugReport::getConstValues(BugReport::ACCOUNT_TYPE),
-                'placeholder' => 'Type d\'utilisateur',
-                'attr' => [
-                    'data-controller' => 'tomselect',
-                    'data-tomselect-target' => 'select',
-                ],
+            ->add('userKind', StyledEntityType::class, [
+                'class' => UserKind::class,
+                'placeholder' => "Type d'utilisateur",
             ])
             ->add('url', TextType::class, [
                 'label' => 'URL (exemple : https://pro.reconnect.fr/families)',
@@ -63,6 +50,14 @@ class BugReportType extends AbstractType
             ])
             ->add('content', CKEditorType::class, [
                 'label' => 'Description du bug rencontré',
+            ])
+            ->add('attachement', DropzoneType::class, [
+                'label' => 'Ajouter un screenshot',
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Drag and drop a file or click to browse',
+                ],
             ]);
     }
 

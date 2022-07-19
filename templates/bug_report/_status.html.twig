@@ -1,0 +1,11 @@
+{% if bug_report.done %}
+    <span class="float-end badge text-success border border-success p-2">{{ 'Résolu' }}</span>
+{% else %}
+    <span class="float-end badge text-warning border border-warning p-2">{{ 'En cours' }}</span>
+    {% if is_granted('ROLE_TECH_TEAM') %}
+        <a
+                href="{{ path('bug_report_mark_done', {'id': bug_report.id}) }}"
+                class="btn btn-success position-absolute" style="left: 100%; top: 0"><i
+                    class="fa fa-check"></i></a>
+    {% endif %}
+{% endif %}

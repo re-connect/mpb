@@ -621,6 +621,9 @@
     "symfony/uid": {
         "version": "v5.3.3"
     },
+    "symfony/ux-dropzone": {
+        "version": "v2.3.0"
+    },
     "symfony/validator": {
         "version": "6.1",
         "recipe": {

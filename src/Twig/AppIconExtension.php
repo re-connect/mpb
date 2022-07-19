@@ -24,8 +24,12 @@ class AppIconExtension extends AbstractExtension
      * @throws \Twig\Error\SyntaxError
      * @throws \Twig\Error\LoaderError
      */
-    public function showAppIcon(Environment $environment, Application $application): string
+    public function showAppIcon(Environment $environment, ?Application $application): string
     {
+        if (!$application) {
+            return '';
+        }
+
         return $environment->render(name: 'bug_report/_application_icon.html.twig', context: [
             'application' => $application,
         ]);
