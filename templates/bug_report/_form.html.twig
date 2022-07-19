@@ -2,32 +2,35 @@
 
 <div class="row">
     <div class="col-12">
-        <div class="form-floating">
-            {{ form_widget(form.title) }}
-            {{ form_label(form.title) }}
-        </div>
-        <hr class="text-primary my-3">
-    </div>
-    <div class="col-12 my-3">
-        {{ form_row(form.content) }}
-    </div>
-    <div class="col-12 col-sm-6 col-md-8">
         <div class="row">
-            <div class="col-12 col-md-6">
-                {{ form_row(form.application) }}
+            <div class="col-12 col-md-7 col-lg-10">
+                <div class="form-floating">
+                    {{ form_widget(form.title) }}
+                    {{ form_label(form.title) }}
+                </div>
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col-12 mt-2 col-md-5 col-lg-2 mt-md-0">
+                {{ form_widget(form.application) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-3">
                 {{ form_row(form.accountType) }}
             </div>
-            <div class="col-12 col-md-4">
-                {{ form_row(form.accountId) }}
-            </div>
-            <div class="col-12 col-md-8">
+            <div class="col-12 col-md-7">
                 {{ form_row(form.url) }}
+            </div>
+            <div class="col-12 col-md-2">
+                {{ form_row(form.accountId) }}
             </div>
         </div>
     </div>
-    <div class="col-12 col-sm-6 col-md-4 mt-3 d-flex">
-        <button class="btn btn-primary btn-lg flex-grow-1">{{ button_label }}</button>
-    </div>
-    {{ form_end(form) }}
+</div>
+<hr class="text-primary my-3">
+<div class="col-12 ">
+    {{ form_row(form.content) }}
+</div>
+<div class="col-12 offset-sm-6 col-sm-6 offset-md-8 col-md-4 mt-3 d-flex">
+    <button class="btn btn-primary btn-lg flex-grow-1">{{ button_label }}</button>
+</div>
+{{ form_end(form) }}

@@ -28,6 +28,12 @@ class BugReportType extends AbstractType
             ->add('application', EntityType::class, [
                 'label' => 'Application',
                 'class' => Application::class,
+                'choice_attr' => function (Application $choice) {
+                    return [
+                        'data-color' => $choice->getColor(),
+                        'data-icon' => $choice->getIcon(),
+                    ];
+                },
                 'attr' => [
                     'data-controller' => 'tomselect',
                     'data-tomselect-target' => 'select',
