@@ -12,13 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: BugReportRepository::class)]
 class BugReport
 {
-    final public const ACCOUNT_TYPE = [
-        0 => 'Bénéficiaire',
-        1 => 'TS',
-        2 => 'Gestionnaire',
-        3 => 'Admin',
-    ];
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -59,9 +52,6 @@ class BugReport
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $account_id = null;
 
-    #[ORM\Column(type: 'integer')]
-    private ?int $account_type = 0;
-
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $item_id = null;
 
@@ -69,13 +59,21 @@ class BugReport
     private ?string $userAgent = null;
 
     #[ORM\ManyToOne(targetEntity: Application::class, inversedBy: 'bugReports')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Application $application = null;
+
+    #[ORM\ManyToOne(targetEntity: UserKind::class, inversedBy: 'bugReports')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?UserKind $userKind = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $done = false;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'getBugReportsAssignedToMe')]
     private ?User $assignee = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $attachementName = null;
 
     /**
      * @param string[] $array
@@ -233,18 +231,6 @@ class BugReport
         return $this;
     }
 
-    public function getAccountType(): ?int
-    {
-        return $this->account_type;
-    }
-
-    public function setAccountType(int $account_type): self
-    {
-        $this->account_type = $account_type;
-
-        return $this;
-    }
-
     public function getItemId(): ?int
     {
         return $this->item_id;
@@ -314,6 +300,30 @@ class BugReport
     public function setAssignee(?User $assignee): self
     {
         $this->assignee = $assignee;
+
+        return $this;
+    }
+
+    public function getUserKind(): ?UserKind
+    {
+        return $this->userKind;
+    }
+
+    public function setUserKind(?UserKind $userKind): self
+    {
+        $this->userKind = $userKind;
+
+        return $this;
+    }
+
+    public function getAttachementName(): ?string
+    {
+        return $this->attachementName;
+    }
+
+    public function setAttachementName(?string $attachementName): self
+    {
+        $this->attachementName = $attachementName;
 
         return $this;
     }

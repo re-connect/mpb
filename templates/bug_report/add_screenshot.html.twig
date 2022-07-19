@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouer screenshot{% endblock %}
+
+{% block body %}
+    <h1>Ajouter un screenshot ?</h1>
+
+    <div class="container pb-4">
+        <div class="row">
+            <div class="d-grid gap-2 col-12 my-5">
+                <a class="btn btn-primary btn-lg" type="button"
+                   href="{{ path('app_home') }}"
+                >Créer sans ajotuer de screenshot</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -25,10 +25,26 @@ label.required {
   display: none;
 }
 
-.ts-wrapper.form-control .ts-control {
-  border: none;
+.ts-wrapper.form-control {
+  height: 58px;
+
+  .ts-control {
+    padding-left: 0;
+    height: 100%;
+    border: none;
+
+    input, div {
+      color: $body-color;
+      font-size: 1rem;
+    }
+
+    div {
+      padding-top: 4px;
+    }
+  }
+
+  input::placeholder {
+    opacity: 1;
+  }
 }
 
-input.form-control {
-  height: 52px;
-}

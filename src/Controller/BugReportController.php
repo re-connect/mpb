@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\BugReport;
 use App\Form\BugReportType;
+use App\Security\Voter\Permissions;
 use App\Service\BugReportService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -29,9 +30,9 @@ class BugReportController extends AbstractController
         $bugReport = $service->initBugReport($request->headers->get('User-Agent', ''));
         $form = $this->createForm(BugReportType::class, $bugReport)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $service->create($bugReport);
+            $service->create($bugReport, $form->get('attachement')->getData());
 
-            return $this->redirectToRoute('bug_report_index');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('bug_report/new.html.twig', [
@@ -40,6 +41,16 @@ class BugReportController extends AbstractController
         ]);
     }
 
+    #[Route(path: '/{id}/add-screenshot', name: 'add_screenshot', methods: ['GET', 'POST'])]
+    public function addScreenshot(BugReport $bugReport): Response
+    {
+        return $this->render('bug_report/add_screenshot.html.twig', [
+            'bug' => $bugReport,
+        ]);
+    }
+
+
+    #[IsGranted(Permissions::MANAGE, 'bugReport')]
     #[Route(path: '/{id}', name: 'bug_report_show', methods: ['GET'])]
     public function show(BugReport $bugReport): Response
     {
@@ -66,6 +77,7 @@ class BugReportController extends AbstractController
         ]);
     }
 
+    #[IsGranted(Permissions::MANAGE, 'bugReport')]
     #[Route(path: '/{id}', name: 'bug_report_delete', methods: ['POST'])]
     public function delete(Request $request, BugReport $bugReport, EntityManagerInterface $em): Response
     {

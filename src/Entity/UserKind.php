@@ -2,23 +2,23 @@
 
 namespace App\Entity;
 
-use App\Repository\ApplicationRepository;
+use App\Repository\UserKindRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ApplicationRepository::class)]
-class Application extends StyledEntityKind
+#[ORM\Entity(repositoryClass: UserKindRepository::class)]
+class UserKind extends StyledEntityKind
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column]
     private ?int $id = null;
 
     /**
      * @var Collection<int, BugReport> $bugReports
      */
-    #[ORM\OneToMany(mappedBy: 'application', targetEntity: BugReport::class)]
+    #[ORM\OneToMany(mappedBy: 'userKind', targetEntity: BugReport::class)]
     private Collection $bugReports;
 
     public function __construct()
@@ -43,7 +43,7 @@ class Application extends StyledEntityKind
     {
         if (!$this->bugReports->contains($bugReport)) {
             $this->bugReports[] = $bugReport;
-            $bugReport->setApplication($this);
+            $bugReport->setUserKind($this);
         }
 
         return $this;
@@ -53,8 +53,8 @@ class Application extends StyledEntityKind
     {
         if ($this->bugReports->removeElement($bugReport)) {
             // set the owning side to null (unless already changed)
-            if ($bugReport->getApplication() === $this) {
-                $bugReport->setApplication(null);
+            if ($bugReport->getUserKind() === $this) {
+                $bugReport->setUserKind(null);
             }
         }
 
