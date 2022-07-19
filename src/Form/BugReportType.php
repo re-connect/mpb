@@ -26,8 +26,8 @@ class BugReportType extends AbstractType
                 ],
             ])
             ->add('application', EntityType::class, [
-                'label' => 'Application',
                 'class' => Application::class,
+                'placeholder' => 'Application',
                 'choice_attr' => function (Application $choice) {
                     return [
                         'data-color' => $choice->getColor(),
@@ -39,27 +39,30 @@ class BugReportType extends AbstractType
                     'data-tomselect-target' => 'select',
                 ],
             ])
-            ->add('content', CKEditorType::class, [
-                'label' => 'Description du bug rencontré',
+            ->add('accountType', ChoiceType::class, [
+                'choices' => BugReport::getConstValues(BugReport::ACCOUNT_TYPE),
+                'placeholder' => 'Type d\'utilisateur',
+                'attr' => [
+                    'data-controller' => 'tomselect',
+                    'data-tomselect-target' => 'select',
+                ],
             ])
             ->add('url', TextType::class, [
-                'label' => 'URL',
+                'label' => 'URL (exemple : https://pro.reconnect.fr/families)',
                 'attr' => [
-                    'placeholder' => 'exemple : https://pro.reconnect.fr/families',
+                    'placeholder' => 'URL (exemple : https://pro.reconnect.fr/families)',
                 ],
                 'required' => false,
             ])
             ->add('accountId', IntegerType::class, [
                 'label' => 'ID compte',
                 'required' => false,
-            ])
-            ->add('accountType', ChoiceType::class, [
-                'label' => "Type d'utilisateur",
-                'choices' => BugReport::getConstValues(BugReport::ACCOUNT_TYPE),
                 'attr' => [
-                    'data-controller' => 'tomselect',
-                    'data-tomselect-target' => 'select',
+                    'placeholder' => 'ID compte',
                 ],
+            ])
+            ->add('content', CKEditorType::class, [
+                'label' => 'Description du bug rencontré',
             ]);
     }
 

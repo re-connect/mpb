@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\BugReport;
 use App\Form\BugReportType;
+use App\Security\Voter\Permissions;
 use App\Service\BugReportService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -40,6 +41,7 @@ class BugReportController extends AbstractController
         ]);
     }
 
+    #[IsGranted(Permissions::MANAGE, 'bugReport')]
     #[Route(path: '/{id}', name: 'bug_report_show', methods: ['GET'])]
     public function show(BugReport $bugReport): Response
     {
@@ -66,6 +68,7 @@ class BugReportController extends AbstractController
         ]);
     }
 
+    #[IsGranted(Permissions::MANAGE, 'bugReport')]
     #[Route(path: '/{id}', name: 'bug_report_delete', methods: ['POST'])]
     public function delete(Request $request, BugReport $bugReport, EntityManagerInterface $em): Response
     {

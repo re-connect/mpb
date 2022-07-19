@@ -13,10 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BugReport
 {
     final public const ACCOUNT_TYPE = [
-        0 => 'Bénéficiaire',
-        1 => 'TS',
-        2 => 'Gestionnaire',
-        3 => 'Admin',
+        1 => 'Bénéficiaire',
+        2 => 'TS',
+        3 => 'Gestionnaire',
+        4 => 'Admin',
     ];
 
     #[ORM\Id]

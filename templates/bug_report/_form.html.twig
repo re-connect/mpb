@@ -14,14 +14,20 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-3">
-                {{ form_row(form.accountType) }}
+            <div class="col-12 col-md-3 mt-2">
+                {{ form_widget(form.accountType) }}
             </div>
-            <div class="col-12 col-md-7">
-                {{ form_row(form.url) }}
+            <div class="col-12 col-md-7 mt-2">
+                <div class="form-floating">
+                    {{ form_widget(form.url) }}
+                    {{ form_label(form.url) }}
+                </div>
             </div>
-            <div class="col-12 col-md-2">
-                {{ form_row(form.accountId) }}
+            <div class="col-12 col-md-2 mt-2">
+                <div class="form-floating">
+                    {{ form_widget(form.accountId) }}
+                    {{ form_label(form.accountId) }}
+                </div>
             </div>
         </div>
     </div>
