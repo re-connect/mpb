@@ -26,7 +26,7 @@ return new class() extends DefaultDeployer {
             );
     }
 
-    public function beforePreparing(): void
+    public function beforePublishing(): void
     {
         $this->runRemote('yarn install');
         $this->runRemote('yarn build');

@@ -5,13 +5,7 @@
 {% block body %}
     <div class="position-relative">
         {{ include('bug_report/_back_to_list_button.html.twig') }}
-        <a
-                class="btn btn-sm btn-outline-info"
-                style="z-index: 2; right: 1em; bottom: 1em"
-                href="{{ path('bug_report_take_over', { 'id': bug_report.id }) }}"
-        >
-            Prendre en charge
-        </a>
+        {{ include('bug_report/_assignee_section.html.twig', {'bug': bug_report}) }}
         <h1>{{ bug_report.title }}</h1>
         <table class="table">
             <tbody>
@@ -28,7 +22,7 @@
                 <td>{{ bug_report.user }}</td>
             </tr>
             <tr>
-                <th>Personne en charge</th>
+                <th>Traité par</th>
                 <td>{{ bug_report.assignee }}</td>
             </tr>
             <tr>

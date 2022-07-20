@@ -18,6 +18,6 @@ export default class extends Controller {
     setTimeout(() => {
       this.elementTarget.innerHTML = previousContent;
       this.elementTarget.disabled = false;
-    }, 2000);
+    }, 1500);
   }
 }

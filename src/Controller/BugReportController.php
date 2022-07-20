@@ -8,6 +8,7 @@ use App\Security\Voter\Permissions;
 use App\Service\BugReportService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,7 +31,9 @@ class BugReportController extends AbstractController
         $bugReport = $service->initBugReport($request->headers->get('User-Agent', ''));
         $form = $this->createForm(BugReportType::class, $bugReport)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $service->create($bugReport, $form->get('attachement')->getData());
+            /** @var ?UploadedFile $attachment */
+            $attachment = $form->get('attachement')->getData();
+            $service->create($bugReport, $attachment);
 
             return $this->redirectToRoute('app_home');
         }
@@ -48,7 +51,6 @@ class BugReportController extends AbstractController
             'bug' => $bugReport,
         ]);
     }
-
 
     #[IsGranted(Permissions::MANAGE, 'bugReport')]
     #[Route(path: '/{id}', name: 'bug_report_show', methods: ['GET'])]

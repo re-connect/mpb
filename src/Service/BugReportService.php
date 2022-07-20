@@ -52,9 +52,13 @@ class BugReportService
      */
     public function getAccessible(): array
     {
-        return $this->authorizationChecker->isGranted('ROLE_TEAM')
-            ? $this->repository->findBy([], ['done' => Criteria::ASC, 'createdAt' => Criteria::DESC])
-            : $this->repository->findByUser($this->getUser());
+        $criteria = [];
+        $orderBy = ['done' => Criteria::ASC, 'createdAt' => Criteria::DESC];
+        if (!$this->authorizationChecker->isGranted('ROLE_TEAM')) {
+            $criteria['user'] = $this->getUser();
+        }
+
+        return $this->repository->findBy($criteria, $orderBy);
     }
 
     public function markAsDone(BugReport $bug): void
