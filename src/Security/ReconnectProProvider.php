@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class ReconnectProProvider extends AbstractProvider
 {
-    private string $baseUrl = 'https://localhost:8001';
+    private string $baseUrl = 'https://pro.reconnect.fr';
 
     private function getProviderUrl(string $path): string
     {

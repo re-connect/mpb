@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\BugReport;
 use App\Form\BugReportType;
+use App\Repository\ApplicationRepository;
 use App\Security\Voter\Permissions;
 use App\Service\BugReportService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,10 +19,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class BugReportController extends AbstractController
 {
     #[Route(path: '/list', name: 'bug_report_index', methods: ['GET'])]
-    public function index(BugReportService $service): Response
+    public function index(Request $request, BugReportService $service, ApplicationRepository $applicationRepository): Response
     {
+        $showDone = $request->query->getBoolean('done');
+        $application = $request->query->getInt('app');
+
         return $this->render('bug_report/index.html.twig', [
-            'bug_reports' => $service->getAccessible(),
+            'bug_reports' => $service->getAccessible($showDone, $application),
+            'done' => $showDone,
+            'applications' => $applicationRepository->findAll(),
         ]);
     }
 
@@ -30,7 +37,9 @@ class BugReportController extends AbstractController
         $bugReport = $service->initBugReport($request->headers->get('User-Agent', ''));
         $form = $this->createForm(BugReportType::class, $bugReport)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $service->create($bugReport, $form->get('attachement')->getData());
+            /** @var ?UploadedFile $attachment */
+            $attachment = $form->get('attachement')->getData();
+            $service->create($bugReport, $attachment);
 
             return $this->redirectToRoute('app_home');
         }
@@ -49,7 +58,6 @@ class BugReportController extends AbstractController
         ]);
     }
 
-
     #[IsGranted(Permissions::MANAGE, 'bugReport')]
     #[Route(path: '/{id}', name: 'bug_report_show', methods: ['GET'])]
     public function show(BugReport $bugReport): Response
@@ -61,12 +69,14 @@ class BugReportController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/edit', name: 'bug_report_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, BugReport $bugReport, EntityManagerInterface $em): Response
+    public function edit(Request $request, BugReport $bugReport, BugReportService $service): Response
     {
         $form = $this->createForm(BugReportType::class, $bugReport);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
+            /** @var ?UploadedFile $attachment */
+            $attachment = $form->get('attachement')->getData();
+            $service->update($bugReport, $attachment);
 
             return $this->redirectToRoute('bug_report_index');
         }

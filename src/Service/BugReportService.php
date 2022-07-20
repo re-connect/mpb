@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\BugReport;
+use App\Repository\ApplicationRepository;
 use App\Repository\BugReportRepository;
 use App\Traits\UserAwareTrait;
 use Doctrine\Common\Collections\Criteria;
@@ -17,12 +18,13 @@ class BugReportService
     use UserAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly BugReportRepository $repository,
+        private readonly EntityManagerInterface        $em,
+        private readonly BugReportRepository           $repository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly NotificationService $notificator,
-        private readonly string $uploadsDirectory,
-        Security $security,
+        private readonly NotificationService           $notificator,
+        private readonly ApplicationRepository         $applicationRepository,
+        private readonly string                        $uploadsDirectory,
+        Security                                       $security,
     ) {
         $this->security = $security;
     }
@@ -34,13 +36,7 @@ class BugReportService
 
     public function create(BugReport $bug, ?UploadedFile $attachment = null): void
     {
-        $bug->setUser($this->getUser());
-
-        if ($attachment) {
-            $attachmentName = Uuid::v4().'.'.$attachment->guessExtension();
-            $attachment->move($this->uploadsDirectory, $attachmentName);
-            $bug->setAttachementName($attachmentName);
-        }
+        $this->handleAttachment($bug, $attachment);
 
         $this->em->persist($bug);
         $this->em->flush();
@@ -50,11 +46,18 @@ class BugReportService
     /**
      * @return BugReport[]
      */
-    public function getAccessible(): array
+    public function getAccessible(bool $done = false, int $applicationId = 0): array
     {
-        return $this->authorizationChecker->isGranted('ROLE_TEAM')
-            ? $this->repository->findBy([], ['done' => Criteria::ASC, 'createdAt' => Criteria::DESC])
-            : $this->repository->findByUser($this->getUser());
+        $criteria = ['done' => $done];
+        if ($applicationId) {
+            $criteria['application'] = $this->applicationRepository->find($applicationId);
+        }
+        $orderBy = ['done' => Criteria::ASC, 'createdAt' => Criteria::DESC];
+        if (!$this->authorizationChecker->isGranted('ROLE_TEAM')) {
+            $criteria['user'] = $this->getUser();
+        }
+
+        return $this->repository->findBy($criteria, $orderBy);
     }
 
     public function markAsDone(BugReport $bug): void
@@ -62,5 +65,22 @@ class BugReportService
         $bug->setDone(true);
         $this->em->flush();
         $this->notificator->notifyBug($bug);
+    }
+
+    public function update(BugReport $bug, ?UploadedFile $attachment): void
+    {
+        $this->handleAttachment($bug, $attachment);
+
+        $this->em->flush();
+    }
+
+    private function handleAttachment(BugReport $bug, ?UploadedFile $attachment): void
+    {
+        $bug->setUser($this->getUser());
+        if ($attachment) {
+            $attachmentName = Uuid::v4().'.'.$attachment->guessExtension();
+            $attachment->move($this->uploadsDirectory, $attachmentName);
+            $bug->setAttachementName($attachmentName);
+        }
     }
 }

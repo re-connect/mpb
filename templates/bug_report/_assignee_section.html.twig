@@ -1,21 +1,23 @@
 {% if not bug.done %}
-    {% if bug.assignee %}
-        <span class="badge bg-success">{{ 'Traité par : '~bug.assignee }}</span>
-    {% else %}
-        <div>
+    <div>
+        {% if bug.assignee %}
+            <span class="badge text-success border border-success">
+                {{ 'Traité par : '~bug.assignee }}</span>
+        {% else %}
             {% if is_granted('ROLE_TECH_TEAM') %}
                 <a
-                        class="btn btn-sm btn-outline-info position-absolute"
-                        style="z-index: 2; right: 1em; bottom: 1em"
+                        class="btn btn-sm btn-outline-info"
                         href="{{ path('bug_report_take_over', { 'id': bug.id }) }}"
                 >
+                    <i class="fa fa-truck-fast"></i>
                     Prendre en charge
                 </a>
             {% else %}
-                <span class="badge badge-warning">
-                {{ 'En attente d\'assignation' }}
-            </span>
+                <span class="badge border border-warning text-warning">
+                    <i class="fa fa-hourglass-1"></i>
+                    En attente d'assignation
+                </span>
             {% endif %}
-        </div>
-    {% endif %}
+        {% endif %}
+    </div>
 {% endif %}

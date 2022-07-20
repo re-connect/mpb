@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\BugReport;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,31 +19,4 @@ class BugReportRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, BugReport::class);
     }
-
-    /**
-     * @return BugReport[]
-     */
-    public function findByUser(?User $user): array
-    {
-        /** @var BugReport[] $bugReports */
-        $bugReports = $this->createQueryBuilder('b')
-            ->andWhere('b.user = :user')
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->getResult();
-
-        return $bugReports;
-    }
-
-    /*
-    public function findOneBySomeField($value): ?BugReport
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

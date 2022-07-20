@@ -1,0 +1,11 @@
+{% if is_granted('ROLE_TEAM') %}
+    <div class="row">
+        {% for application in applications %}
+            <div class="col d-flex justify-content-center">
+                <a href="{{ path('bug_report_index', {'app': application.id}) }}" class="btn btn-outline-light mt-4">
+                    {{ app_icon(application) }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
