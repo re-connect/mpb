@@ -7,6 +7,7 @@
        href="{{ path('bug_report_new') }}">Déclarer un bug</a>
     <h1>Liste des bugs</h1>
     <div class="container py-3 px-4">
+        {{ include('bug_report/_toggle_application_buttons.html.twig', {'applications': applications}) }}
         <div class="row">
             {% for bug_report in bug_reports %}
                 {{ include('bug_report/_card.html.twig', { bug_report }) }}
@@ -14,5 +15,6 @@
                 Aucun Bug report n'a été ajouté
             {% endfor %}
         </div>
+        {{ include('bug_report/_toggle_solved_button.html.twig', {'done': done}) }}
     </div>
 {% endblock %}

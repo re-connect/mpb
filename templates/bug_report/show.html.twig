@@ -4,8 +4,14 @@
 
 {% block body %}
     <div class="position-relative">
-        {{ include('bug_report/_back_to_list_button.html.twig') }}
-        {{ include('bug_report/_assignee_section.html.twig', {'bug': bug_report}) }}
+        <div class="row">
+            <div class="col">
+                {{ include('bug_report/_back_to_list_button.html.twig') }}
+            </div>
+            <div class="col">
+                {{ include('bug_report/_assignee_section.html.twig', {'bug': bug_report}) }}
+            </div>
+        </div>
         <h1>{{ bug_report.title }}</h1>
         <table class="table">
             <tbody>

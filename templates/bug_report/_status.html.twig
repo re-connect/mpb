@@ -1,14 +1,15 @@
-{% if bug_report.done %}
-    <span class="float-end badge text-success border border-success p-2">{{ 'Résolu' }}</span>
-{% else %}
-    <span class="float-end badge text-warning border border-warning p-2">{{ 'En cours' }}</span>
-    {% if is_granted('ROLE_TECH_TEAM') %}
-        <a
-                {{ stimulus_controller('loading') }}
-                {{ stimulus_action('loading', 'startLoading') }}
-                {{ stimulus_target('loading', 'element') }}
-                href="{{ path('bug_report_mark_done', {'id': bug_report.id}) }}"
-                class="btn btn-success position-absolute" style="left: 100%; top: 0"><i
-                    class="fa fa-check"></i></a>
+<div>
+    {% if bug_report.done %}
+        <span class="badge text-success border border-success">{{ 'Résolu' }}</span>
+    {% else %}
+        <span class="badge text-warning border border-warning">
+            <i class="fa fa-hourglass-1"></i>
+            {{ 'En cours' }}
+        </span>
+        {% if is_granted('ROLE_TECH_TEAM') %}
+            <a
+                    href="{{ path('bug_report_mark_done', {'id': bug_report.id}) }}"
+                    class="btn btn-success btn-sm mb-2"><i class="fa fa-check"></i></a>
+        {% endif %}
     {% endif %}
-{% endif %}
+</div>

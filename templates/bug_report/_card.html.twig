@@ -1,25 +1,27 @@
 <div class="col-12 my-2 rounded position-relative shadow-lg btn btn-outline-light text-dark"
      xmlns="http://www.w3.org/1999/html">
     <div class="row">
-        <div class="col-1 d-flex justify-content-center align-items-center">
+        <div class="col-3 col-sm-2 col-md-1 d-flex justify-content-center align-items-center">
             {{ app_icon(bug_report.application) }}
         </div>
-        <div class="col-11">
-            <p class="text-start">
-                <span class="h5">{{ bug_report.title }}</span>
-                {{ include('bug_report/_status.html.twig', {'bug': bug_report}) }}
-            </p>
-            <div class="d-flex pt-1 align-items-start">
-                <div>
-                    <span class="fw-bolder text-decoration-underline">Remonté par :</span>
+        <div class="col-9 col-sm-10 col-md-11">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="text-start">
+                        <span class="h5">{{ bug_report.title }}</span>
+                    </div>
+                    <div class="text-start">
+                        <span class="fw-bolder text-decoration-underline">Remonté par :</span>
+                        <small>{{ bug_report.user.userIdentifier }}</small>
+                        <br/>
+                        <span class="fw-bolder text-decoration-underline">Le :</span>
+                        <small>{{ bug_report.createdAt|date("d/m/Y") }}</small>
+                    </div>
                 </div>
-                <div class="flex-grow-1 text-start ps-3">
-                    <small>{{ bug_report.user.userIdentifier }}</small>
-                    <br/>
-                    <small>Le {{ bug_report.createdAt|date("d/m/Y") }}
-                        à {{ bug_report.createdAt|date("H:i") }}</small>
+                <div class="col-12 col-md-6 z-2 d-flex flex-column align-items-end">
+                    {{ include('bug_report/_status.html.twig', {'bug': bug_report}) }}
+                    {{ include('bug_report/_assignee_section.html.twig', {'bug': bug_report}) }}
                 </div>
-                {{ include('bug_report/_assignee_section.html.twig', {'bug': bug_report}) }}
             </div>
         </div>
         <a href="{{ path('bug_report_show', {'id': bug_report.id}) }}" class="stretched-link"></a>
