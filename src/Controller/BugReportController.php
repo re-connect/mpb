@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\BugReport;
+use App\Entity\Bug;
 use App\Form\BugReportType;
 use App\Repository\ApplicationRepository;
 use App\Security\Voter\Permissions;
@@ -51,7 +51,7 @@ class BugReportController extends AbstractController
     }
 
     #[Route(path: '/{id}/add-screenshot', name: 'add_screenshot', methods: ['GET', 'POST'])]
-    public function addScreenshot(BugReport $bugReport): Response
+    public function addScreenshot(Bug $bugReport): Response
     {
         return $this->render('bug/add_screenshot.html.twig', [
             'bug' => $bugReport,
@@ -60,7 +60,7 @@ class BugReportController extends AbstractController
 
     #[IsGranted(Permissions::MANAGE, 'bugReport')]
     #[Route(path: '/{id}', name: 'bug_report_show', methods: ['GET'])]
-    public function show(BugReport $bugReport): Response
+    public function show(Bug $bugReport): Response
     {
         return $this->render('bug/show.html.twig', [
             'bug_report' => $bugReport,
@@ -69,7 +69,7 @@ class BugReportController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/edit', name: 'bug_report_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, BugReport $bugReport, BugReportService $service): Response
+    public function edit(Request $request, Bug $bugReport, BugReportService $service): Response
     {
         $form = $this->createForm(BugReportType::class, $bugReport);
         $form->handleRequest($request);
@@ -89,7 +89,7 @@ class BugReportController extends AbstractController
 
     #[IsGranted(Permissions::MANAGE, 'bugReport')]
     #[Route(path: '/{id}', name: 'bug_report_delete', methods: ['POST'])]
-    public function delete(Request $request, BugReport $bugReport, EntityManagerInterface $em): Response
+    public function delete(Request $request, Bug $bugReport, EntityManagerInterface $em): Response
     {
         $csrfTokenName = sprintf('delete%d', $bugReport->getId());
         if ($this->isCsrfTokenValid($csrfTokenName, (string) $request->request->get('_token', ''))) {
@@ -102,7 +102,7 @@ class BugReportController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/take-over', name: 'bug_report_take_over', methods: ['GET'])]
-    public function takeOver(BugReport $bugReport, EntityManagerInterface $em): Response
+    public function takeOver(Bug $bugReport, EntityManagerInterface $em): Response
     {
         $bugReport->setAssignee($this->getUser());
         $em->flush();
@@ -112,7 +112,7 @@ class BugReportController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/mark-done', name: 'bug_report_mark_done', methods: ['GET'])]
-    public function markDone(BugReport $bugReport, BugReportService $service): Response
+    public function markDone(Bug $bugReport, BugReportService $service): Response
     {
         $service->markAsDone($bugReport);
 

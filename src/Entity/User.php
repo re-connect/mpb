@@ -49,9 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     private array $roles = [];
 
     /**
-     * @var Collection<int, BugReport>
+     * @var Collection<int, Bug>
      */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: BugReport::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bug::class, orphanRemoval: true)]
     private Collection $bugReports;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Preference::class, cascade: ['persist', 'remove'])]
@@ -76,9 +76,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     private Collection $attachments;
 
     /**
-     * @var Collection<int, BugReport>
+     * @var Collection<int, Bug>
      */
-    #[ORM\OneToMany(mappedBy: 'assignee', targetEntity: BugReport::class)]
+    #[ORM\OneToMany(mappedBy: 'assignee', targetEntity: Bug::class)]
     private Collection $getBugReportsAssignedToMe;
 
     public function __construct()
@@ -161,14 +161,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     }
 
     /**
-     * @return Collection<int, BugReport>
+     * @return Collection<int, Bug>
      */
     public function getBugReports(): Collection
     {
         return $this->bugReports;
     }
 
-    public function addBugReport(BugReport $bugReport): self
+    public function addBugReport(Bug $bugReport): self
     {
         if (!$this->bugReports->contains($bugReport)) {
             $this->bugReports[] = $bugReport;
@@ -178,7 +178,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         return $this;
     }
 
-    public function removeBugReport(BugReport $bugReport): self
+    public function removeBugReport(Bug $bugReport): self
     {
         if ($this->bugReports->removeElement($bugReport)) {
             // set the owning side to null (unless already changed)
@@ -350,14 +350,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     }
 
     /**
-     * @return Collection<int, BugReport>
+     * @return Collection<int, Bug>
      */
     public function getGetBugReportsAssignedToMe(): Collection
     {
         return $this->getBugReportsAssignedToMe;
     }
 
-    public function addGetBugReportsAssignedToMe(BugReport $getBugReportsAssignedToMe): self
+    public function addGetBugReportsAssignedToMe(Bug $getBugReportsAssignedToMe): self
     {
         if (!$this->getBugReportsAssignedToMe->contains($getBugReportsAssignedToMe)) {
             $this->getBugReportsAssignedToMe[] = $getBugReportsAssignedToMe;
@@ -367,7 +367,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         return $this;
     }
 
-    public function removeGetBugReportsAssignedToMe(BugReport $getBugReportsAssignedToMe): self
+    public function removeGetBugReportsAssignedToMe(Bug $getBugReportsAssignedToMe): self
     {
         if ($this->getBugReportsAssignedToMe->removeElement($getBugReportsAssignedToMe)) {
             // set the owning side to null (unless already changed)

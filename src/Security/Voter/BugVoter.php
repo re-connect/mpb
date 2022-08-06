@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\BugReport;
+use App\Entity\Bug;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -16,13 +16,13 @@ class BugVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return Permissions::MANAGE === $attribute && $subject instanceof BugReport;
+        return Permissions::MANAGE === $attribute && $subject instanceof Bug;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
-        if (!$user instanceof UserInterface || !$subject instanceof BugReport) {
+        if (!$user instanceof UserInterface || !$subject instanceof Bug) {
             return false;
         }
 

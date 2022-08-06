@@ -23,9 +23,9 @@ class Attachment
     #[ORM\JoinColumn(nullable: false)]
     private ?User $uploadedBy = null;
 
-    #[ORM\ManyToOne(targetEntity: BugReport::class, inversedBy: 'attachments')]
+    #[ORM\ManyToOne(targetEntity: Bug::class, inversedBy: 'attachments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?BugReport $bugReport = null;
+    private ?Bug $bugReport = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $url = null;
@@ -71,12 +71,12 @@ class Attachment
         return $this;
     }
 
-    public function getBugReport(): ?BugReport
+    public function getBugReport(): ?Bug
     {
         return $this->bugReport;
     }
 
-    public function setBugReport(?BugReport $bugReport): self
+    public function setBugReport(?Bug $bugReport): self
     {
         $this->bugReport = $bugReport;
 

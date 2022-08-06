@@ -16,9 +16,9 @@ class Application extends StyledEntityKind
     private ?int $id = null;
 
     /**
-     * @var Collection<int, BugReport> $bugReports
+     * @var Collection<int, Bug> $bugReports
      */
-    #[ORM\OneToMany(mappedBy: 'application', targetEntity: BugReport::class)]
+    #[ORM\OneToMany(mappedBy: 'application', targetEntity: Bug::class)]
     private Collection $bugReports;
 
     public function __construct()
@@ -32,14 +32,14 @@ class Application extends StyledEntityKind
     }
 
     /**
-     * @return Collection<int, BugReport>
+     * @return Collection<int, Bug>
      */
     public function getBugReports(): Collection
     {
         return $this->bugReports;
     }
 
-    public function addBugReport(BugReport $bugReport): self
+    public function addBugReport(Bug $bugReport): self
     {
         if (!$this->bugReports->contains($bugReport)) {
             $this->bugReports[] = $bugReport;
@@ -49,7 +49,7 @@ class Application extends StyledEntityKind
         return $this;
     }
 
-    public function removeBugReport(BugReport $bugReport): self
+    public function removeBugReport(Bug $bugReport): self
     {
         if ($this->bugReports->removeElement($bugReport)) {
             // set the owning side to null (unless already changed)

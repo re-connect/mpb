@@ -26,9 +26,9 @@ class Comment
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
-    #[ORM\ManyToOne(targetEntity: BugReport::class, inversedBy: 'comments')]
+    #[ORM\ManyToOne(targetEntity: Bug::class, inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?BugReport $bugReport = null;
+    private ?Bug $bugReport = null;
 
     public function getId(): ?int
     {
@@ -83,12 +83,12 @@ class Comment
         return $this;
     }
 
-    public function getBugReport(): ?BugReport
+    public function getBugReport(): ?Bug
     {
         return $this->bugReport;
     }
 
-    public function setBugReport(?BugReport $bugReport): self
+    public function setBugReport(?Bug $bugReport): self
     {
         $this->bugReport = $bugReport;
 
