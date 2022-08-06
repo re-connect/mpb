@@ -35,36 +35,36 @@ class BugReportServiceTest extends KernelTestCase
      */
     public function testInitBugReport(string $a): void
     {
-        $bugReport = $this->service->initBugReport($a);
+        $bug = $this->service->initBugReport($a);
 
-        $this->assertIsObject($bugReport);
-        $this->assertEquals($a, $bugReport->getUserAgent());
-        $this->assertEquals(0, $bugReport->getApplication());
+        $this->assertIsObject($bug);
+        $this->assertEquals($a, $bug->getUserAgent());
+        $this->assertEquals(0, $bug->getApplication());
     }
 
     public function testCreate(): void
     {
         $this->loginUser('tester_team@gmail.com');
 
-        $bugReport = $this->service->initBugReport('');
+        $bug = $this->service->initBugReport('');
 
-        $this->assertNull($bugReport->getCreatedAt());
+        $this->assertNull($bug->getCreatedAt());
 
-        $this->service->create($bugReport);
+        $this->service->create($bug);
 
-        $this->assertNotNull($bugReport->getCreatedAt());
-        $this->assertFalse($bugReport->isDone());
+        $this->assertNotNull($bug->getCreatedAt());
+        $this->assertFalse($bug->isDone());
     }
 
     public function testGetAccessible(): void
     {
         $this->loginUser('tester_team@gmail.com');
-        $bugReportsTeamUser = $this->service->getAccessible();
+        $bugsTeamUser = $this->service->getAccessible();
 
         $this->loginUser('tester@gmail.com');
-        $bugReportsUser = $this->service->getAccessible();
+        $bugsUser = $this->service->getAccessible();
 
-        $this->assertGreaterThan(count($bugReportsUser), count($bugReportsTeamUser));
+        $this->assertGreaterThan(count($bugsUser), count($bugsTeamUser));
     }
 
     private function loginUser(string $email): void

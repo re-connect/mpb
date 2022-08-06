@@ -49,10 +49,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     private array $roles = [];
 
     /**
-     * @var Collection<int, BugReport>
+     * @var Collection<int, Bug>
      */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: BugReport::class, orphanRemoval: true)]
-    private Collection $bugReports;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bug::class, orphanRemoval: true)]
+    private Collection $bugs;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Preference::class, cascade: ['persist', 'remove'])]
     private Preference $preference;
@@ -76,18 +76,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     private Collection $attachments;
 
     /**
-     * @var Collection<int, BugReport>
+     * @var Collection<int, Bug>
      */
-    #[ORM\OneToMany(mappedBy: 'assignee', targetEntity: BugReport::class)]
-    private Collection $getBugReportsAssignedToMe;
+    #[ORM\OneToMany(mappedBy: 'assignee', targetEntity: Bug::class)]
+    private Collection $getBugsAssignedToMe;
 
     public function __construct()
     {
-        $this->bugReports = new ArrayCollection();
+        $this->bugs = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->badges = new ArrayCollection();
         $this->attachments = new ArrayCollection();
-        $this->getBugReportsAssignedToMe = new ArrayCollection();
+        $this->getBugsAssignedToMe = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -161,29 +161,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     }
 
     /**
-     * @return Collection<int, BugReport>
+     * @return Collection<int, Bug>
      */
-    public function getBugReports(): Collection
+    public function getBugs(): Collection
     {
-        return $this->bugReports;
+        return $this->bugs;
     }
 
-    public function addBugReport(BugReport $bugReport): self
+    public function addBugReport(Bug $bug): self
     {
-        if (!$this->bugReports->contains($bugReport)) {
-            $this->bugReports[] = $bugReport;
-            $bugReport->setUser($this);
+        if (!$this->bugs->contains($bug)) {
+            $this->bugs[] = $bug;
+            $bug->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeBugReport(BugReport $bugReport): self
+    public function removeBugReport(Bug $bug): self
     {
-        if ($this->bugReports->removeElement($bugReport)) {
+        if ($this->bugs->removeElement($bug)) {
             // set the owning side to null (unless already changed)
-            if ($bugReport->getUser() === $this) {
-                $bugReport->setUser(null);
+            if ($bug->getUser() === $this) {
+                $bug->setUser(null);
             }
         }
 
@@ -350,29 +350,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     }
 
     /**
-     * @return Collection<int, BugReport>
+     * @return Collection<int, Bug>
      */
     public function getGetBugReportsAssignedToMe(): Collection
     {
-        return $this->getBugReportsAssignedToMe;
+        return $this->getBugsAssignedToMe;
     }
 
-    public function addGetBugReportsAssignedToMe(BugReport $getBugReportsAssignedToMe): self
+    public function addGetBugReportsAssignedToMe(Bug $getBugsAssignedToMe): self
     {
-        if (!$this->getBugReportsAssignedToMe->contains($getBugReportsAssignedToMe)) {
-            $this->getBugReportsAssignedToMe[] = $getBugReportsAssignedToMe;
-            $getBugReportsAssignedToMe->setAssignee($this);
+        if (!$this->getBugsAssignedToMe->contains($getBugsAssignedToMe)) {
+            $this->getBugsAssignedToMe[] = $getBugsAssignedToMe;
+            $getBugsAssignedToMe->setAssignee($this);
         }
 
         return $this;
     }
 
-    public function removeGetBugReportsAssignedToMe(BugReport $getBugReportsAssignedToMe): self
+    public function removeGetBugReportsAssignedToMe(Bug $getBugsAssignedToMe): self
     {
-        if ($this->getBugReportsAssignedToMe->removeElement($getBugReportsAssignedToMe)) {
+        if ($this->getBugsAssignedToMe->removeElement($getBugsAssignedToMe)) {
             // set the owning side to null (unless already changed)
-            if ($getBugReportsAssignedToMe->getAssignee() === $this) {
-                $getBugReportsAssignedToMe->setAssignee(null);
+            if ($getBugsAssignedToMe->getAssignee() === $this) {
+                $getBugsAssignedToMe->setAssignee(null);
             }
         }
 

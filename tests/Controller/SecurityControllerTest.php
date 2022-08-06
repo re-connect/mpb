@@ -19,7 +19,7 @@ class SecurityControllerTest extends WebTestCase
         $client->loginUser($user);
 
         $client->request('GET', '/');
-        $this->assertResponseRedirects('/bug-report/list');
+        $this->assertResponseRedirects('/bugs/list');
 
         $client->request('GET', '/logout');
         $this->assertResponseRedirects('');

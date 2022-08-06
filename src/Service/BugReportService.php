@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\BugReport;
+use App\Entity\Bug;
 use App\Repository\ApplicationRepository;
 use App\Repository\BugReportRepository;
 use App\Traits\UserAwareTrait;
@@ -18,23 +18,23 @@ class BugReportService
     use UserAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly BugReportRepository $repository,
+        private readonly EntityManagerInterface        $em,
+        private readonly BugReportRepository           $repository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly NotificationService $notificator,
-        private readonly ApplicationRepository $applicationRepository,
-        private readonly string $uploadsDirectory,
-        Security $security,
+        private readonly NotificationService           $notificator,
+        private readonly ApplicationRepository         $applicationRepository,
+        private readonly string                        $uploadsDirectory,
+        Security                                       $security,
     ) {
         $this->security = $security;
     }
 
-    public function initBugReport(string $userAgent): BugReport
+    public function initBugReport(string $userAgent): Bug
     {
-        return (new BugReport())->setUserAgent($userAgent);
+        return (new Bug())->setUserAgent($userAgent);
     }
 
-    public function create(BugReport $bug, ?UploadedFile $attachment = null): void
+    public function create(Bug $bug, ?UploadedFile $attachment = null): void
     {
         $this->handleAttachment($bug, $attachment);
 
@@ -44,7 +44,7 @@ class BugReportService
     }
 
     /**
-     * @return BugReport[]
+     * @return Bug[]
      */
     public function getAccessible(bool $done = false, int $applicationId = 0): array
     {
@@ -60,27 +60,27 @@ class BugReportService
         return $this->repository->findBy($criteria, $orderBy);
     }
 
-    public function markAsDone(BugReport $bug): void
+    public function markAsDone(Bug $bug): void
     {
         $bug->setDone(true);
         $this->em->flush();
         $this->notificator->notifyBug($bug);
     }
 
-    public function update(BugReport $bug, ?UploadedFile $attachment): void
+    public function update(Bug $bug, ?UploadedFile $attachment): void
     {
         $this->handleAttachment($bug, $attachment);
-
         $this->em->flush();
     }
 
-    private function handleAttachment(BugReport $bug, ?UploadedFile $attachment): void
+    private function handleAttachment(Bug $bug, ?UploadedFile $attachment): void
     {
-        $bug->setUser($this->getUser());
-        if ($attachment) {
-            $attachmentName = Uuid::v4().'.'.$attachment->guessExtension();
-            $attachment->move($this->uploadsDirectory, $attachmentName);
-            $bug->setAttachementName($attachmentName);
+        if (!$attachment) {
+            return;
         }
+
+        $attachmentName = Uuid::v4().'.'.$attachment->guessExtension();
+        $attachment->move($this->uploadsDirectory, $attachmentName);
+        $bug->setAttachementName($attachmentName);
     }
 }

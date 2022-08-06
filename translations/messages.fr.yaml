@@ -1,0 +1,18 @@
+add_comment: Ajouter un commentaire
+application: Application
+comments: Commentaires
+created_by: Remonté par
+creation_date: Date de création
+email: Email
+information: Informations
+login: Connexion
+message: Message
+password: Mot de passe
+pending_take_over: En attente d'assignation
+rp_login: Connexion avec Reconnect Pro
+status: Status
+take_over: Prendre en charge
+taken_over_by: Traité par
+title: Titre
+update_bug: Modifier un bug
+user_kind: Type d'utilsateur

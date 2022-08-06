@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Application;
-use App\Entity\BugReport;
+use App\Entity\Bug;
 use App\Entity\UserKind;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
@@ -64,7 +64,7 @@ class BugReportType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => BugReport::class,
+            'data_class' => Bug::class,
         ]);
     }
 }

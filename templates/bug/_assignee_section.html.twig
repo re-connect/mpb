@@ -1,5 +1,5 @@
 {% if not bug.done %}
-    <div>
+    <div class="float-end">
         {% if bug.assignee %}
             <span class="badge text-success border border-success">
                 {{ 'Traité par : '~bug.assignee }}</span>
@@ -7,15 +7,15 @@
             {% if is_granted('ROLE_TECH_TEAM') %}
                 <a
                         class="btn btn-sm btn-outline-info"
-                        href="{{ path('bug_report_take_over', { 'id': bug.id }) }}"
+                        href="{{ path('bug_take_over', { 'id': bug.id }) }}"
                 >
                     <i class="fa fa-truck-fast"></i>
-                    Prendre en charge
+                    {{ 'take_over'|trans }}
                 </a>
             {% else %}
                 <span class="badge border border-warning text-warning">
                     <i class="fa fa-hourglass-1"></i>
-                    En attente d'assignation
+                    {{ 'pending_take_over'|trans }}
                 </span>
             {% endif %}
         {% endif %}

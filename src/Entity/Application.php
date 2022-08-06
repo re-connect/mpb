@@ -16,14 +16,14 @@ class Application extends StyledEntityKind
     private ?int $id = null;
 
     /**
-     * @var Collection<int, BugReport> $bugReports
+     * @var Collection<int, Bug> $bugs
      */
-    #[ORM\OneToMany(mappedBy: 'application', targetEntity: BugReport::class)]
-    private Collection $bugReports;
+    #[ORM\OneToMany(mappedBy: 'application', targetEntity: Bug::class)]
+    private Collection $bugs;
 
     public function __construct()
     {
-        $this->bugReports = new ArrayCollection();
+        $this->bugs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -32,29 +32,29 @@ class Application extends StyledEntityKind
     }
 
     /**
-     * @return Collection<int, BugReport>
+     * @return Collection<int, Bug>
      */
-    public function getBugReports(): Collection
+    public function getBugs(): Collection
     {
-        return $this->bugReports;
+        return $this->bugs;
     }
 
-    public function addBugReport(BugReport $bugReport): self
+    public function addBugReport(Bug $bug): self
     {
-        if (!$this->bugReports->contains($bugReport)) {
-            $this->bugReports[] = $bugReport;
-            $bugReport->setApplication($this);
+        if (!$this->bugs->contains($bug)) {
+            $this->bugs[] = $bug;
+            $bug->setApplication($this);
         }
 
         return $this;
     }
 
-    public function removeBugReport(BugReport $bugReport): self
+    public function removeBugReport(Bug $bug): self
     {
-        if ($this->bugReports->removeElement($bugReport)) {
+        if ($this->bugs->removeElement($bug)) {
             // set the owning side to null (unless already changed)
-            if ($bugReport->getApplication() === $this) {
-                $bugReport->setApplication(null);
+            if ($bug->getApplication() === $this) {
+                $bug->setApplication(null);
             }
         }
 

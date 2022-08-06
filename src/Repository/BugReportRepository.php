@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\BugReport;
+use App\Entity\Bug;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method BugReport|null find($id, $lockMode = null, $lockVersion = null)
- * @method BugReport|null findOneBy(array $criteria, array $orderBy = null)
- * @method BugReport[]    findAll()
- * @method BugReport[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @extends ServiceEntityRepository<BugReport>
+ * @method Bug|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Bug|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Bug[]    findAll()
+ * @method Bug[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends ServiceEntityRepository<Bug>
  */
 class BugReportRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, BugReport::class);
+        parent::__construct($registry, Bug::class);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\BugReport;
+use App\Entity\Bug;
 use Symfony\Component\Notifier\Bridge\Slack\Block\SlackActionsBlock;
 use Symfony\Component\Notifier\Bridge\Slack\Block\SlackDividerBlock;
 use Symfony\Component\Notifier\Bridge\Slack\Block\SlackSectionBlock;
@@ -20,7 +20,7 @@ class NotificationService
     ) {
     }
 
-    public function notifyBug(BugReport $bug): void
+    public function notifyBug(Bug $bug): void
     {
         $text = $bug->isDone() ? 'Bug résolu' : 'Nouveau bug';
         $chatMessage = (new ChatMessage($text))->options($this->createSlackOptions($bug, $text));
@@ -28,7 +28,7 @@ class NotificationService
         $this->chatter->send($chatMessage);
     }
 
-    private function createSlackOptions(BugReport $bug, string $text): SlackOptions
+    private function createSlackOptions(Bug $bug, string $text): SlackOptions
     {
         return (new SlackOptions())
             ->iconEmoji($bug->isDone() ? 'white_check_mark' : 'Bug')
@@ -39,7 +39,7 @@ class NotificationService
                 (new SlackActionsBlock())
                     ->button(
                         'Voir le bug',
-                        $this->router->generate('bug_report_show', ['id' => $bug->getId()], UrlGenerator::ABSOLUTE_URL),
+                        $this->router->generate('bug_show', ['id' => $bug->getId()], UrlGenerator::ABSOLUTE_URL),
                         'primary'
                     ));
     }

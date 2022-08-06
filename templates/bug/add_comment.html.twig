@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'add_comment'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2">
+                <h1>{{ bug.title }}</h1>
+                {{ include('bug/_comments.html.twig', {bug}) }}
+
+                {{ form(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Application;
-use App\Entity\BugReport;
+use App\Entity\Bug;
 use App\Entity\User;
 use App\Entity\UserKind;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -18,7 +18,7 @@ class BugReportCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return BugReport::class;
+        return Bug::class;
     }
 
     public function configureFields(string $pageName): iterable

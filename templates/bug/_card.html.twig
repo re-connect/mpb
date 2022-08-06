@@ -2,28 +2,28 @@
      xmlns="http://www.w3.org/1999/html">
     <div class="row">
         <div class="col-3 col-sm-2 col-md-1 d-flex justify-content-center align-items-center">
-            {{ app_icon(bug_report.application) }}
+            {{ app_icon(bug.application) }}
         </div>
         <div class="col-9 col-sm-10 col-md-11">
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="text-start">
-                        <span class="h5">{{ bug_report.title }}</span>
+                        <span class="h5">{{ bug.title }}</span>
                     </div>
                     <div class="text-start">
                         <span class="fw-bolder text-decoration-underline">Remonté par :</span>
-                        <small>{{ bug_report.user.userIdentifier }}</small>
+                        <small>{{ bug.user.userIdentifier }}</small>
                         <br/>
                         <span class="fw-bolder text-decoration-underline">Le :</span>
-                        <small>{{ bug_report.createdAt|date("d/m/Y") }}</small>
+                        <small>{{ bug.createdAt|date("d/m/Y") }}</small>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 z-2 d-flex flex-column align-items-end">
-                    {{ include('bug_report/_status.html.twig', {'bug': bug_report}) }}
-                    {{ include('bug_report/_assignee_section.html.twig', {'bug': bug_report}) }}
+                    {{ include('bug/_status.html.twig', {'bug': bug}) }}
+                    {{ include('bug/_assignee_section.html.twig', {'bug': bug}) }}
                 </div>
             </div>
         </div>
-        <a href="{{ path('bug_report_show', {'id': bug_report.id}) }}" class="stretched-link"></a>
+        <a href="{{ path('bug_show', {'id': bug.id}) }}" class="stretched-link"></a>
     </div>
 </div>
