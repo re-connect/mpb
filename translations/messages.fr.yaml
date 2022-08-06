@@ -3,3 +3,11 @@ password: Mot de passe
 email: Email
 login: Connexion
 update_bug: Modifier un bug
+title: Titre
+information: Informations
+created_by: Remonté par
+taken_by: Traité par
+application: Application
+user_kind: Type d'utilsateur
+status: Status
+creation_date: Date de création

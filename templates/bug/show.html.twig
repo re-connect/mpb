@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}BugReport{% endblock %}
+{% block title %}{{ bug.title }}{% endblock %}
 
 {% block body %}
     <div class="position-relative">
@@ -16,35 +16,35 @@
         <table class="table">
             <tbody>
             <tr>
-                <th>Titre</th>
+                <th>{{ 'title'|trans }}</th>
                 <td>{{ bug.title }}</td>
             </tr>
             <tr>
-                <th>Informations</th>
+                <th>{{ 'information'|trans }}</th>
                 <td>{{ bug.content|raw }}</td>
             </tr>
             <tr>
-                <th>Remonté par</th>
+                <th>{{ 'created_by'|trans }}</th>
                 <td>{{ bug.user }}</td>
             </tr>
             <tr>
-                <th>Traité par</th>
+                <th>{{ 'taken_by'|trans }}</th>
                 <td>{{ bug.assignee }}</td>
             </tr>
             <tr>
-                <th>Application</th>
+                <th>{{ 'application'|trans }}</th>
                 <td>{{ bug.application }}</td>
             </tr>
             <tr>
-                <th>Type d'utilsateur</th>
+                <th>{{ 'user_kind'|trans }}</th>
                 <td>{{ bug.userKind }}</td>
             </tr>
             <tr>
-                <th>Status</th>
+                <th>{{ 'status'|trans }}</th>
                 <td>{{ include('bug/_status.html.twig', {'bug': bug}) }}</td>
             </tr>
             <tr>
-                <th>Date de création</th>
+                <th>{{ 'creation_date'|trans }}</th>
                 <td>{{ bug.createdAt ? bug.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             </tbody>
