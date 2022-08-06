@@ -6,10 +6,10 @@
     <div class="position-relative">
         <div class="row">
             <div class="col">
-                {{ include('bug_report/_back_to_list_button.html.twig') }}
+                {{ include('bug/_back_to_list_button.html.twig') }}
             </div>
             <div class="col">
-                {{ include('bug_report/_assignee_section.html.twig', {'bug': bug_report}) }}
+                {{ include('bug/_assignee_section.html.twig', {'bug': bug_report}) }}
             </div>
         </div>
         <h1>{{ bug_report.title }}</h1>
@@ -41,7 +41,7 @@
             </tr>
             <tr>
                 <th>Status</th>
-                <td>{{ include('bug_report/_status.html.twig', {'bug': bug_report}) }}</td>
+                <td>{{ include('bug/_status.html.twig', {'bug': bug_report}) }}</td>
             </tr>
             <tr>
                 <th>Date de création</th>
@@ -62,7 +62,7 @@
                 </div>
             {% endif %}
             <div class="col">
-                {{ include('bug_report/_delete_form.html.twig') }}
+                {{ include('bug/_delete_form.html.twig') }}
             </div>
         </div>
     </div>

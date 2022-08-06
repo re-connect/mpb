@@ -3,10 +3,10 @@
 {% block title %}New BugReport{% endblock %}
 
 {% block body %}
-    {{ include('bug_report/_back_to_list_button.html.twig') }}
+    {{ include('bug/_back_to_list_button.html.twig') }}
     <h1>Nouveau Bug</h1>
 
     <div class="container pb-4">
-        {{ include('bug_report/_form.html.twig', {'button_label': 'Créer'}) }}
+        {{ include('bug/_form.html.twig', {'button_label': 'Créer'}) }}
     </div>
 {% endblock %}

@@ -24,7 +24,7 @@ class BugReportController extends AbstractController
         $showDone = $request->query->getBoolean('done');
         $application = $request->query->getInt('app');
 
-        return $this->render('bug_report/index.html.twig', [
+        return $this->render('bug/index.html.twig', [
             'bug_reports' => $service->getAccessible($showDone, $application),
             'done' => $showDone,
             'applications' => $applicationRepository->findAll(),
@@ -44,7 +44,7 @@ class BugReportController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('bug_report/new.html.twig', [
+        return $this->render('bug/new.html.twig', [
             'bug_report' => $bugReport,
             'form' => $form->createView(),
         ]);
@@ -53,7 +53,7 @@ class BugReportController extends AbstractController
     #[Route(path: '/{id}/add-screenshot', name: 'add_screenshot', methods: ['GET', 'POST'])]
     public function addScreenshot(BugReport $bugReport): Response
     {
-        return $this->render('bug_report/add_screenshot.html.twig', [
+        return $this->render('bug/add_screenshot.html.twig', [
             'bug' => $bugReport,
         ]);
     }
@@ -62,7 +62,7 @@ class BugReportController extends AbstractController
     #[Route(path: '/{id}', name: 'bug_report_show', methods: ['GET'])]
     public function show(BugReport $bugReport): Response
     {
-        return $this->render('bug_report/show.html.twig', [
+        return $this->render('bug/show.html.twig', [
             'bug_report' => $bugReport,
         ]);
     }
@@ -81,7 +81,7 @@ class BugReportController extends AbstractController
             return $this->redirectToRoute('bug_report_index');
         }
 
-        return $this->render('bug_report/edit.html.twig', [
+        return $this->render('bug/edit.html.twig', [
             'bug_report' => $bugReport,
             'form' => $form->createView(),
         ]);

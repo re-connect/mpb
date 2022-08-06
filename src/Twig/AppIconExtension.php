@@ -30,7 +30,7 @@ class AppIconExtension extends AbstractExtension
             return '';
         }
 
-        return $environment->render(name: 'bug_report/_application_icon.html.twig', context: [
+        return $environment->render(name: 'bug/_application_icon.html.twig', context: [
             'application' => $application,
         ]);
     }
