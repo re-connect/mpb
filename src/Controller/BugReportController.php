@@ -15,23 +15,23 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('ROLE_USER')]
-#[Route(path: '/bug-report')]
+#[Route(path: '/bugs')]
 class BugReportController extends AbstractController
 {
-    #[Route(path: '/list', name: 'bug_report_index', methods: ['GET'])]
+    #[Route(path: '/list', name: 'bug_index', methods: ['GET'])]
     public function index(Request $request, BugReportService $service, ApplicationRepository $applicationRepository): Response
     {
         $showDone = $request->query->getBoolean('done');
         $application = $request->query->getInt('app');
 
         return $this->render('bug/index.html.twig', [
-            'bug_reports' => $service->getAccessible($showDone, $application),
+            'bugs' => $service->getAccessible($showDone, $application),
             'done' => $showDone,
             'applications' => $applicationRepository->findAll(),
         ]);
     }
 
-    #[Route(path: '/create', name: 'bug_report_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/create', name: 'bug_new', methods: ['GET', 'POST'])]
     public function new(Request $request, BugReportService $service): Response
     {
         $bug = $service->initBugReport($request->headers->get('User-Agent', ''));
@@ -45,7 +45,7 @@ class BugReportController extends AbstractController
         }
 
         return $this->render('bug/new.html.twig', [
-            'bug_report' => $bug,
+            'bug' => $bug,
             'form' => $form->createView(),
         ]);
     }
@@ -59,16 +59,16 @@ class BugReportController extends AbstractController
     }
 
     #[IsGranted(Permissions::MANAGE, 'bug')]
-    #[Route(path: '/{id}', name: 'bug_report_show', methods: ['GET'])]
+    #[Route(path: '/{id}', name: 'bug_show', methods: ['GET'])]
     public function show(Bug $bug): Response
     {
         return $this->render('bug/show.html.twig', [
-            'bug_report' => $bug,
+            'bug' => $bug,
         ]);
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
-    #[Route(path: '/{id}/edit', name: 'bug_report_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}/edit', name: 'bug_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Bug $bug, BugReportService $service): Response
     {
         $form = $this->createForm(BugReportType::class, $bug);
@@ -78,17 +78,17 @@ class BugReportController extends AbstractController
             $attachment = $form->get('attachement')->getData();
             $service->update($bug, $attachment);
 
-            return $this->redirectToRoute('bug_report_index');
+            return $this->redirectToRoute('bug_index');
         }
 
         return $this->render('bug/edit.html.twig', [
-            'bug_report' => $bug,
+            'bug' => $bug,
             'form' => $form->createView(),
         ]);
     }
 
     #[IsGranted(Permissions::MANAGE, 'bug')]
-    #[Route(path: '/{id}', name: 'bug_report_delete', methods: ['POST'])]
+    #[Route(path: '/{id}', name: 'bug_delete', methods: ['POST'])]
     public function delete(Request $request, Bug $bug, EntityManagerInterface $em): Response
     {
         $csrfTokenName = sprintf('delete%d', $bug->getId());
@@ -97,25 +97,25 @@ class BugReportController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('bug_report_index');
+        return $this->redirectToRoute('bug_index');
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
-    #[Route(path: '/{id}/take-over', name: 'bug_report_take_over', methods: ['GET'])]
+    #[Route(path: '/{id}/take-over', name: 'bug_take_over', methods: ['GET'])]
     public function takeOver(Bug $bug, EntityManagerInterface $em): Response
     {
         $bug->setAssignee($this->getUser());
         $em->flush();
 
-        return $this->redirectToRoute('bug_report_index');
+        return $this->redirectToRoute('bug_index');
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
-    #[Route(path: '/{id}/mark-done', name: 'bug_report_mark_done', methods: ['GET'])]
+    #[Route(path: '/{id}/mark-done', name: 'bug_mark_done', methods: ['GET'])]
     public function markDone(Bug $bug, BugReportService $service): Response
     {
         $service->markAsDone($bug);
 
-        return $this->redirectToRoute('bug_report_index');
+        return $this->redirectToRoute('bug_index');
     }
 }

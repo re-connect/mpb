@@ -39,7 +39,7 @@ class NotificationService
                 (new SlackActionsBlock())
                     ->button(
                         'Voir le bug',
-                        $this->router->generate('bug_report_show', ['id' => $bug->getId()], UrlGenerator::ABSOLUTE_URL),
+                        $this->router->generate('bug_show', ['id' => $bug->getId()], UrlGenerator::ABSOLUTE_URL),
                         'primary'
                     ));
     }

@@ -7,7 +7,7 @@
             {% if is_granted('ROLE_TECH_TEAM') %}
                 <a
                         class="btn btn-sm btn-outline-info"
-                        href="{{ path('bug_report_take_over', { 'id': bug.id }) }}"
+                        href="{{ path('bug_take_over', { 'id': bug.id }) }}"
                 >
                     <i class="fa fa-truck-fast"></i>
                     Prendre en charge
