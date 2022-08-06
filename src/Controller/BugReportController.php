@@ -44,27 +44,20 @@ class BugReportController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('bug/new.html.twig', [
-            'bug' => $bug,
-            'form' => $form->createView(),
-        ]);
+        return $this->renderForm('bug/new.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
     #[Route(path: '/{id}/add-screenshot', name: 'add_screenshot', methods: ['GET', 'POST'])]
     public function addScreenshot(Bug $bug): Response
     {
-        return $this->render('bug/add_screenshot.html.twig', [
-            'bug' => $bug,
-        ]);
+        return $this->render('bug/add_screenshot.html.twig', ['bug' => $bug]);
     }
 
     #[IsGranted(Permissions::MANAGE, 'bug')]
     #[Route(path: '/{id}', name: 'bug_show', methods: ['GET'])]
     public function show(Bug $bug): Response
     {
-        return $this->render('bug/show.html.twig', [
-            'bug' => $bug,
-        ]);
+        return $this->render('bug/show.html.twig', ['bug' => $bug]);
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
@@ -81,10 +74,7 @@ class BugReportController extends AbstractController
             return $this->redirectToRoute('bug_index');
         }
 
-        return $this->render('bug/edit.html.twig', [
-            'bug' => $bug,
-            'form' => $form->createView(),
-        ]);
+        return $this->renderForm('bug/edit.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
     #[IsGranted(Permissions::MANAGE, 'bug')]
