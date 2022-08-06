@@ -54,6 +54,6 @@ class SecurityController extends AbstractController
     #[Route(path: '/slack-chat', name: 'slack_chat', methods: ['POST'])]
     public function slackChat(): Response
     {
-        return new Response(null, 200);
+        return new Response(null, Response::HTTP_OK);
     }
 }

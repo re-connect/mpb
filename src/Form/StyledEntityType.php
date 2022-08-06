@@ -13,12 +13,10 @@ class StyledEntityType extends AbstractType
     {
         $resolver->setDefaults([
             'required' => false,
-            'choice_attr' => function (StyledEntityKind $choice) {
-                return [
-                    'data-color' => $choice->getColor(),
-                    'data-icon' => $choice->getIcon(),
-                ];
-            },
+            'choice_attr' => fn (StyledEntityKind $choice) => [
+                'data-color' => $choice->getColor(),
+                'data-icon' => $choice->getIcon(),
+            ],
             'attr' => [
                 'data-controller' => 'tomselect',
                 'data-tomselect-target' => 'select',

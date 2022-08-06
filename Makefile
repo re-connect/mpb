@@ -2,17 +2,21 @@ BIN     	  = ./vendor/bin
 RECTOR        = $(BIN)/rector
 PHPSTAN       = $(BIN)/phpstan
 PHP_CS_FIXER  = $(BIN)/php-cs-fixer
+PHPUNIT		  = $(BIN)/simple-phpunit
 
-.PHONY        : # Not needed here, but you can put your all your targets to be sure
+.PHONY        :
 
-cs: rector stan lint ## Run all coding standards checks
+cs: rector stan lint
 
-rector: ## Run Rector
+test:
+	@$(PHPUNIT)
+
+rector:
 	@$(RECTOR) process
 
-stan: ## Run PHPStan
+stan:
 	@$(PHPSTAN) analyse
 
-lint: ## Fix files with php-cs-fixer
+lint:
 	@$(PHP_CS_FIXER) fix src --allow-risky=yes
 	@$(PHP_CS_FIXER) fix tests --allow-risky=yes
