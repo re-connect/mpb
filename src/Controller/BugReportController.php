@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Bug;
+use App\Entity\Comment;
 use App\Form\BugReportType;
+use App\Form\CommentType;
 use App\Repository\ApplicationRepository;
 use App\Security\Voter\Permissions;
 use App\Service\BugReportService;

@@ -4,13 +4,11 @@
 
 {% block body %}
     <div class="position-relative">
-        <div class="row">
-            <div class="col">
-                {{ include('bug/_back_to_list_button.html.twig') }}
-            </div>
-            <div class="col">
-                {{ include('bug/_assignee_section.html.twig', {'bug': bug}) }}
-            </div>
+        <div class="col">
+            {{ include('bug/_back_to_list_button.html.twig') }}
+        </div>
+        <div class="col">
+            {{ include('bug/_assignee_section.html.twig', {bug}) }}
         </div>
         <h1>{{ bug.title }}</h1>
         <table class="table">
@@ -28,7 +26,7 @@
                 <td>{{ bug.user }}</td>
             </tr>
             <tr>
-                <th>{{ 'taken_by'|trans }}</th>
+                <th>{{ 'taken_over_by'|trans }}</th>
                 <td>{{ bug.assignee }}</td>
             </tr>
             <tr>
