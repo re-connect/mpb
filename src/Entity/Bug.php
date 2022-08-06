@@ -69,7 +69,7 @@ class Bug
     #[ORM\Column(type: 'boolean')]
     private bool $done = false;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'getBugReportsAssignedToMe')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'getBugsAssignedToMe')]
     private ?User $assignee = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -159,7 +159,7 @@ class Bug
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
-            $comment->setBugReport($this);
+            $comment->setBug($this);
         }
 
         return $this;
@@ -169,8 +169,8 @@ class Bug
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($comment->getBugReport() === $this) {
-                $comment->setBugReport(null);
+            if ($comment->getBug() === $this) {
+                $comment->setBug(null);
             }
         }
 
@@ -189,7 +189,7 @@ class Bug
     {
         if (!$this->attachments->contains($attachment)) {
             $this->attachments[] = $attachment;
-            $attachment->setBugReport($this);
+            $attachment->setBug($this);
         }
 
         return $this;
@@ -199,8 +199,8 @@ class Bug
     {
         if ($this->attachments->removeElement($attachment)) {
             // set the owning side to null (unless already changed)
-            if ($attachment->getBugReport() === $this) {
-                $attachment->setBugReport(null);
+            if ($attachment->getBug() === $this) {
+                $attachment->setBug(null);
             }
         }
 

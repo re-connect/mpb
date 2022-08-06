@@ -34,7 +34,7 @@ class UserKind extends StyledEntityKind
     /**
      * @return Collection<int, Bug>
      */
-    public function getBugReports(): Collection
+    public function getBugs(): Collection
     {
         return $this->bugReports;
     }

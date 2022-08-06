@@ -83,12 +83,12 @@ class Comment
         return $this;
     }
 
-    public function getBugReport(): ?Bug
+    public function getBug(): ?Bug
     {
         return $this->bugReport;
     }
 
-    public function setBugReport(?Bug $bugReport): self
+    public function setBug(?Bug $bugReport): self
     {
         $this->bugReport = $bugReport;
 
