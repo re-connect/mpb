@@ -5,18 +5,9 @@
 {% block body %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+            <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2">
                 <h1>{{ bug.title }}</h1>
-
-                {% for comment in bug.comments %}
-                    <div class="card text-bg-info mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ comment.content }}</h5>
-                            <p class="card-text">{{ comment.user }}</p>
-                        </div>
-                    </div>
-
-                {% endfor %}
+                {{ include('bug/_comments.html.twig', {bug}) }}
 
                 {{ form(form) }}
             </div>

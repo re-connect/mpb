@@ -135,6 +135,10 @@ class Bug
         return $this;
     }
 
+    public function hasComments(): bool {
+        return $this->comments->count() > 0;
+    }
+
     /**
      * @return Collection<int, Attachment>
      */

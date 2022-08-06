@@ -1,0 +1,12 @@
+{% if bug.hasComments %}
+    <div class="row">
+        <h1>{{ 'comments'|trans }}</h1>
+        {{ include('comment/_list.html.twig', {'comments': bug.comments}) }}
+        <div class="col">
+            <a class="btn btn-info" href="{{ path('bug_add_comment', {'id': bug.id}) }}">
+                <i class="fas fa-plus"></i>
+                <i class="fas fa-comment-alt me-2"></i>
+                {{ 'add_comment'|trans }}</a>
+        </div>
+    </div>
+{% endif %}
