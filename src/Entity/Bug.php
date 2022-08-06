@@ -31,20 +31,20 @@ class Bug
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bugReports')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bugs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     /**
      * @var Collection<int, Comment>
      */
-    #[ORM\OneToMany(mappedBy: 'bugReport', targetEntity: Comment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'bug', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
     /**
      * @var Collection<int, Attachment>
      */
-    #[ORM\OneToMany(mappedBy: 'bugReport', targetEntity: Attachment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'bug', targetEntity: Attachment::class, orphanRemoval: true)]
     private Collection $attachments;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -59,11 +59,11 @@ class Bug
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $userAgent = null;
 
-    #[ORM\ManyToOne(targetEntity: Application::class, inversedBy: 'bugReports')]
+    #[ORM\ManyToOne(targetEntity: Application::class, inversedBy: 'bugs')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Application $application = null;
 
-    #[ORM\ManyToOne(targetEntity: UserKind::class, inversedBy: 'bugReports')]
+    #[ORM\ManyToOne(targetEntity: UserKind::class, inversedBy: 'bugs')]
     #[ORM\JoinColumn(nullable: true)]
     private ?UserKind $userKind = null;
 

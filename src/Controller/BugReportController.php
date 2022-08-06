@@ -58,7 +58,7 @@ class BugReportController extends AbstractController
         ]);
     }
 
-    #[IsGranted(Permissions::MANAGE, 'bugReport')]
+    #[IsGranted(Permissions::MANAGE, 'bug')]
     #[Route(path: '/{id}', name: 'bug_report_show', methods: ['GET'])]
     public function show(Bug $bug): Response
     {
@@ -87,7 +87,7 @@ class BugReportController extends AbstractController
         ]);
     }
 
-    #[IsGranted(Permissions::MANAGE, 'bugReport')]
+    #[IsGranted(Permissions::MANAGE, 'bug')]
     #[Route(path: '/{id}', name: 'bug_report_delete', methods: ['POST'])]
     public function delete(Request $request, Bug $bug, EntityManagerInterface $em): Response
     {
