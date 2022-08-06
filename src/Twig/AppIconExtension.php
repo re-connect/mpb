@@ -12,7 +12,7 @@ class AppIconExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('app_icon', [$this, 'showAppIcon'], [
+            new TwigFunction('app_icon', $this->showAppIcon(...), [
                 'is_safe' => ['html'],
                 'needs_environment' => true,
             ]),

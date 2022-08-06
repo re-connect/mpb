@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\MappedSuperclass]
-abstract class StyledEntityKind
+abstract class StyledEntityKind implements \Stringable
 {
     #[ORM\Column(length: 255)]
     private ?string $name = null;

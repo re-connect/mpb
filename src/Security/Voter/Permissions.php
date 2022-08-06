@@ -4,5 +4,5 @@ namespace App\Security\Voter;
 
 class Permissions
 {
-    public const MANAGE = 'POST_MANAGE';
+    final public const MANAGE = 'POST_MANAGE';
 }
