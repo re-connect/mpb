@@ -16,14 +16,14 @@ class UserKind extends StyledEntityKind
     private ?int $id = null;
 
     /**
-     * @var Collection<int, Bug> $bugReports
+     * @var Collection<int, Bug> $bugs
      */
     #[ORM\OneToMany(mappedBy: 'userKind', targetEntity: Bug::class)]
-    private Collection $bugReports;
+    private Collection $bugs;
 
     public function __construct()
     {
-        $this->bugReports = new ArrayCollection();
+        $this->bugs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -36,25 +36,25 @@ class UserKind extends StyledEntityKind
      */
     public function getBugs(): Collection
     {
-        return $this->bugReports;
+        return $this->bugs;
     }
 
-    public function addBugReport(Bug $bugReport): self
+    public function addBugReport(Bug $bug): self
     {
-        if (!$this->bugReports->contains($bugReport)) {
-            $this->bugReports[] = $bugReport;
-            $bugReport->setUserKind($this);
+        if (!$this->bugs->contains($bug)) {
+            $this->bugs[] = $bug;
+            $bug->setUserKind($this);
         }
 
         return $this;
     }
 
-    public function removeBugReport(Bug $bugReport): self
+    public function removeBugReport(Bug $bug): self
     {
-        if ($this->bugReports->removeElement($bugReport)) {
+        if ($this->bugs->removeElement($bug)) {
             // set the owning side to null (unless already changed)
-            if ($bugReport->getUserKind() === $this) {
-                $bugReport->setUserKind(null);
+            if ($bug->getUserKind() === $this) {
+                $bug->setUserKind(null);
             }
         }
 

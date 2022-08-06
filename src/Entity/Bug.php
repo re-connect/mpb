@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: 'bug_report')]
 #[ORM\Entity(repositoryClass: BugReportRepository::class)]
 class Bug
 {

@@ -34,66 +34,66 @@ class BugReportController extends AbstractController
     #[Route(path: '/create', name: 'bug_report_new', methods: ['GET', 'POST'])]
     public function new(Request $request, BugReportService $service): Response
     {
-        $bugReport = $service->initBugReport($request->headers->get('User-Agent', ''));
-        $form = $this->createForm(BugReportType::class, $bugReport)->handleRequest($request);
+        $bug = $service->initBugReport($request->headers->get('User-Agent', ''));
+        $form = $this->createForm(BugReportType::class, $bug)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var ?UploadedFile $attachment */
             $attachment = $form->get('attachement')->getData();
-            $service->create($bugReport, $attachment);
+            $service->create($bug, $attachment);
 
             return $this->redirectToRoute('app_home');
         }
 
         return $this->render('bug/new.html.twig', [
-            'bug_report' => $bugReport,
+            'bug_report' => $bug,
             'form' => $form->createView(),
         ]);
     }
 
     #[Route(path: '/{id}/add-screenshot', name: 'add_screenshot', methods: ['GET', 'POST'])]
-    public function addScreenshot(Bug $bugReport): Response
+    public function addScreenshot(Bug $bug): Response
     {
         return $this->render('bug/add_screenshot.html.twig', [
-            'bug' => $bugReport,
+            'bug' => $bug,
         ]);
     }
 
     #[IsGranted(Permissions::MANAGE, 'bugReport')]
     #[Route(path: '/{id}', name: 'bug_report_show', methods: ['GET'])]
-    public function show(Bug $bugReport): Response
+    public function show(Bug $bug): Response
     {
         return $this->render('bug/show.html.twig', [
-            'bug_report' => $bugReport,
+            'bug_report' => $bug,
         ]);
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/edit', name: 'bug_report_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Bug $bugReport, BugReportService $service): Response
+    public function edit(Request $request, Bug $bug, BugReportService $service): Response
     {
-        $form = $this->createForm(BugReportType::class, $bugReport);
+        $form = $this->createForm(BugReportType::class, $bug);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var ?UploadedFile $attachment */
             $attachment = $form->get('attachement')->getData();
-            $service->update($bugReport, $attachment);
+            $service->update($bug, $attachment);
 
             return $this->redirectToRoute('bug_report_index');
         }
 
         return $this->render('bug/edit.html.twig', [
-            'bug_report' => $bugReport,
+            'bug_report' => $bug,
             'form' => $form->createView(),
         ]);
     }
 
     #[IsGranted(Permissions::MANAGE, 'bugReport')]
     #[Route(path: '/{id}', name: 'bug_report_delete', methods: ['POST'])]
-    public function delete(Request $request, Bug $bugReport, EntityManagerInterface $em): Response
+    public function delete(Request $request, Bug $bug, EntityManagerInterface $em): Response
     {
-        $csrfTokenName = sprintf('delete%d', $bugReport->getId());
+        $csrfTokenName = sprintf('delete%d', $bug->getId());
         if ($this->isCsrfTokenValid($csrfTokenName, (string) $request->request->get('_token', ''))) {
-            $em->remove($bugReport);
+            $em->remove($bug);
             $em->flush();
         }
 
@@ -102,9 +102,9 @@ class BugReportController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/take-over', name: 'bug_report_take_over', methods: ['GET'])]
-    public function takeOver(Bug $bugReport, EntityManagerInterface $em): Response
+    public function takeOver(Bug $bug, EntityManagerInterface $em): Response
     {
-        $bugReport->setAssignee($this->getUser());
+        $bug->setAssignee($this->getUser());
         $em->flush();
 
         return $this->redirectToRoute('bug_report_index');
@@ -112,9 +112,9 @@ class BugReportController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/mark-done', name: 'bug_report_mark_done', methods: ['GET'])]
-    public function markDone(Bug $bugReport, BugReportService $service): Response
+    public function markDone(Bug $bug, BugReportService $service): Response
     {
-        $service->markAsDone($bugReport);
+        $service->markAsDone($bug);
 
         return $this->redirectToRoute('bug_report_index');
     }

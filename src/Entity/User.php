@@ -52,7 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
      * @var Collection<int, Bug>
      */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bug::class, orphanRemoval: true)]
-    private Collection $bugReports;
+    private Collection $bugs;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Preference::class, cascade: ['persist', 'remove'])]
     private Preference $preference;
@@ -83,7 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
 
     public function __construct()
     {
-        $this->bugReports = new ArrayCollection();
+        $this->bugs = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->badges = new ArrayCollection();
         $this->attachments = new ArrayCollection();
@@ -165,25 +165,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
      */
     public function getBugs(): Collection
     {
-        return $this->bugReports;
+        return $this->bugs;
     }
 
-    public function addBugReport(Bug $bugReport): self
+    public function addBugReport(Bug $bug): self
     {
-        if (!$this->bugReports->contains($bugReport)) {
-            $this->bugReports[] = $bugReport;
-            $bugReport->setUser($this);
+        if (!$this->bugs->contains($bug)) {
+            $this->bugs[] = $bug;
+            $bug->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeBugReport(Bug $bugReport): self
+    public function removeBugReport(Bug $bug): self
     {
-        if ($this->bugReports->removeElement($bugReport)) {
+        if ($this->bugs->removeElement($bug)) {
             // set the owning side to null (unless already changed)
-            if ($bugReport->getUser() === $this) {
-                $bugReport->setUser(null);
+            if ($bug->getUser() === $this) {
+                $bug->setUser(null);
             }
         }
 

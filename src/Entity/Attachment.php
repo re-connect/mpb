@@ -25,7 +25,7 @@ class Attachment
 
     #[ORM\ManyToOne(targetEntity: Bug::class, inversedBy: 'attachments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Bug $bugReport = null;
+    private ?Bug $bug = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $url = null;
@@ -73,12 +73,12 @@ class Attachment
 
     public function getBug(): ?Bug
     {
-        return $this->bugReport;
+        return $this->bug;
     }
 
-    public function setBug(?Bug $bugReport): self
+    public function setBug(?Bug $bug): self
     {
-        $this->bugReport = $bugReport;
+        $this->bug = $bug;
 
         return $this;
     }

@@ -28,7 +28,7 @@ class Comment
 
     #[ORM\ManyToOne(targetEntity: Bug::class, inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Bug $bugReport = null;
+    private ?Bug $bug = null;
 
     public function getId(): ?int
     {
@@ -85,12 +85,12 @@ class Comment
 
     public function getBug(): ?Bug
     {
-        return $this->bugReport;
+        return $this->bug;
     }
 
-    public function setBug(?Bug $bugReport): self
+    public function setBug(?Bug $bug): self
     {
-        $this->bugReport = $bugReport;
+        $this->bug = $bug;
 
         return $this;
     }
