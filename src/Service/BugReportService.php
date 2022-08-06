@@ -18,13 +18,13 @@ class BugReportService
     use UserAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly BugReportRepository $repository,
+        private readonly EntityManagerInterface        $em,
+        private readonly BugReportRepository           $repository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly NotificationService $notificator,
-        private readonly ApplicationRepository $applicationRepository,
-        private readonly string $uploadsDirectory,
-        Security $security,
+        private readonly NotificationService           $notificator,
+        private readonly ApplicationRepository         $applicationRepository,
+        private readonly string                        $uploadsDirectory,
+        Security                                       $security,
     ) {
         $this->security = $security;
     }
@@ -70,17 +70,17 @@ class BugReportService
     public function update(Bug $bug, ?UploadedFile $attachment): void
     {
         $this->handleAttachment($bug, $attachment);
-
         $this->em->flush();
     }
 
     private function handleAttachment(Bug $bug, ?UploadedFile $attachment): void
     {
-        $bug->setUser($this->getUser());
-        if ($attachment) {
-            $attachmentName = Uuid::v4().'.'.$attachment->guessExtension();
-            $attachment->move($this->uploadsDirectory, $attachmentName);
-            $bug->setAttachementName($attachmentName);
+        if (!$attachment) {
+            return;
         }
+
+        $attachmentName = Uuid::v4().'.'.$attachment->guessExtension();
+        $attachment->move($this->uploadsDirectory, $attachmentName);
+        $bug->setAttachementName($attachmentName);
     }
 }

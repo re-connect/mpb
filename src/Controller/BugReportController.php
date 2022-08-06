@@ -110,4 +110,19 @@ class BugReportController extends AbstractController
 
         return $this->redirectToRoute('bug_index');
     }
+
+    #[IsGranted(Permissions::MANAGE, 'bug')]
+    #[Route(path: '/{id}/add-comment', name: 'bug_add_comment', methods: ['GET', 'POST'])]
+    public function addComment(Request $request, Bug $bug, EntityManagerInterface $em): Response
+    {
+        $comment = (new Comment())->setBug($bug);
+        $form = $this->createForm(CommentType::class, $comment)->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($comment);
+            $em->flush();
+        }
+
+        return $this->renderForm('bug/add_comment.html.twig', ['bug' => $bug, 'form' => $form]);
+    }
 }

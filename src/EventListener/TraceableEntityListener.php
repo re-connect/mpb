@@ -17,6 +17,18 @@ class TraceableEntityListener
         $this->security = $security;
     }
 
+    /* @phpstan-ignore-next-line */
+    public function preUpdate(LifecycleEventArgs $args): void
+    {
+        $entity = $args->getObject();
+        if (!$entity instanceof Comment && !$entity instanceof Bug) {
+            return;
+        }
+
+        $entity->setUpdatedAt();
+    }
+
+    /* @phpstan-ignore-next-line */
     public function prePersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
