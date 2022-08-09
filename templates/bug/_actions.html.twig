@@ -1,0 +1,11 @@
+<div class="row mt-4">
+    {% if is_granted('ROLE_TECH_TEAM') %}
+        <div class="col">
+            <a class="btn btn-warning" href="{{ path('bug_edit', {'id': bug.id}) }}"><i
+                        class="fas fa-pencil-alt"></i></a>
+        </div>
+    {% endif %}
+    <div class="col">
+        {{ include('bug/_delete_form.html.twig') }}
+    </div>
+</div>

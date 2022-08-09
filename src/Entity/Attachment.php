@@ -27,9 +27,6 @@ class Attachment
     #[ORM\JoinColumn(nullable: false)]
     private ?Bug $bug = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $url = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -79,18 +76,6 @@ class Attachment
     public function setBug(?Bug $bug): self
     {
         $this->bug = $bug;
-
-        return $this;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(string $url): self
-    {
-        $this->url = $url;
 
         return $this;
     }

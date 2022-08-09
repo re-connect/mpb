@@ -2,67 +2,34 @@
 
 {% block title %}{{ bug.title }}{% endblock %}
 
+{% set items = [
+    { name: 'title', content: bug.title },
+    { name: 'information', content: bug.content },
+    { name: 'created_by', content: bug.user },
+    { name: 'taken_over_by', content: bug.assignee },
+    { name: 'application', content: bug.application },
+    { name: 'user_kind', content: bug.userKind },
+    { name: 'status', content: include('bug/_status.html.twig', {'bug': bug}) },
+    { name: 'creation_date', content: bug.createdAt ? bug.createdAt|date('Y-m-d H:i:s') : '' },
+] %}
+
 {% block body %}
     <div class="position-relative">
-        <div class="col">
-            {{ include('bug/_back_to_list_button.html.twig') }}
-        </div>
-        <div class="col">
-            {{ include('bug/_assignee_section.html.twig', {bug}) }}
-        </div>
+        <div class="col">{{ include('bug/_back_to_list_button.html.twig') }}</div>
+        <div class="col">{{ include('bug/_assignee_section.html.twig', {bug}) }}</div>
         <h1>{{ bug.title }}</h1>
         <table class="table">
             <tbody>
-            <tr>
-                <th>{{ 'title'|trans }}</th>
-                <td>{{ bug.title }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'information'|trans }}</th>
-                <td>{{ bug.content|raw }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'created_by'|trans }}</th>
-                <td>{{ bug.user }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'taken_over_by'|trans }}</th>
-                <td>{{ bug.assignee }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'application'|trans }}</th>
-                <td>{{ bug.application }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'user_kind'|trans }}</th>
-                <td>{{ bug.userKind }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'status'|trans }}</th>
-                <td>{{ include('bug/_status.html.twig', {'bug': bug}) }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'creation_date'|trans }}</th>
-                <td>{{ bug.createdAt ? bug.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+            {% for item in items %}
+                <tr>
+                    <th>{{ item.name|trans }}</th>
+                    <td>{{ item.content|raw }}</td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
-        {% if bug.attachementName %}
-            <div class="row">
-                <img class="img-fluid" src="{{ asset('uploads/'~bug.attachementName) }}" alt="Attachment"/>
-            </div>
-        {% endif %}
+        {{ include('bug/_list_attachments.html.twig', {bug}) }}
         {{ include('bug/_comments.html.twig', {bug}) }}
-        <div class="row mt-4">
-            {% if is_granted('ROLE_TECH_TEAM') %}
-                <div class="col">
-                    <a class="btn btn-warning" href="{{ path('bug_edit', {'id': bug.id}) }}"><i
-                                class="fas fa-pencil-alt"></i></a>
-                </div>
-            {% endif %}
-            <div class="col">
-                {{ include('bug/_delete_form.html.twig') }}
-            </div>
-        </div>
+        {{ include('bug/_actions.html.twig', {bug}) }}
     </div>
 {% endblock %}

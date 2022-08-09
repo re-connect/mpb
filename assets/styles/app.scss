@@ -51,3 +51,13 @@ label.required {
 .z-2 {
   z-index: 2;
 }
+
+.upload-button {
+  height: 40px;
+  border-radius: 8px;
+  border-style: dashed;
+  border-color: $info;
+  border-width: 3px;
+  font-weight: bold;
+  color: $info;
+}
