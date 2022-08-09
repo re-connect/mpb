@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\UX\Dropzone\Form\DropzoneType;
 
 class BugReportType extends AbstractType
 {
@@ -50,14 +49,6 @@ class BugReportType extends AbstractType
             ])
             ->add('content', CKEditorType::class, [
                 'label' => 'Description du bug rencontré',
-            ])
-            ->add('attachement', DropzoneType::class, [
-                'label' => 'Ajouter un screenshot',
-                'mapped' => false,
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Drag and drop a file or click to browse',
-                ],
             ]);
     }
 

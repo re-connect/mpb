@@ -28,6 +28,9 @@
     "build": "encore production --progress"
   },
   "dependencies": {
-    "tom-select": "^2.1.0"
+    "@uppy/locales": "^2.1.1",
+    "axios": "^0.27.2",
+    "tom-select": "^2.1.0",
+    "uppy": "^2.13.2"
   }
 }

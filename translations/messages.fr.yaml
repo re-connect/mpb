@@ -1,3 +1,4 @@
+add_attachment: Ajouter une image
 add_comment: Ajouter un commentaire
 application: Application
 comments: Commentaires
@@ -7,6 +8,7 @@ email: Email
 information: Informations
 login: Connexion
 message: Message
+new_bug: Nouveau bug
 password: Mot de passe
 pending_take_over: En attente d'assignation
 rp_login: Connexion avec Reconnect Pro

@@ -1,4 +1,4 @@
-{{ form_start(form) }}
+{{ form_start(form, {'attr': {'id': 'bug-form'}}) }}
 
 <div class="row">
     <div class="col-12">
@@ -36,10 +36,9 @@
 <div class="col-12 ">
     {{ form_row(form.content) }}
 </div>
-<div class="col-12 mt-3">
-    {{ form_row(form.attachement) }}
-</div>
 <div class="col-12 offset-sm-6 col-sm-6 offset-md-8 col-md-4 mt-3 d-flex">
     <button class="btn btn-primary btn-lg flex-grow-1">{{ button_label }}</button>
 </div>
 {{ form_end(form) }}
+
+{{ include('attachment/_widget.html.twig', {bug}) }}

@@ -4,7 +4,7 @@
 
 {% block body %}
     <a class="btn btn-primary float-end my-2"
-       href="{{ path('bug_new') }}">Déclarer un bug</a>
+       href="{{ path('bug_init') }}">Déclarer un bug</a>
     <h1>Liste des bugs</h1>
     <div class="container py-3 px-4">
         {{ include('bug/_toggle_application_buttons.html.twig', {'applications': applications}) }}

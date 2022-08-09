@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Attachment;
 use App\Entity\Bug;
 use App\Repository\ApplicationRepository;
 use App\Repository\BugReportRepository;
@@ -31,14 +32,16 @@ class BugReportService
 
     public function initBugReport(string $userAgent): Bug
     {
-        return (new Bug())->setUserAgent($userAgent);
+        $bug = (new Bug())->setUserAgent($userAgent);
+        $this->em->persist($bug);
+        $this->em->flush();
+
+        return $bug;
     }
 
-    public function create(Bug $bug, ?UploadedFile $attachment = null): void
+    public function create(Bug $bug): void
     {
-        $this->handleAttachment($bug, $attachment);
-
-        $this->em->persist($bug);
+        $bug->publish();
         $this->em->flush();
         $this->notificator->notifyBug($bug);
     }
@@ -67,13 +70,26 @@ class BugReportService
         $this->notificator->notifyBug($bug);
     }
 
-    public function update(Bug $bug, ?UploadedFile $attachment): void
+    public function addAttachment(Bug $bug, mixed $file): void
     {
-        $this->handleAttachment($bug, $attachment);
+        if (!($file instanceof UploadedFile)) {
+            return;
+        }
+
+        $name = Uuid::v4().'.'.$file->guessExtension();
+        $attachment = (new Attachment())
+            ->setBug($bug)
+            ->setName($name)
+            ->setSize($file->getSize())
+            ->setUploadedBy($this->getUser());
+        $this->em->persist($attachment);
         $this->em->flush();
+        $bug->addAttachment($attachment);
+
+        $file->move($this->uploadsDirectory, $name);
     }
 
-    private function handleAttachment(Bug $bug, ?UploadedFile $attachment): void
+    public function handleAttachment(Bug $bug, ?UploadedFile $attachment): void
     {
         if (!$attachment) {
             return;

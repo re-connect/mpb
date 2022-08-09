@@ -33,15 +33,20 @@ class BugReportController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/create', name: 'bug_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, BugReportService $service): Response
+    #[Route(path: '/init', name: 'bug_init', methods: ['GET', 'POST'])]
+    public function init(Request $request, BugReportService $service): Response
     {
         $bug = $service->initBugReport($request->headers->get('User-Agent', ''));
+
+        return $this->redirectToRoute('bug_new', ['id' => $bug->getId()]);
+    }
+
+    #[Route(path: '/create/{id}', name: 'bug_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, Bug $bug, BugReportService $service): Response
+    {
         $form = $this->createForm(BugReportType::class, $bug)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var ?UploadedFile $attachment */
-            $attachment = $form->get('attachement')->getData();
-            $service->create($bug, $attachment);
+            $service->create($bug);
 
             return $this->redirectToRoute('app_home');
         }
@@ -64,14 +69,12 @@ class BugReportController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/edit', name: 'bug_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Bug $bug, BugReportService $service): Response
+    public function edit(Request $request, Bug $bug, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(BugReportType::class, $bug);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var ?UploadedFile $attachment */
-            $attachment = $form->get('attachement')->getData();
-            $service->update($bug, $attachment);
+            $em->flush();
 
             return $this->redirectToRoute('bug_index');
         }
