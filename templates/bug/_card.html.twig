@@ -6,7 +6,7 @@
         </div>
         <div class="col-9 col-sm-10 col-md-11">
             <div class="row">
-                <div class="col-12 col-md-6">
+                <div class="col">
                     <div class="text-start">
                         <span class="h5">{{ bug.title }}</span>
                     </div>
@@ -18,7 +18,7 @@
                         <small>{{ bug.createdAt|date("d/m/Y") }}</small>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 z-2 d-flex flex-column align-items-end">
+                <div class="col flex-grow-0 z-2 d-flex flex-column align-items-end">
                     {{ include('bug/_status.html.twig', {'bug': bug}) }}
                     {{ include('bug/_assignee_section.html.twig', {'bug': bug}) }}
                 </div>

@@ -6,7 +6,7 @@
         {% else %}
             {% if is_granted('ROLE_TECH_TEAM') %}
                 <a
-                        class="btn btn-sm btn-outline-info"
+                        class="badge text-info border border-info btn"
                         href="{{ path('bug_take_over', { 'id': bug.id }) }}"
                 >
                     <i class="fa fa-truck-fast"></i>
