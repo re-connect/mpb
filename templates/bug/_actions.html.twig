@@ -1,5 +1,5 @@
 <div class="row mt-4">
-    {% if is_granted('ROLE_TECH_TEAM') %}
+    {% if is_granted('UPDATE', bug) %}
         <div class="col">
             <a class="btn btn-warning" href="{{ path('bug_edit', {'id': bug.id}) }}"><i
                         class="fas fa-pencil-alt"></i></a>

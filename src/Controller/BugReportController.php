@@ -59,20 +59,21 @@ class BugReportController extends AbstractController
         return $this->render('bug/add_screenshot.html.twig', ['bug' => $bug]);
     }
 
-    #[IsGranted(Permissions::MANAGE, 'bug')]
+    #[IsGranted(Permissions::READ, 'bug')]
     #[Route(path: '/{id}', name: 'bug_show', methods: ['GET'])]
     public function show(Bug $bug): Response
     {
         return $this->render('bug/show.html.twig', ['bug' => $bug]);
     }
 
-    #[IsGranted('ROLE_TECH_TEAM')]
+    #[IsGranted(Permissions::UPDATE, 'bug')]
     #[Route(path: '/{id}/edit', name: 'bug_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Bug $bug, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(BugReportType::class, $bug);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $bug->publish();
             $em->flush();
 
             return $this->redirectToRoute('bug_index');
@@ -81,7 +82,7 @@ class BugReportController extends AbstractController
         return $this->renderForm('bug/edit.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
-    #[IsGranted(Permissions::MANAGE, 'bug')]
+    #[IsGranted(Permissions::READ, 'bug')]
     #[Route(path: '/{id}', name: 'bug_delete', methods: ['POST'])]
     public function delete(Request $request, Bug $bug, EntityManagerInterface $em): Response
     {
@@ -113,7 +114,7 @@ class BugReportController extends AbstractController
         return $this->redirectToRoute('bug_index');
     }
 
-    #[IsGranted(Permissions::MANAGE, 'bug')]
+    #[IsGranted(Permissions::READ, 'bug')]
     #[Route(path: '/{id}/add-comment', name: 'bug_add_comment', methods: ['GET', 'POST'])]
     public function addComment(Request $request, Bug $bug, EntityManagerInterface $em): Response
     {

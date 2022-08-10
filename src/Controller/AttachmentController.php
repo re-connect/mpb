@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AttachmentController extends AbstractController
 {
     #[Route(path: '/bug/{id}', name: 'add_attachment', methods: ['POST'])]
-    #[IsGranted(Permissions::MANAGE, 'bug')]
+    #[IsGranted(Permissions::READ, 'bug')]
     public function addAttachment(Request $request, Bug $bug, BugReportService $bugService): Response
     {
         $bugService->addAttachment($bug, $request->files->get('file'));
@@ -24,7 +24,7 @@ class AttachmentController extends AbstractController
     }
 
     #[Route(path: '/bug/{id}/widget', name: 'attachment_widget', methods: ['GET'])]
-    #[IsGranted(Permissions::MANAGE, 'bug')]
+    #[IsGranted(Permissions::READ, 'bug')]
     public function getAttachmentWidget(Bug $bug): Response
     {
         return $this->render('attachment/_widget.html.twig', ['bug' => $bug]);
