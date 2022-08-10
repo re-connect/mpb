@@ -295,7 +295,7 @@ class Bug
 
     public function publish(): self
     {
-        $this->draft = true;
+        $this->draft = false;
 
         return $this;
     }

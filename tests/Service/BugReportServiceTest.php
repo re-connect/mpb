@@ -45,13 +45,13 @@ class BugReportServiceTest extends KernelTestCase
     public function testCreate(): void
     {
         $this->loginUser('tester_team@gmail.com');
-
         $bug = $this->service->initBugReport('');
 
-        $this->assertNull($bug->getCreatedAt());
+        $this->assertEmpty($bug->getUserAgent());
+        $this->assertTrue($bug->isDraft());
 
         $this->service->create($bug);
-
+        $this->assertFalse($bug->isDraft());
         $this->assertNotNull($bug->getCreatedAt());
         $this->assertFalse($bug->isDone());
     }
