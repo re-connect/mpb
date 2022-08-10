@@ -2,7 +2,11 @@
      xmlns="http://www.w3.org/1999/html">
     <div class="row">
         <div class="col-3 col-sm-2 col-md-1 d-flex justify-content-center align-items-center">
-            {{ app_icon(bug.application) }}
+            {% if bug.draft %}
+                {{ 'draft'|trans }}
+            {% else %}
+                {{ app_icon(bug.application) }}
+            {% endif %}
         </div>
         <div class="col-9 col-sm-10 col-md-11">
             <div class="row">
@@ -18,10 +22,12 @@
                         <small>{{ bug.createdAt|date("d/m/Y") }}</small>
                     </div>
                 </div>
-                <div class="col flex-grow-0 z-2 d-flex flex-column align-items-end">
-                    {{ include('bug/_status.html.twig', {'bug': bug}) }}
-                    {{ include('bug/_assignee_section.html.twig', {'bug': bug}) }}
-                </div>
+                {% if not bug.draft %}
+                    <div class="col flex-grow-0 z-2 d-flex flex-column align-items-end">
+                        {{ include('bug/_status.html.twig', {'bug': bug}) }}
+                        {{ include('bug/_assignee_section.html.twig', {'bug': bug}) }}
+                    </div>
+                {% endif %}
             </div>
         </div>
         <a href="{{ path('bug_show', {'id': bug.id}) }}" class="stretched-link"></a>

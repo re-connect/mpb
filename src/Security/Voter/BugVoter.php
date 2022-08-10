@@ -16,7 +16,7 @@ class BugVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return Permissions::MANAGE === $attribute && $subject instanceof Bug;
+        return in_array($attribute, [Permissions::UPDATE, Permissions::READ]) && $subject instanceof Bug;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
@@ -26,12 +26,18 @@ class BugVoter extends Voter
             return false;
         }
 
-        if ($this->checker->isGranted('ROLE_TEAM')) {
+        if ($this->checker->isGranted('ROLE_TECH_TEAM')) {
             return true;
         }
 
-        if (Permissions::MANAGE === $attribute) {
-            return $user === $subject->getUser();
+        if ($user !== $subject->getUser()) {
+            return false;
+        }
+
+        if (Permissions::READ === $attribute) {
+            return true;
+        } elseif (Permissions::UPDATE === $attribute) {
+            return $subject->isDraft();
         }
 
         return false;

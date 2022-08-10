@@ -281,9 +281,9 @@ class Bug
         return $this;
     }
 
-    public function isDraft(): ?bool
+    public function isDraft(): bool
     {
-        return $this->draft;
+        return (bool) $this->draft;
     }
 
     public function setDraft(bool $draft): self
