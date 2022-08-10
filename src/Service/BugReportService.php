@@ -19,13 +19,13 @@ class BugReportService
     use UserAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface        $em,
-        private readonly BugReportRepository           $repository,
+        private readonly EntityManagerInterface $em,
+        private readonly BugReportRepository $repository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly NotificationService           $notificator,
-        private readonly ApplicationRepository         $applicationRepository,
-        private readonly string                        $uploadsDirectory,
-        Security                                       $security,
+        private readonly NotificationService $notificator,
+        private readonly ApplicationRepository $applicationRepository,
+        private readonly string $uploadsDirectory,
+        Security $security,
     ) {
         $this->security = $security;
     }
