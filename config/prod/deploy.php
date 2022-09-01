@@ -28,8 +28,8 @@ return new class() extends DefaultDeployer {
 
     public function beforePublishing(): void
     {
-        $this->runRemote('npm install');
-        $this->runRemote('npm run build');
+        $this->runRemote('yarn install');
+        $this->runRemote('yarn run build');
     }
 
     public function beforeFinishingDeploy(): void
