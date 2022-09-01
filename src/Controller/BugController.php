@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('ROLE_USER')]
 #[Route(path: '/bugs')]
-class BugReportController extends AbstractController
+class BugController extends AbstractController
 {
     #[Route(path: '/list', name: 'bug_index', methods: ['GET'])]
     public function index(Request $request, BugReportService $service, ApplicationRepository $applicationRepository): Response
