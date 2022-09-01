@@ -28,13 +28,13 @@ return new class() extends DefaultDeployer {
 
     public function beforePublishing(): void
     {
-        $this->runRemote('yarn install');
-        $this->runRemote('yarn build');
+        $this->runRemote('npm install');
+        $this->runRemote('npm run build');
     }
 
     public function beforeFinishingDeploy(): void
     {
-        $this->runRemote('php bin/console ckeditor:install && php bin/console assets:install public');
+//        $this->runRemote('php bin/console ckeditor:install && php bin/console assets:install public');
         $this->runRemote('{{ console_bin }} doctrine:migrations:migrate -q');
     }
 };
