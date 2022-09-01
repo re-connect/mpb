@@ -174,9 +174,6 @@
     "phpdocumentor/type-resolver": {
         "version": "1.4.0"
     },
-    "phpspec/prophecy": {
-        "version": "1.13.0"
-    },
     "phpunit/php-code-coverage": {
         "version": "9.2.6"
     },
@@ -620,9 +617,6 @@
     },
     "symfony/uid": {
         "version": "v5.3.3"
-    },
-    "symfony/ux-dropzone": {
-        "version": "v2.3.0"
     },
     "symfony/validator": {
         "version": "6.1",
