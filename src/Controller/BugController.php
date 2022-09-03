@@ -4,11 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Bug;
 use App\Entity\Comment;
-use App\Form\BugReportType;
+use App\Form\BugType;
 use App\Form\CommentType;
 use App\Repository\ApplicationRepository;
 use App\Security\Voter\Permissions;
-use App\Service\BugReportService;
+use App\Service\BugService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BugController extends AbstractController
 {
     #[Route(path: '/list', name: 'bug_index', methods: ['GET'])]
-    public function index(Request $request, BugReportService $service, ApplicationRepository $applicationRepository): Response
+    public function index(Request $request, BugService $service, ApplicationRepository $applicationRepository): Response
     {
         $showDone = $request->query->getBoolean('done');
         $application = $request->query->getInt('app');
@@ -33,17 +33,17 @@ class BugController extends AbstractController
     }
 
     #[Route(path: '/init', name: 'bug_init', methods: ['GET', 'POST'])]
-    public function init(Request $request, BugReportService $service): Response
+    public function init(Request $request, BugService $service): Response
     {
-        $bug = $service->initBugReport($request->headers->get('User-Agent', ''));
+        $bug = $service->initBug($request->headers->get('User-Agent', ''));
 
         return $this->redirectToRoute('bug_new', ['id' => $bug->getId()]);
     }
 
     #[Route(path: '/create/{id}', name: 'bug_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, Bug $bug, BugReportService $service): Response
+    public function new(Request $request, Bug $bug, BugService $service): Response
     {
-        $form = $this->createForm(BugReportType::class, $bug)->handleRequest($request);
+        $form = $this->createForm(BugType::class, $bug)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $service->create($bug);
 
@@ -70,7 +70,7 @@ class BugController extends AbstractController
     #[Route(path: '/{id}/edit', name: 'bug_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Bug $bug, EntityManagerInterface $em): Response
     {
-        $form = $this->createForm(BugReportType::class, $bug);
+        $form = $this->createForm(BugType::class, $bug);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $bug->publish();
@@ -107,7 +107,7 @@ class BugController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/mark-done', name: 'bug_mark_done', methods: ['GET'])]
-    public function markDone(Bug $bug, BugReportService $service): Response
+    public function markDone(Bug $bug, BugService $service): Response
     {
         $service->markAsDone($bug);
 

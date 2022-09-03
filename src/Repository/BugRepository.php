@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Bug[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @extends ServiceEntityRepository<Bug>
  */
-class BugReportRepository extends ServiceEntityRepository
+class BugRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

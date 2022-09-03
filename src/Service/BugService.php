@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Entity\Attachment;
 use App\Entity\Bug;
 use App\Repository\ApplicationRepository;
-use App\Repository\BugReportRepository;
+use App\Repository\BugRepository;
 use App\Traits\UserAwareTrait;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,23 +14,23 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Uid\Uuid;
 
-class BugReportService
+class BugService
 {
     use UserAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly BugReportRepository $repository,
+        private readonly EntityManagerInterface        $em,
+        private readonly BugRepository                 $repository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly NotificationService $notificator,
-        private readonly ApplicationRepository $applicationRepository,
-        private readonly string $uploadsDirectory,
-        Security $security,
+        private readonly NotificationService           $notificator,
+        private readonly ApplicationRepository         $applicationRepository,
+        private readonly string                        $uploadsDirectory,
+        Security                                       $security,
     ) {
         $this->security = $security;
     }
 
-    public function initBugReport(string $userAgent): Bug
+    public function initBug(string $userAgent): Bug
     {
         $bug = (new Bug())->setUserAgent($userAgent);
         $this->em->persist($bug);
