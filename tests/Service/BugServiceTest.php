@@ -3,13 +3,13 @@
 namespace App\Tests\Service;
 
 use App\Repository\UserRepository;
-use App\Service\BugReportService;
+use App\Service\BugService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class BugReportServiceTest extends KernelTestCase
+class BugServiceTest extends KernelTestCase
 {
-    private BugReportService $service;
+    private BugService $service;
 
     /**
      * @return \Generator<string[]>
@@ -27,15 +27,15 @@ class BugReportServiceTest extends KernelTestCase
     {
         $container = self::getContainer();
         $this->loginUser('tester@gmail.com');
-        $this->service = $container->get(BugReportService::class);
+        $this->service = $container->get(BugService::class);
     }
 
     /**
      * @dataProvider userAgents
      */
-    public function testInitBugReport(string $a): void
+    public function testInitBug(string $a): void
     {
-        $bug = $this->service->initBugReport($a);
+        $bug = $this->service->initBug($a);
 
         $this->assertIsObject($bug);
         $this->assertEquals($a, $bug->getUserAgent());
@@ -45,7 +45,7 @@ class BugReportServiceTest extends KernelTestCase
     public function testCreate(): void
     {
         $this->loginUser('tester_team@gmail.com');
-        $bug = $this->service->initBugReport('');
+        $bug = $this->service->initBug('');
 
         $this->assertEmpty($bug->getUserAgent());
         $this->assertTrue($bug->isDraft());

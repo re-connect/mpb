@@ -14,7 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class BugReportCrudController extends AbstractCrudController
+class BugCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {

@@ -39,7 +39,7 @@ class UserKind extends StyledEntityKind
         return $this->bugs;
     }
 
-    public function addBugReport(Bug $bug): self
+    public function addBug(Bug $bug): self
     {
         if (!$this->bugs->contains($bug)) {
             $this->bugs[] = $bug;
@@ -49,7 +49,7 @@ class UserKind extends StyledEntityKind
         return $this;
     }
 
-    public function removeBugReport(Bug $bug): self
+    public function removeBug(Bug $bug): self
     {
         if ($this->bugs->removeElement($bug)) {
             // set the owning side to null (unless already changed)

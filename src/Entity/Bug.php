@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\BugReportRepository;
+use App\Repository\BugRepository;
 use App\Traits\OwnedTrait;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'bug_report')]
-#[ORM\Entity(repositoryClass: BugReportRepository::class)]
+#[ORM\Entity(repositoryClass: BugRepository::class)]
 class Bug
 {
     use TimestampableTrait;

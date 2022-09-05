@@ -168,7 +168,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         return $this->bugs;
     }
 
-    public function addBugReport(Bug $bug): self
+    public function addBug(Bug $bug): self
     {
         if (!$this->bugs->contains($bug)) {
             $this->bugs[] = $bug;
@@ -178,7 +178,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         return $this;
     }
 
-    public function removeBugReport(Bug $bug): self
+    public function removeBug(Bug $bug): self
     {
         if ($this->bugs->removeElement($bug)) {
             // set the owning side to null (unless already changed)
@@ -352,12 +352,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     /**
      * @return Collection<int, Bug>
      */
-    public function getGetBugReportsAssignedToMe(): Collection
+    public function getGetBugsAssignedToMe(): Collection
     {
         return $this->getBugsAssignedToMe;
     }
 
-    public function addGetBugReportsAssignedToMe(Bug $getBugsAssignedToMe): self
+    public function addGetBugsAssignedToMe(Bug $getBugsAssignedToMe): self
     {
         if (!$this->getBugsAssignedToMe->contains($getBugsAssignedToMe)) {
             $this->getBugsAssignedToMe[] = $getBugsAssignedToMe;
@@ -367,7 +367,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         return $this;
     }
 
-    public function removeGetBugReportsAssignedToMe(Bug $getBugsAssignedToMe): self
+    public function removeGetBugsAssignedToMe(Bug $getBugsAssignedToMe): self
     {
         if ($this->getBugsAssignedToMe->removeElement($getBugsAssignedToMe)) {
             // set the owning side to null (unless already changed)

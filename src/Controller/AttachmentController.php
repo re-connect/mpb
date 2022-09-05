@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Bug;
 use App\Security\Voter\Permissions;
-use App\Service\BugReportService;
+use App\Service\BugService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ class AttachmentController extends AbstractController
 {
     #[Route(path: '/bug/{id}', name: 'add_attachment', methods: ['POST'])]
     #[IsGranted(Permissions::READ, 'bug')]
-    public function addAttachment(Request $request, Bug $bug, BugReportService $bugService): Response
+    public function addAttachment(Request $request, Bug $bug, BugService $bugService): Response
     {
         $bugService->addAttachment($bug, $request->files->get('file'));
 
