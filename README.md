@@ -1,5 +1,11 @@
 # Setup
 
+## Requirements
+* PHP 8.1
+* Symfony client [https://symfony.com/downloads](https://symfony.com/downloads)
+* Postgresql
+* Npm
+
 ## Database
 
 * Install Psql
@@ -23,4 +29,15 @@ symfony console doctrine:migrations:migrate --env=test
 
 ```
 symfony console doctrine:fixtures:load --env=test
+```
+
+## Run
+
+```
+symfony composer install
+symfony serve
+```
+```
+npm install
+npm run dev 
 ```
