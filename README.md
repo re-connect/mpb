@@ -51,5 +51,5 @@ symfony console doctrine:fixtures:load --env=test
 ```
 * Use phpunit to run tests
 ```
-phpunit tests 
+php ./vendor/bin/simple-phpunit tests
 ```
