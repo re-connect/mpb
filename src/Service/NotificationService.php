@@ -14,6 +14,7 @@ use Symfony\Component\Notifier\ChatterInterface;
 use Symfony\Component\Notifier\Exception\TransportExceptionInterface;
 use Symfony\Component\Notifier\Message\ChatMessage;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class NotificationService
@@ -43,7 +44,7 @@ class NotificationService
                 (new SlackActionsBlock())
                     ->button(
                         'Voir le bug',
-                        $this->router->generate('bug_show', ['id' => $bug->getId()], UrlGenerator::ABSOLUTE_URL),
+                        $this->router->generate('bug_show', ['id' => $bug->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
                         'primary'
                     ));
     }
