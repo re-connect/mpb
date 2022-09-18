@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ feature.title }}{% endblock %}
+
+{% set items = [
+    { name: 'title', content: feature.title },
+    { name: 'information', content: feature.content },
+    { name: 'created_by', content: feature.user },
+    { name: 'application', content: feature.application },
+    { name: 'creation_date', content: feature.createdAt ? feature.createdAt|date('Y-m-d H:i:s') : '' },
+] %}
+
+{% block body %}
+    <div class="position-relative">
+        <div class="col">{{ include('feature/_back_to_list_button.html.twig') }}</div>
+        <h1>{{ feature.title }}</h1>
+        <table class="table">
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <th>{{ item.name|trans }}</th>
+                    <td>{{ item.content|raw }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ include('feature/_comments.html.twig', {feature}) }}
+    </div>
+{% endblock %}

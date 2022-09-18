@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'features_list'| trans }}{% endblock %}
+
+{% block body %}
+    <a class="btn btn-primary float-end my-2"
+       href="{{ path('feature_new') }}">{{ 'propose_new_feature'|trans }}</a>
+    <h1>{{ 'features_list'|trans }}</h1>
+    <div class="container py-3 px-4">
+        <div class="row">
+            {% for feature in features %}
+                {{ include('feature/_card.html.twig', { feature }) }}
+            {% else %}
+                {{ 'no_feature'|trans }}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -29,9 +29,7 @@ class Bug
     #[ORM\Column(type: 'text')]
     private ?string $content = '';
 
-    /**
-     * @var Collection<int, Comment>
-     */
+    /** @var Collection<int, Comment> */
     #[ORM\OneToMany(mappedBy: 'bug', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 

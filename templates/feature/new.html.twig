@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'new_feature'|trans }}{% endblock %}
+
+{% block body %}
+    {{ include('feature/_back_to_list_button.html.twig') }}
+    <h1>{{ 'new_feature'|trans }}</h1>
+
+    <div class="container pb-4">
+        {{ include('feature/_form.html.twig', {'button_label': 'create'|trans}) }}
+    </div>
+{% endblock %}

@@ -4,6 +4,7 @@ namespace App\EventListener;
 
 use App\Entity\Bug;
 use App\Entity\Comment;
+use App\Entity\Feature;
 use App\Traits\UserAwareTrait;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Security;
@@ -21,7 +22,7 @@ class TraceableEntityListener
     public function preUpdate(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
-        if (!$entity instanceof Comment && !$entity instanceof Bug) {
+        if (!$entity instanceof Comment && !$entity instanceof Bug && !$entity instanceof Feature) {
             return;
         }
 
@@ -32,7 +33,7 @@ class TraceableEntityListener
     public function prePersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
-        if (!$entity instanceof Comment && !$entity instanceof Bug) {
+        if (!$entity instanceof Comment && !$entity instanceof Bug && !$entity instanceof Feature) {
             return;
         }
 

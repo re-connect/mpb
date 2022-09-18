@@ -12,7 +12,7 @@
             {% for bug in bugs %}
                 {{ include('bug/_card.html.twig', { bug }) }}
             {% else %}
-                Aucun Bug report n'a été ajouté
+                Aucun Bug n'a été ajouté
             {% endfor %}
         </div>
         {{ include('bug/_toggle_solved_button.html.twig', {'done': done}) }}

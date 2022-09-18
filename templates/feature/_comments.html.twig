@@ -1,0 +1,6 @@
+{% if feature.hasComments %}
+    <div class="row">
+        <h1>{{ 'comments'|trans }}</h1>
+        {{ include('comment/_list.html.twig', {'comments': feature.comments}) }}
+    </div>
+{% endif %}
