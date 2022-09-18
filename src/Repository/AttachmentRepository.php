@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Attachment|null findOneBy(array $criteria, array $orderBy = null)
  * @method Attachment[]    findAll()
  * @method Attachment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
  * @extends ServiceEntityRepository<Attachment>
  */
 class AttachmentRepository extends ServiceEntityRepository

@@ -12,11 +12,20 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('bug_index') }}">
-                        <i class="fas fa-table me-2"></i>
-                        Tous les bugs
+                        <i class="fas fa-triangle-exclamation me-2"></i>
+                        {{ 'all_bugs'|trans }}
                         <span class="visually-hidden"></span>
                     </a>
                 </li>
+                {% if is_granted('ROLE_TEAM') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('features_list') }}">
+                            <i class="fas fa-wand-magic-sparkles me-2"></i>
+                            {{ 'all_features'|trans }}
+                            <span class="visually-hidden"></span>
+                        </a>
+                    </li>
+                {% endif %}
                 <li class="nav-item {{ app.user ? 'd-none' : '' }}">
                     <a class="nav-link" href="{{ path('app_login') }}">Login
                         <span class="visually-hidden"></span>

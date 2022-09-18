@@ -1,5 +1,5 @@
 <div class="row">
-    {% for comment in bug.comments %}
+    {% for comment in comments %}
         {% set isMine = comment.user == app.user %}
         <div class="col-12 col-sm-11 {% if loop.index is odd %}offset-sm-1{% endif %}">
             <div class="card text-bg-{{ isMine ? 'info' : 'light' }} mb-3">

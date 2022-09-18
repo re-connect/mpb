@@ -22,8 +22,12 @@ class Comment
     private ?string $content = '';
 
     #[ORM\ManyToOne(targetEntity: Bug::class, inversedBy: 'comments')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Bug $bug = null;
+
+    #[ORM\ManyToOne(targetEntity: Feature::class, inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Feature $feature = null;
 
     public function getId(): ?int
     {
@@ -50,6 +54,18 @@ class Comment
     public function setBug(?Bug $bug): self
     {
         $this->bug = $bug;
+
+        return $this;
+    }
+
+    public function getFeature(): ?Feature
+    {
+        return $this->feature;
+    }
+
+    public function setFeature(?Feature $feature): self
+    {
+        $this->feature = $feature;
 
         return $this;
     }

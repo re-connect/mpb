@@ -21,7 +21,7 @@ class BugType extends AbstractType
                 'label' => 'Titre du Bug',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'sdasd',
+                    'placeholder' => 'title',
                 ],
             ])
             ->add('application', StyledEntityType::class, [

@@ -2,20 +2,28 @@ add_attachment: Ajouter une image
 add_comment: Ajouter un commentaire
 application: Application
 comments: Commentaires
+create: Créer
 created_by: Remonté par
 creation_date: Date de création
+description: Description
+draft: Brouillon
 email: Email
+features_list: Liste des fonctionnalités proposées
 information: Informations
 login: Connexion
 message: Message
 new_bug: Nouveau bug
+new_feature: Nouvelle fonctionnalité
+no_feature: Pas de fonctionnalité proposée
 password: Mot de passe
 pending_take_over: En attente d'assignation
+propose_new_feature: Proposer une nouvelle fonctionnalité
 rp_login: Connexion avec Reconnect Pro
 status: Status
 take_over: Prendre en charge
 taken_over_by: Traité par
 title: Titre
 update_bug: Modifier un bug
-user_kind: Type d'utilsateur
-draft: Brouillon
+user_kind: Type d'utilisateur
+all_bugs: Bugs
+all_features: Fonctionnalités

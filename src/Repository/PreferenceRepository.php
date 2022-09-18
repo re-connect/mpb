@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Preference|null findOneBy(array $criteria, array $orderBy = null)
  * @method Preference[]    findAll()
  * @method Preference[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
  * @extends ServiceEntityRepository<Preference>
  */
 class PreferenceRepository extends ServiceEntityRepository

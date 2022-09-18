@@ -19,13 +19,13 @@ class BugService
     use UserAwareTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface        $em,
-        private readonly BugRepository                 $repository,
+        private readonly EntityManagerInterface $em,
+        private readonly BugRepository $repository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly NotificationService           $notificator,
-        private readonly ApplicationRepository         $applicationRepository,
-        private readonly string                        $uploadsDirectory,
-        Security                                       $security,
+        private readonly NotificationService $notificator,
+        private readonly ApplicationRepository $applicationRepository,
+        private readonly string $uploadsDirectory,
+        Security $security,
     ) {
         $this->security = $security;
     }
@@ -87,16 +87,5 @@ class BugService
         $bug->addAttachment($attachment);
 
         $file->move($this->uploadsDirectory, $name);
-    }
-
-    public function handleAttachment(Bug $bug, ?UploadedFile $attachment): void
-    {
-        if (!$attachment) {
-            return;
-        }
-
-        $attachmentName = Uuid::v4().'.'.$attachment->guessExtension();
-        $attachment->move($this->uploadsDirectory, $attachmentName);
-        $bug->setAttachementName($attachmentName);
     }
 }
