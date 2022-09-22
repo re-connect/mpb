@@ -53,6 +53,7 @@
     "twig/twig": "3.4.*"
   },
   "require-dev": {
+    "deployer/deployer": "^7.0",
     "easycorp/easy-deploy-bundle": "dev-master",
     "friendsofphp/php-cs-fixer": "3.*",
     "phpstan/phpstan": "1.8.*",
