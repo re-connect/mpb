@@ -8,16 +8,16 @@ creation_date: Date de création
 description: Description
 draft: Brouillon
 email: Email
-features_list: Liste des fonctionnalités proposées
+features_list: Liste des améliorations proposées
 information: Informations
 login: Connexion
 message: Message
 new_bug: Nouveau bug
-new_feature: Nouvelle fonctionnalité
-no_feature: Pas de fonctionnalité proposée
+new_feature: Nouvelle amélioration
+no_feature: Pas de amélioration proposée
 password: Mot de passe
 pending_take_over: En attente d'assignation
-propose_new_feature: Proposer une nouvelle fonctionnalité
+propose_new_feature: Proposer une nouvelle amélioration
 rp_login: Connexion avec Reconnect Pro
 status: Status
 take_over: Prendre en charge
@@ -26,4 +26,4 @@ title: Titre
 update_bug: Modifier un bug
 user_kind: Type d'utilisateur
 all_bugs: Bugs
-all_features: Fonctionnalités
+all_features: Améliorations

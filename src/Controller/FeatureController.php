@@ -38,7 +38,7 @@ class FeatureController extends AbstractController
             return $this->redirectToRoute('features_list');
         }
 
-        return $this->renderForm('feature/new.html.twig', ['feature' => $feature, 'form' => $form]);
+        return $this->renderForm('feature/new.html.twig', ['form' => $form]);
     }
 
     #[Route(path: '/show/{id}', name: 'feature_show', methods: ['GET'])]
