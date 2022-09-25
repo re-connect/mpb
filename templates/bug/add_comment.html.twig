@@ -6,7 +6,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2">
+                <a class="btn btn-outline-dark mb-4" href="{{ path('bug_show', {'id': bug.id}) }}">
+                    <i class="fa fa-chevron-left"></i>
+                    {{ 'back_to_bug'|trans }}
+                </a>
                 <h1>{{ bug.title }}</h1>
+                <hr/>
                 {{ include('bug/_comments.html.twig', {bug}) }}
 
                 {{ form(form) }}

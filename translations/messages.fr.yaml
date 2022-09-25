@@ -1,6 +1,9 @@
 add_attachment: Ajouter une image
 add_comment: Ajouter un commentaire
+all_bugs: Bugs
+all_features: Améliorations
 application: Application
+back_to_bug: Retour au bug
 comments: Commentaires
 create: Créer
 created_by: Remonté par
@@ -25,5 +28,3 @@ taken_over_by: Traité par
 title: Titre
 update_bug: Modifier un bug
 user_kind: Type d'utilisateur
-all_bugs: Bugs
-all_features: Améliorations
