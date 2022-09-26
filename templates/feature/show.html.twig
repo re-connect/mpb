@@ -25,5 +25,6 @@
             </tbody>
         </table>
         {{ include('feature/_comments.html.twig', {feature}) }}
+        <a class="btn btn-info" href="{{ path('feature_add_comment', {id: feature.id}) }}">{{ 'add_comment'|trans }}</a>
     </div>
 {% endblock %}

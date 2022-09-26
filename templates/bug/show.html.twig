@@ -30,6 +30,7 @@
         </table>
         {{ include('bug/_list_attachments.html.twig', {bug}) }}
         {{ include('bug/_comments.html.twig', {bug}) }}
+        <a class="btn btn-info" href="{{ path('bug_add_comment', {id: bug.id}) }}">{{ 'add_comment'|trans }}</a>
         {{ include('bug/_actions.html.twig', {bug}) }}
     </div>
 {% endblock %}
