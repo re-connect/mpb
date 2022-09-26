@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Service\SecurityService;
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2Client;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,13 +50,24 @@ class SecurityController extends AbstractController
         return $client->getOAuth2Provider()->authorize();
     }
 
-    /**
-     * @throws \Exception
-     */
     #[Route(path: '/reconnect-pro-check', name: 'reconnect_pro_login_check', methods: ['GET'])]
     public function reconnectProLoginCheck(Request $request, SecurityService $service): Response
     {
-        return $this->redirect($service->authenticateUserFromReconnectPro($request));
+        return $service->authenticateUserFromReconnectPro($request);
+    }
+
+    #[Route(path: '/google-login-trigger', name: 'google_login_trigger', methods: ['GET'])]
+    public function googleLoginTrigger(ClientRegistry $clientRegistry): mixed
+    {
+        return $clientRegistry
+            ->getClient('google')
+            ->redirect([], []);
+    }
+
+    #[Route(path: '/google-check', name: 'google_login_check', methods: ['GET'])]
+    public function googleLoginCheck(Request $request, SecurityService $service): Response
+    {
+        return $service->authenticateUserFromGoogle($request);
     }
 
     #[Route(path: '/slack-chat', name: 'slack_chat', methods: ['POST'])]
