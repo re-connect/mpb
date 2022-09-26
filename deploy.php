@@ -10,10 +10,11 @@ set('repository', 'git@github.com:re-connect/mpb.git');
 
 add('shared_files', [
     '.env',
+    'config/secrets/prod/prod.decrypt.private.php',
 ]);
 add('shared_dirs', [
-    'var',
-    'config/secrets/prod',
+    'var/log',
+    'var/oauth',
     'node_modules',
     'vendor',
 ]);
