@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Attachment;
 use App\Entity\Bug;
+use App\Form\Model\Search;
 use App\Repository\ApplicationRepository;
 use App\Repository\BugRepository;
 use App\Traits\UserAwareTrait;
@@ -46,21 +47,42 @@ class BugService
         $this->notificator->notifyBug($bug);
     }
 
-    /**
-     * @return Bug[]
-     */
-    public function getAccessible(bool $done = false, int $applicationId = 0): array
+    /** @return Bug[] */
+    public function getAccessible(Search $search): array
     {
-        $criteria = ['done' => $done];
-        if ($applicationId) {
-            $criteria['application'] = $this->applicationRepository->find($applicationId);
+        $parameters = ['done' => $search->getShowDone() ?? false];
+
+        $qb = $this->repository->createQueryBuilder('b')
+            ->leftJoin('b.user', 'u')
+            ->leftJoin('b.application', 'a')
+            ->andWhere('b.done = :done')
+            ->addOrderBy('b.done', Criteria::ASC)
+            ->addOrderBy('b.createdAt', Criteria::DESC);
+
+        if ($applicationId = $search->getApplication()) {
+            $qb->andWhere('a.id = :application');
+            $parameters['application'] = $applicationId;
         }
-        $orderBy = ['done' => Criteria::ASC, 'createdAt' => Criteria::DESC];
         if (!$this->authorizationChecker->isGranted('ROLE_TEAM')) {
-            $criteria['user'] = $this->getUser();
+            $qb->andWhere('b.user = :user');
+            $parameters['user'] = $this->getUser();
+        }
+        if ($searchText = $search->getText()) {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->like('LOWER(b.title)', ':searchText'),
+                    $qb->expr()->like('LOWER(b.content)', ':searchText'),
+                    $qb->expr()->like('LOWER(u.email)', ':searchText'),
+                    $qb->expr()->like('LOWER(a.name)', ':searchText'),
+                )
+            );
+            $parameters['searchText'] = '%'.strtolower($searchText).'%';
         }
 
-        return $this->repository->findBy($criteria, $orderBy);
+        /** @var Bug[] $bugs */
+        $bugs = $qb->setParameters($parameters)->getQuery()->getResult();
+
+        return $bugs;
     }
 
     public function markAsDone(Bug $bug): void

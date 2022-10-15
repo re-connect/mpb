@@ -6,6 +6,8 @@ use App\Entity\Bug;
 use App\Entity\Comment;
 use App\Form\BugType;
 use App\Form\CommentType;
+use App\Form\Model\Search;
+use App\Form\SearchType;
 use App\Repository\ApplicationRepository;
 use App\Security\Voter\Permissions;
 use App\Service\BugService;
@@ -22,13 +24,28 @@ class BugController extends AbstractController
     #[Route(path: '/list', name: 'bug_index', methods: ['GET'])]
     public function index(Request $request, BugService $service, ApplicationRepository $applicationRepository): Response
     {
-        $showDone = $request->query->getBoolean('done');
-        $application = $request->query->getInt('app');
+        $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
 
-        return $this->render('bug/index.html.twig', [
-            'bugs' => $service->getAccessible($showDone, $application),
-            'done' => $showDone,
+        $searchForm = $this->createForm(SearchType::class, null, [
+            'action' => $this->generateUrl('bug_search', $request->query->all()),
+        ]);
+
+        return $this->renderForm('bug/index.html.twig', [
+            'bugs' => $service->getAccessible($search),
+            'done' => $search->getShowDone(),
+            'searchForm' => $searchForm,
             'applications' => $applicationRepository->findAll(),
+        ]);
+    }
+
+    #[Route(path: '/search', name: 'bug_search', methods: ['POST'])]
+    public function search(Request $request, BugService $service, ApplicationRepository $applicationRepository): Response
+    {
+        $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $this->createForm(SearchType::class, $search)->handleRequest($request);
+
+        return $this->render('bug/_list.html.twig', [
+            'bugs' => $service->getAccessible($search),
         ]);
     }
 

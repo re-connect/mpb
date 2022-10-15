@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\BugRepository;
-use App\Traits\OwnedTrait;
 use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,7 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Bug
 {
     use TimestampableTrait;
-    use OwnedTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -29,13 +27,15 @@ class Bug
     #[ORM\Column(type: 'text')]
     private ?string $content = '';
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bugs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     /** @var Collection<int, Comment> */
     #[ORM\OneToMany(mappedBy: 'bug', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
-    /**
-     * @var Collection<int, Attachment>
-     */
+    /** @var Collection<int, Attachment> */
     #[ORM\OneToMany(mappedBy: 'bug', targetEntity: Attachment::class, orphanRemoval: true)]
     private Collection $attachments;
 
@@ -102,6 +102,18 @@ class Bug
     public function setContent(?string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

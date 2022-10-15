@@ -5,6 +5,7 @@ all_features: Améliorations
 application: Application
 back_to_bug: Retour au bug
 back_to_feature: Retour à l'amélioration
+bugs_list: Liste des bugs
 comments: Commentaires
 create: Créer
 created_by: Remonté par
@@ -13,11 +14,13 @@ description: Description
 draft: Brouillon
 email: Email
 features_list: Liste des améliorations proposées
+google_login: Connexion Google
 information: Informations
 login: Connexion
 message: Message
-new_bug: Nouveau bug
+new_bug: Déclarer un bug
 new_feature: Nouvelle amélioration
+no_bug_yet: Aucun Bug n'a été ajouté
 no_feature: Pas de amélioration proposée
 password: Mot de passe
 pending_take_over: En attente d'assignation
@@ -29,4 +32,4 @@ taken_over_by: Traité par
 title: Titre
 update_bug: Modifier un bug
 user_kind: Type d'utilisateur
-google_login: Connexion Google
+search: Rechercher

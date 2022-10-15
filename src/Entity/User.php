@@ -42,48 +42,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
 
     private ?string $plainPassword = null;
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    /**
-     * @var Collection<int, Bug>
-     */
+    /** @var Collection<int, Bug> */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bug::class, orphanRemoval: true)]
     private Collection $bugs;
+
+    /** @var Collection<int, Feature> */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Feature::class, orphanRemoval: true)]
+    private Collection $features;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Preference::class, cascade: ['persist', 'remove'])]
     private Preference $preference;
 
-    /**
-     * @var Collection<int, Comment>
-     */
+    /** @var Collection<int, Comment> */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
-    /**
-     * @var Collection<int, Badge>
-     */
+    /** @var Collection<int, Badge> */
     #[ORM\ManyToMany(targetEntity: Badge::class, mappedBy: 'users')]
     private Collection $badges;
 
-    /**
-     * @var Collection<int, Attachment>
-     */
+    /** @var Collection<int, Attachment> */
     #[ORM\OneToMany(mappedBy: 'uploadedBy', targetEntity: Attachment::class, orphanRemoval: true)]
     private Collection $attachments;
 
-    /**
-     * @var Collection<int, Bug>
-     */
+    /** @var Collection<int, Bug> */
     #[ORM\OneToMany(mappedBy: 'assignee', targetEntity: Bug::class)]
     private Collection $getBugsAssignedToMe;
 
     public function __construct()
     {
         $this->bugs = new ArrayCollection();
+        $this->features = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->badges = new ArrayCollection();
         $this->attachments = new ArrayCollection();
@@ -160,9 +153,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         return $this;
     }
 
-    /**
-     * @return Collection<int, Bug>
-     */
+    /** @return Collection<int, Bug> */
     public function getBugs(): Collection
     {
         return $this->bugs;
@@ -184,6 +175,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
             // set the owning side to null (unless already changed)
             if ($bug->getUser() === $this) {
                 $bug->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /** @return Collection<int, Feature> */
+    public function getFeatures(): Collection
+    {
+        return $this->features;
+    }
+
+    public function addFeature(Feature $feature): self
+    {
+        if (!$this->features->contains($feature)) {
+            $this->features[] = $feature;
+            $feature->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeature(Feature $feature): self
+    {
+        if ($this->features->removeElement($feature)) {
+            // set the owning side to null (unless already changed)
+            if ($feature->getUser() === $this) {
+                $feature->setUser(null);
             }
         }
 
