@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
-use App\Traits\OwnedTrait;
 use App\Traits\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Comment
 {
     use TimestampableTrait;
-    use OwnedTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -28,6 +26,10 @@ class Comment
     #[ORM\ManyToOne(targetEntity: Feature::class, inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Feature $feature = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -66,6 +68,18 @@ class Comment
     public function setFeature(?Feature $feature): self
     {
         $this->feature = $feature;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
