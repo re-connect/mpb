@@ -9,7 +9,7 @@ require 'recipe/symfony.php';
 set('repository', 'git@github.com:re-connect/mpb.git');
 
 add('shared_files', [
-    '.env',
+    '.env.local',
     'config/secrets/prod/prod.decrypt.private.php',
 ]);
 add('shared_dirs', [
