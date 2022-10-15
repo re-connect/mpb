@@ -40,9 +40,14 @@ class Feature
     #[ORM\OneToMany(mappedBy: 'feature', targetEntity: Comment::class)]
     private Collection $comments;
 
+    /** @var Collection<int, Vote> */
+    #[ORM\OneToMany(mappedBy: 'feature', targetEntity: Vote::class)]
+    private Collection $votes;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,5 +146,35 @@ class Feature
     public function hasComments(): bool
     {
         return $this->comments->count() > 0;
+    }
+
+    /**
+     * @return Collection<int, Vote>
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(Vote $vote): self
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes->add($vote);
+            $vote->setFeature($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): self
+    {
+        if ($this->votes->removeElement($vote)) {
+            // set the owning side to null (unless already changed)
+            if ($vote->getFeature() === $this) {
+                $vote->setFeature(null);
+            }
+        }
+
+        return $this;
     }
 }

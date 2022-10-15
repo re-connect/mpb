@@ -73,6 +73,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     #[ORM\OneToMany(mappedBy: 'assignee', targetEntity: Bug::class)]
     private Collection $getBugsAssignedToMe;
 
+    /** @var Collection<int, Vote> */
+    #[ORM\OneToMany(mappedBy: 'voter', targetEntity: Vote::class, orphanRemoval: true)]
+    private Collection $votes;
+
     public function __construct()
     {
         $this->bugs = new ArrayCollection();
@@ -81,6 +85,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         $this->badges = new ArrayCollection();
         $this->attachments = new ArrayCollection();
         $this->getBugsAssignedToMe = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -396,5 +401,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         }
 
         return $this;
+    }
+
+    /** @return Collection<int, Vote> */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(Vote $vote): self
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes->add($vote);
+            $vote->setVoter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): self
+    {
+        if ($this->votes->removeElement($vote)) {
+            // set the owning side to null (unless already changed)
+            if ($vote->getVoter() === $this) {
+                $vote->setVoter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function hasVotedBug(Bug $bug): bool
+    {
+        return $this->votes->exists(fn (int $key, Vote $vote) => $vote->getBug() === $bug);
+    }
+
+    public function getVoteForBug(Bug $bug): ?Vote
+    {
+        $voteForBug = $this->votes->filter(fn (Vote $vote) => $vote->getBug() === $bug)->first();
+
+        return false === $voteForBug ? null : $voteForBug;
     }
 }

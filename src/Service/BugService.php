@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Entity\Attachment;
 use App\Entity\Bug;
 use App\Form\Model\Search;
-use App\Repository\ApplicationRepository;
 use App\Repository\BugRepository;
 use App\Traits\UserAwareTrait;
 use Doctrine\Common\Collections\Criteria;
@@ -24,7 +23,6 @@ class BugService
         private readonly BugRepository $repository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly NotificationService $notificator,
-        private readonly ApplicationRepository $applicationRepository,
         private readonly string $uploadsDirectory,
         Security $security,
     ) {
