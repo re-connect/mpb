@@ -49,6 +49,7 @@ class SecurityController extends AbstractController
         return $client->getOAuth2Provider()->authorize();
     }
 
+    /** @throws \Exception */
     #[Route(path: '/reconnect-pro-check', name: 'reconnect_pro_login_check', methods: ['GET'])]
     public function reconnectProLoginCheck(Request $request, SecurityService $service): Response
     {
