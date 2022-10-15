@@ -71,10 +71,15 @@ class Bug
     #[ORM\Column(nullable: true)]
     private ?bool $draft = true;
 
+    /** @var Collection<int, Vote> */
+    #[ORM\OneToMany(mappedBy: 'bug', targetEntity: Vote::class)]
+    private Collection $votes;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->attachments = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -306,6 +311,34 @@ class Bug
     public function publish(): self
     {
         $this->draft = false;
+
+        return $this;
+    }
+
+    /** @return Collection<int, Vote> */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(Vote $vote): self
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes->add($vote);
+            $vote->setBug($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): self
+    {
+        if ($this->votes->removeElement($vote)) {
+            // set the owning side to null (unless already changed)
+            if ($vote->getBug() === $this) {
+                $vote->setBug(null);
+            }
+        }
 
         return $this;
     }

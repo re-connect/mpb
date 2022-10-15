@@ -26,6 +26,7 @@
                     <div class="col flex-grow-0 z-2 d-flex flex-column align-items-end">
                         {{ include('bug/_status.html.twig', {'bug': bug}) }}
                         {{ include('bug/_assignee_section.html.twig', {'bug': bug}) }}
+                        {{ include('bug/_votes.html.twig', {'bug': bug}) }}
                     </div>
                 {% endif %}
             </div>

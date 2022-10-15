@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Bug;
 use App\Entity\Comment;
+use App\Entity\Vote;
 use App\Form\BugType;
 use App\Form\CommentType;
 use App\Form\Model\Search;
@@ -144,5 +145,32 @@ class BugController extends AbstractController
         }
 
         return $this->renderForm('bug/add_comment.html.twig', ['bug' => $bug, 'form' => $form]);
+    }
+
+    #[IsGranted(Permissions::READ, 'bug')]
+    #[Route(path: '/{id}/vote', name: 'bug_vote', methods: ['GET'])]
+    public function vote(Bug $bug, EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        if ($user && !$user->hasVotedBug($bug)) {
+            $vote = (new Vote())->setBug($bug)->setVoter($user);
+            $em->persist($vote);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('bug_index');
+    }
+
+    #[IsGranted(Permissions::READ, 'bug')]
+    #[Route(path: '/{id}/unvote', name: 'bug_unvote', methods: ['GET'])]
+    public function unvote(Bug $bug, EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
+        if ($user && $user->hasVotedBug($bug) && $vote = $user->getVoteForBug($bug)) {
+            $em->remove($vote);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('bug_index');
     }
 }
