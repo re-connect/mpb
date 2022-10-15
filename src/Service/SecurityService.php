@@ -47,9 +47,7 @@ class SecurityService
         }
     }
 
-    /**
-     * @throws \Exception
-     */
+    /** @throws \Exception */
     public function authenticateUserFromReconnectPro(Request $request): Response
     {
         try {
