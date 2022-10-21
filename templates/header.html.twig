@@ -2,7 +2,12 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ path('bug_index') }}">
             <img src="/favicon.png" alt="logo" class="img-fluid me-2" style="max-width: 35px;"/>
-            Mon Petit Bug
+            {{ 'app_title'|trans }}
+        </a>
+        <a class="btn btn-light" href="https://github.com/re-connect/mpb" target="_blank"
+           data-bs-toggle="tooltip" data-bs-placement="left" title="{{ 'view_code_on_github'|trans }}"
+        >
+            <i class="fa-brands fa-github"></i>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
                 aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">

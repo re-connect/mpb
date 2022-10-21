@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Bugsssss{% endblock %}</title>
+    <title>{% block title %}{{ 'app_title'|trans }}{% endblock %}</title>
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.png"/>
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}

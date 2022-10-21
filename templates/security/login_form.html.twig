@@ -1,42 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
-                <div class="card border-primary mb-3 p-4 text-primary">
-                    {% if error %}
-                        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                    {% endif %}
-
-                    <form action="{{ path('app_login_form') }}" method="post">
-
-                        <div class="mb-3">
-                            <label for="username" class="form-label">{{ 'email'|trans }} :</label>
-                            <input class="form-control border-primary" type="text" id="username" name="_username"
-                                   placeholder="{{ last_username }}"
-                                   value="{{ last_username }}"/>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">{{ 'password'|trans }} :</label>
-                            <input type="password" id="password" name="_password" class="form-control border-primary"/>
-                        </div>
-
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                        <button type="submit" class="btn btn-primary float-end">{{ 'login'|trans }}</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="container d-flex justify-content-center">
-        <div class="d-grid gap-2 mt-5">
+        <div class="d-grid gap-2">
+            <a
+                    href="{{ path('google_login_trigger') }}"
+                    class="btn btn-info btn-lg shadow-lg fw-bolder fs-1 px-5"
+                    style="line-height: 200px; height: 200px">
+                {{ 'google_login'|trans }}
+            </a>
             <a
                     href="{{ path('reconnect_pro_login_trigger') }}"
-                    class="btn btn-info btn-lg shadow-lg fw-bolder fs-1 px-5" style="line-height: 200px; height: 200px">
+                    class="btn btn-info btn-lg shadow-lg fw-bolder fs-1 mt-4"
+                    style="line-height: 200px; height: 200px">
                 {{ 'rp_login'|trans }}
             </a>
+            <div class="card border-primary mb-3 p-4 text-primary mt-4">
+                {% if error %}
+                    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                <form action="{{ path('app_login') }}" method="post">
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label">{{ 'email'|trans }} :</label>
+                        <input class="form-control border-primary" type="text" id="username" name="_username"
+                               placeholder="{{ last_username }}"
+                               value="{{ last_username }}"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">{{ 'password'|trans }} :</label>
+                        <input type="password" id="password" name="_password" class="form-control border-primary"/>
+                    </div>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <button type="submit" class="btn btn-primary float-end">{{ 'login'|trans }}</button>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}
