@@ -31,7 +31,7 @@ host('155.133.130.39')
 // Tasks
 
 task('deploy:build_frontend', function () {
-    run('cd {{release_path}} && yarn install && yarn build');
+    run('cd {{release_path}} && npm install && npm run build');
 });
 task('deploy:assets_install', function () {
     run('cd {{release_path}} && php bin/console ckeditor:install && php bin/console assets:install public');

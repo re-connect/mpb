@@ -43,7 +43,7 @@ class AuthenticationTest extends WebTestCase
     public function testUserLogin(): void
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'gandalf@gmail.com']);
-        $this->client->request('GET', '/login');
+        $this->client->request('GET', '/login_form');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertNotNull($user);
         $this->client->loginUser($user);

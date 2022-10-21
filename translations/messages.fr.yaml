@@ -2,6 +2,7 @@ add_attachment: Ajouter une image
 add_comment: Ajouter un commentaire
 all_bugs: Bugs
 all_features: Améliorations
+app_title: Mon Petit Bug
 application: Application
 back_to_bug: Retour au bug
 back_to_feature: Retour à l'amélioration
@@ -13,6 +14,7 @@ creation_date: Date de création
 description: Description
 draft: Brouillon
 email: Email
+email_pwd: Email/Mot de passe
 features_list: Liste des améliorations proposées
 google_login: Connexion Google
 information: Informations
@@ -26,10 +28,11 @@ password: Mot de passe
 pending_take_over: En attente d'assignation
 propose_new_feature: Proposer une nouvelle amélioration
 rp_login: Connexion avec Reconnect Pro
+search: Rechercher
 status: Status
 take_over: Prendre en charge
 taken_over_by: Traité par
 title: Titre
 update_bug: Modifier un bug
 user_kind: Type d'utilisateur
-search: Rechercher
+view_code_on_github: Voire le code sur Github
