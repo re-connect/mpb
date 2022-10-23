@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'bug_report')]
 #[ORM\Entity(repositoryClass: BugRepository::class)]
-class Bug
+class Bug extends UserRequest
 {
     use TimestampableTrait;
 

@@ -56,6 +56,17 @@ class Vote
         return $this;
     }
 
+    public function setItem(UserRequest $item): self
+    {
+        if ($item instanceof Feature) {
+            $this->feature = $item;
+        } elseif ($item instanceof Bug) {
+            $this->bug = $item;
+        }
+
+        return $this;
+    }
+
     public function getVoter(): ?User
     {
         return $this->voter;

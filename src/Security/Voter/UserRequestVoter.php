@@ -3,12 +3,13 @@
 namespace App\Security\Voter;
 
 use App\Entity\Bug;
+use App\Entity\UserRequest;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class BugVoter extends Voter
+class UserRequestVoter extends Voter
 {
     public function __construct(private readonly AuthorizationCheckerInterface $checker)
     {
@@ -16,13 +17,13 @@ class BugVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [Permissions::UPDATE, Permissions::READ]) && $subject instanceof Bug;
+        return in_array($attribute, [Permissions::UPDATE, Permissions::READ]) && $subject instanceof UserRequest;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
-        if (!$user instanceof UserInterface || !$subject instanceof Bug) {
+        if (!$user instanceof UserInterface || !$subject instanceof UserRequest) {
             return false;
         }
 
@@ -36,7 +37,7 @@ class BugVoter extends Voter
 
         if (Permissions::READ === $attribute) {
             return true;
-        } elseif (Permissions::UPDATE === $attribute) {
+        } elseif (Permissions::UPDATE === $attribute && $subject instanceof Bug) {
             return $subject->isDraft();
         }
 

@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FeatureRepository::class)]
-class Feature
+class Feature extends UserRequest
 {
     use TimestampableTrait;
 

@@ -438,8 +438,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
 
     public function getVoteForBug(Bug $bug): ?Vote
     {
-        $voteForBug = $this->votes->filter(fn (Vote $vote) => $vote->getBug() === $bug)->first();
+        $vote = $this->votes->filter(fn (Vote $vote) => $vote->getBug() === $bug)->first();
 
-        return false === $voteForBug ? null : $voteForBug;
+        return false === $vote ? null : $vote;
+    }
+
+    public function getVoteForFeature(Feature $feature): ?Vote
+    {
+        $vote = $this->votes->filter(fn (Vote $vote) => $vote->getFeature() === $feature)->first();
+
+        return false === $vote ? null : $vote;
+    }
+
+    public function getVoteForItem(UserRequest $item): ?Vote
+    {
+        if ($item instanceof Feature) {
+            return $this->getVoteForFeature($item);
+        } elseif ($item instanceof Bug) {
+            return $this->getVoteForBug($item);
+        }
+
+        return null;
     }
 }
