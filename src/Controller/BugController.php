@@ -4,11 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Bug;
 use App\Entity\Comment;
-use App\Entity\Vote;
 use App\Form\BugType;
 use App\Form\CommentType;
 use App\Form\Model\Search;
 use App\Form\SearchType;
+use App\Manager\VoteManager;
 use App\Repository\ApplicationRepository;
 use App\Security\Voter\Permissions;
 use App\Service\BugService;
@@ -149,27 +149,18 @@ class BugController extends AbstractController
 
     #[IsGranted(Permissions::READ, 'bug')]
     #[Route(path: '/{id}/vote', name: 'bug_vote', methods: ['GET'])]
-    public function vote(Bug $bug, EntityManagerInterface $em): Response
+    public function vote(Bug $bug, VoteManager $manager): Response
     {
-        $user = $this->getUser();
-        if ($user && !$user->hasVotedBug($bug)) {
-            $vote = (new Vote())->setBug($bug)->setVoter($user);
-            $em->persist($vote);
-            $em->flush();
-        }
+        $manager->voteForItem($bug);
 
         return $this->redirectToRoute('bug_index');
     }
 
     #[IsGranted(Permissions::READ, 'bug')]
     #[Route(path: '/{id}/unvote', name: 'bug_unvote', methods: ['GET'])]
-    public function unvote(Bug $bug, EntityManagerInterface $em): Response
+    public function unvote(Bug $bug, VoteManager $manager): Response
     {
-        $user = $this->getUser();
-        if ($user && $user->hasVotedBug($bug) && $vote = $user->getVoteForBug($bug)) {
-            $em->remove($vote);
-            $em->flush();
-        }
+        $manager->unVoteForItem($bug);
 
         return $this->redirectToRoute('bug_index');
     }

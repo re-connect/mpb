@@ -6,10 +6,12 @@ use App\Entity\Comment;
 use App\Entity\Feature;
 use App\Form\CommentType;
 use App\Form\FeatureType;
+use App\Manager\VoteManager;
 use App\Repository\FeatureRepository;
+use App\Security\Voter\Permissions;
 use App\Service\FeatureService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,10 +22,8 @@ class FeatureController extends AbstractController
     #[Route('/list', name: 'features_list')]
     public function index(FeatureRepository $repository): Response
     {
-        $features = $repository->findAll();
-
         return $this->render('feature/index.html.twig', [
-            'features' => $features,
+            'features' => $repository->findAll(),
         ]);
     }
 
@@ -62,5 +62,23 @@ class FeatureController extends AbstractController
             'feature' => $feature,
             'form' => $form,
         ]);
+    }
+
+    #[IsGranted(Permissions::READ, 'feature')]
+    #[Route(path: '/{id}/vote', name: 'feature_vote', methods: ['GET'])]
+    public function vote(Feature $feature, VoteManager $manager): Response
+    {
+        $manager->voteForItem($feature);
+
+        return $this->redirectToRoute('features_list');
+    }
+
+    #[IsGranted(Permissions::READ, 'feature')]
+    #[Route(path: '/{id}/unvote', name: 'feature_unvote', methods: ['GET'])]
+    public function unVote(Feature $feature, VoteManager $manager): Response
+    {
+        $manager->unVoteForItem($feature);
+
+        return $this->redirectToRoute('features_list');
     }
 }
