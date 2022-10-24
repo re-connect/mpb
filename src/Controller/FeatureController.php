@@ -4,14 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Feature;
+use App\Entity\Tag;
 use App\Form\CommentType;
 use App\Form\FeatureType;
 use App\Manager\VoteManager;
 use App\Repository\FeatureRepository;
+use App\Repository\TagRepository;
 use App\Security\Voter\Permissions;
 use App\Service\FeatureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,9 +45,22 @@ class FeatureController extends AbstractController
     }
 
     #[Route(path: '/show/{id}', name: 'feature_show', methods: ['GET'])]
-    public function show(Feature $feature): Response
+    public function show(Feature $feature, TagRepository $tagRepository): Response
     {
-        return $this->render('feature/show.html.twig', ['feature' => $feature]);
+        return $this->render('feature/show.html.twig', [
+            'feature' => $feature,
+            'tags' => $tagRepository->findAll(),
+        ]);
+    }
+
+    #[ParamConverter('tag', class: Tag::class)]
+    #[Route(path: '/{id}/tag/{tagId}', name: 'feature_tag', methods: ['GET'])]
+    public function addTag(Feature $feature, Tag $tag, EntityManagerInterface $em): Response
+    {
+        $feature->toggleTag($tag);
+        $em->flush();
+
+        return $this->redirectToRoute('feature_show', ['id' => $feature->getId()]);
     }
 
     #[Route(path: '/{id}/add-comment', name: 'feature_add_comment', methods: ['GET', 'POST'])]

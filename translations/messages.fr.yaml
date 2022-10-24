@@ -6,11 +6,13 @@ app_title: Mon Petit Bug
 application: Application
 back_to_bug: Retour au bug
 back_to_feature: Retour à l'amélioration
+bug: Bug
 bugs_list: Liste des bugs
 comments: Commentaires
 create: Créer
 created_by: Remonté par
 creation_date: Date de création
+dashboard: Accueil
 description: Description
 draft: Brouillon
 email: Email
@@ -30,9 +32,12 @@ propose_new_feature: Proposer une nouvelle amélioration
 rp_login: Connexion avec Reconnect Pro
 search: Rechercher
 status: Status
+tag: Label
+tags: Labels
 take_over: Prendre en charge
 taken_over_by: Traité par
 title: Titre
 update_bug: Modifier un bug
+user: Utilisateur
 user_kind: Type d'utilisateur
 view_code_on_github: Voire le code sur Github
