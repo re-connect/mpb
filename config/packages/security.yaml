@@ -62,7 +62,7 @@ security:
         # but require authentication for all other admin routes
         # - { path: ^/admin, roles: ROLE_ADMIN }
     access_control:
-        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/login|reconnect-pro-login-trigger|reconnect-pro-check|google-login-trigger|google-check|slack-chat, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/, roles: ROLE_USER }
 
