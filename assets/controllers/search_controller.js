@@ -17,11 +17,7 @@ export default class extends Controller {
         })
             .then((response) => {
                 if (response && response.data) {
-                    const containerParent = this.containerTarget.parentNode;
-                    const newHtmlContainer = document.createElement('div');
-                    newHtmlContainer.innerHTML = response.data.trim();
-
-                    containerParent.replaceChild(newHtmlContainer.firstChild, this.containerTarget);
+                    this.containerTarget.innerHTML = response.data.trim();
                 }
             })
             .catch((reason) => {

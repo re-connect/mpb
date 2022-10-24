@@ -1,0 +1,7 @@
+<div class="row">
+    {% for feature in features %}
+        {{ include('feature/components/_card.html.twig', { feature }) }}
+    {% else %}
+        {{ 'no_feature'|trans }}
+    {% endfor %}
+</div>

@@ -22,10 +22,10 @@ class SecurityController extends AbstractController
         return $this->redirectToRoute($redirectRoute);
     }
 
-    #[Route(path: '/login_form', name: 'app_login', methods: ['GET', 'POST'])]
+    #[Route(path: '/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function loginForm(AuthenticationUtils $authenticationUtils): Response
     {
-        return $this->renderForm('security/login_form.html.twig', [
+        return $this->renderForm('security/login.html.twig', [
             'error' => $authenticationUtils->getLastAuthenticationError(),
             'last_username' => $authenticationUtils->getLastUsername(),
         ]);

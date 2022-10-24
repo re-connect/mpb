@@ -3,16 +3,21 @@
 {% block title %}{{ 'features_list'| trans }}{% endblock %}
 
 {% block body %}
-    <a class="btn btn-primary float-end my-2"
-       href="{{ path('feature_new') }}">{{ 'propose_new_feature'|trans }}</a>
-    <h1>{{ 'features_list'|trans }}</h1>
-    <div class="container py-3 px-4">
+    <div {{ stimulus_controller('search') }}>
         <div class="row">
-            {% for feature in features %}
-                {{ include('feature/_card.html.twig', { feature }) }}
-            {% else %}
-                {{ 'no_feature'|trans }}
-            {% endfor %}
+            <div class="col flex-grow-1">
+                {{ form_start(searchForm, {'attr': {'data-search-target': 'form'}}) }}
+                {{ form_end(searchForm) }}
+            </div>
+            <div class="mt-2 mt-sm-0 col-12 col-sm-4 col-md-4 col-lg-3 d-flex">
+                <a class="btn btn-primary flex-grow-1"
+                   href="{{ path('feature_new') }}">{{ 'propose_new_feature'|trans }}</a>
+            </div>
+        </div>
+        <div class="container py-3 px-4">
+            <div {{ stimulus_target('search', 'container') }}>
+                {{ include('feature/components/_list.html.twig',{features} ) }}
+            </div>
         </div>
     </div>
 {% endblock %}

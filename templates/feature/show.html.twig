@@ -12,9 +12,9 @@
 
 {% block body %}
     <div class="position-relative">
-        <div class="col">{{ include('feature/_back_to_list_button.html.twig') }}</div>
+        <div class="col">{{ include('feature/components/_back_to_list_button.html.twig') }}</div>
         <h1>{{ feature.title }}</h1>
-        {{ include('feature/_tags.html.twig', {feature, tags}) }}
+        {{ include('feature/components/_tags.html.twig', {feature, tags}) }}
         <table class="table">
             <tbody>
             {% for item in items %}
@@ -25,8 +25,8 @@
             {% endfor %}
             </tbody>
         </table>
-        {{ include('feature/_add_tags.html.twig', {feature, tags}) }}
-        {{ include('feature/_comments.html.twig', {feature}) }}
+        {{ include('feature/components/_add_tags.html.twig', {feature, tags}) }}
+        {{ include('feature/components/_comments.html.twig', {feature}) }}
         <a class="btn btn-info" href="{{ path('feature_add_comment', {id: feature.id}) }}">{{ 'add_comment'|trans }}</a>
     </div>
 {% endblock %}

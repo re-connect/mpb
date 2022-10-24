@@ -7,8 +7,10 @@ use App\Entity\Feature;
 use App\Entity\Tag;
 use App\Form\CommentType;
 use App\Form\FeatureType;
+use App\Form\Model\Search;
+use App\Form\SearchType;
 use App\Manager\VoteManager;
-use App\Repository\FeatureRepository;
+use App\Repository\ApplicationRepository;
 use App\Repository\TagRepository;
 use App\Security\Voter\Permissions;
 use App\Service\FeatureService;
@@ -23,10 +25,29 @@ use Symfony\Component\Routing\Annotation\Route;
 class FeatureController extends AbstractController
 {
     #[Route('/list', name: 'features_list')]
-    public function index(FeatureRepository $repository): Response
+    public function index(Request $request, FeatureService $service, ApplicationRepository $applicationRepository): Response
     {
-        return $this->render('feature/index.html.twig', [
-            'features' => $repository->findAll(),
+        $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $searchForm = $this->createForm(SearchType::class, null, [
+            'action' => $this->generateUrl('feature_search', $request->query->all()),
+        ]);
+
+        return $this->renderForm('feature/index.html.twig', [
+            'features' => $service->getAccessible($search),
+            'done' => $search->getShowDone(),
+            'searchForm' => $searchForm,
+            'applications' => $applicationRepository->findAll(),
+        ]);
+    }
+
+    #[Route(path: '/search', name: 'feature_search', methods: ['POST'])]
+    public function search(Request $request, FeatureService $service): Response
+    {
+        $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $this->createForm(SearchType::class, $search)->handleRequest($request);
+
+        return $this->render('feature/components/_list.html.twig', [
+            'features' => $service->getAccessible($search),
         ]);
     }
 
