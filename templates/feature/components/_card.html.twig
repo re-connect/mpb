@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="col-2 z-2">
-            {{ include('feature/_votes.html.twig', {feature}) }}
+            {{ include('feature/components/_votes.html.twig', {feature}) }}
         </div>
         <a href="{{ path('feature_show', {'id': feature.id}) }}" class="stretched-link"></a>
     </div>

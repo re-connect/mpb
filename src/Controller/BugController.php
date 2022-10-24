@@ -26,7 +26,6 @@ class BugController extends AbstractController
     public function index(Request $request, BugService $service, ApplicationRepository $applicationRepository): Response
     {
         $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
-
         $searchForm = $this->createForm(SearchType::class, null, [
             'action' => $this->generateUrl('bug_search', $request->query->all()),
         ]);
@@ -40,7 +39,7 @@ class BugController extends AbstractController
     }
 
     #[Route(path: '/search', name: 'bug_search', methods: ['POST'])]
-    public function search(Request $request, BugService $service, ApplicationRepository $applicationRepository): Response
+    public function search(Request $request, BugService $service): Response
     {
         $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
         $this->createForm(SearchType::class, $search)->handleRequest($request);

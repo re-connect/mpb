@@ -13,7 +13,7 @@ test:
 	@$(PHPUNIT) tests
 
 rector:
-	@$(RECTOR) process
+	@$(RECTOR) process --clear-cache
 
 stan:
 	@$(PHPSTAN) analyse

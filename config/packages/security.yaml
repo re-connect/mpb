@@ -62,7 +62,9 @@ security:
         # but require authentication for all other admin routes
         # - { path: ^/admin, roles: ROLE_ADMIN }
     access_control:
+        - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/, roles: ROLE_USER }
 
 when@test:
     security:

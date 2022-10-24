@@ -12,7 +12,7 @@ class SecurityControllerTest extends WebTestCase
         $client = static::createClient();
 
         $client->request('GET', '/');
-        $this->assertResponseRedirects('/login_form');
+        $this->assertResponseRedirects('http://localhost/login');
 
         /** @var \App\Entity\User $user */
         $user = self::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'tester@gmail.com']);
@@ -25,6 +25,6 @@ class SecurityControllerTest extends WebTestCase
         $this->assertResponseRedirects('');
 
         $client->request('GET', '/');
-        $this->assertResponseRedirects('/login_form');
+        $this->assertResponseRedirects('http://localhost/login');
     }
 }

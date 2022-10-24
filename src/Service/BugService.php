@@ -24,9 +24,8 @@ class BugService
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly NotificationService $notificator,
         private readonly string $uploadsDirectory,
-        Security $security,
+        private readonly Security $security,
     ) {
-        $this->security = $security;
     }
 
     public function initBug(string $userAgent): Bug
