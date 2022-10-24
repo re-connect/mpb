@@ -1,0 +1,14 @@
+<div class="row">
+    {% for tag in tags %}
+        {% if feature.taggedWith(tag) %}
+            <div class="col-2">
+                <a
+                        class="btn text-white"
+                        style="background-color: {{ tag.color }}"
+                        href="{{ path('feature_tag', {'id': feature.id, 'tagId': tag.id}) }}">
+                    {{ tag.name }}
+                </a>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

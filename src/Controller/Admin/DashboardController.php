@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Application;
 use App\Entity\Bug;
+use App\Entity\Tag;
 use App\Entity\User;
 use App\Entity\UserKind;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -27,16 +28,17 @@ class DashboardController extends AbstractDashboardController
 
     public function configureDashboard(): Dashboard
     {
-        return Dashboard::new()->setTitle('Mpb');
+        return Dashboard::new()->setTitle('MPB');
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Bug', 'fas fa-bug', Bug::class);
-        yield MenuItem::linkToCrud('User', 'fas fa-users', User::class);
-        yield MenuItem::linkToCrud('Application', 'fas fa-computer', Application::class);
-        yield MenuItem::linkToCrud('UserKind', 'fas fa-user', UserKind::class);
+        yield MenuItem::linktoDashboard('dashboard', 'fa fa-home');
+        yield MenuItem::linkToCrud('bug', 'fas fa-bug', Bug::class);
+        yield MenuItem::linkToCrud('user', 'fas fa-users', User::class);
+        yield MenuItem::linkToCrud('application', 'fas fa-computer', Application::class);
+        yield MenuItem::linkToCrud('user_kind', 'fas fa-user', UserKind::class);
+        yield MenuItem::linkToCrud('tags', 'fas fa-tag', Tag::class);
 //         yield MenuItem::linkToCrud('Comment', 'fas fa-list', Comment::class);
     }
 }

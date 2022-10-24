@@ -44,10 +44,15 @@ class Feature extends UserRequest
     #[ORM\OneToMany(mappedBy: 'feature', targetEntity: Vote::class)]
     private Collection $votes;
 
+    /** @var Collection<int, Tag> */
+    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'features')]
+    private Collection $tags;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -176,5 +181,44 @@ class Feature extends UserRequest
         }
 
         return $this;
+    }
+
+    /** @return Collection<int, Tag> */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+            $tag->addFeature($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->removeElement($tag)) {
+            $tag->removeFeature($this);
+        }
+
+        return $this;
+    }
+
+    public function isTaggedWith(Tag $tag): bool
+    {
+        return $this->tags->contains($tag);
+    }
+
+    public function toggleTag(Tag $tag): void
+    {
+        if (!$this->isTaggedWith($tag)) {
+            $this->addTag($tag);
+        } else {
+            $this->removeTag($tag);
+        }
     }
 }
