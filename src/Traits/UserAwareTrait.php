@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Entity\User;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 trait UserAwareTrait
 {

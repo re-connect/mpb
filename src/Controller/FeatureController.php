@@ -14,10 +14,10 @@ use App\Repository\ApplicationRepository;
 use App\Repository\TagRepository;
 use App\Service\FeatureService;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/features')]
 class FeatureController extends AbstractController
@@ -30,7 +30,7 @@ class FeatureController extends AbstractController
             'action' => $this->generateUrl('feature_search', $request->query->all()),
         ]);
 
-        return $this->renderForm('feature/index.html.twig', [
+        return $this->render('feature/index.html.twig', [
             'features' => $service->getAccessible($search),
             'done' => $search->getShowDone(),
             'searchForm' => $searchForm,
@@ -60,7 +60,7 @@ class FeatureController extends AbstractController
             return $this->redirectToRoute('features_list');
         }
 
-        return $this->renderForm('feature/new.html.twig', ['form' => $form]);
+        return $this->render('feature/new.html.twig', ['form' => $form]);
     }
 
     #[Route(path: '/show/{id}', name: 'feature_show', methods: ['GET'])]
@@ -72,8 +72,8 @@ class FeatureController extends AbstractController
         ]);
     }
 
-    #[ParamConverter('tag', class: Tag::class)]
-    #[Route(path: '/{id}/tag/{tagId}', name: 'feature_tag', methods: ['GET'])]
+    #[IsGranted('ROLE_TECH_TEAM')]
+    #[Route(path: '/{id}/tag/{tag}', name: 'feature_tag', methods: ['GET'])]
     public function addTag(Feature $feature, Tag $tag, EntityManagerInterface $em): Response
     {
         $feature->toggleTag($tag);
@@ -93,7 +93,7 @@ class FeatureController extends AbstractController
             $em->flush();
         }
 
-        return $this->renderForm('feature/add_comment.html.twig', [
+        return $this->render('feature/add_comment.html.twig', [
             'feature' => $feature,
             'form' => $form,
         ]);

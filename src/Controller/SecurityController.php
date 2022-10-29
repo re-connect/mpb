@@ -17,7 +17,7 @@ class SecurityController extends AbstractController
     #[Route(path: '/', name: 'app_home')]
     public function redirectAction(): RedirectResponse
     {
-        $redirectRoute = $this->getUser() ? 'bug_index' : 'app_login';
+        $redirectRoute = $this->getUser() ? 'bugs_list' : 'app_login';
 
         return $this->redirectToRoute($redirectRoute);
     }
@@ -25,7 +25,7 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function loginForm(AuthenticationUtils $authenticationUtils): Response
     {
-        return $this->renderForm('security/login.html.twig', [
+        return $this->render('security/login.html.twig', [
             'error' => $authenticationUtils->getLastAuthenticationError(),
             'last_username' => $authenticationUtils->getLastUsername(),
         ]);

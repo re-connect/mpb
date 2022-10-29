@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/bugs')]
 class BugController extends AbstractController
 {
-    #[Route(path: '/list', name: 'bug_index', methods: ['GET'])]
+    #[Route(path: '/list', name: 'bugs_list', methods: ['GET'])]
     public function index(Request $request, BugService $service, ApplicationRepository $applicationRepository): Response
     {
         $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
@@ -30,7 +30,7 @@ class BugController extends AbstractController
             'action' => $this->generateUrl('bug_search', $request->query->all()),
         ]);
 
-        return $this->renderForm('bug/index.html.twig', [
+        return $this->render('bug/index.html.twig', [
             'bugs' => $service->getAccessible($search),
             'done' => $search->getShowDone(),
             'searchForm' => $searchForm,
@@ -67,7 +67,7 @@ class BugController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->renderForm('bug/new.html.twig', ['bug' => $bug, 'form' => $form]);
+        return $this->render('bug/new.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
     #[Route(path: '/{id}/add-screenshot', name: 'add_screenshot', methods: ['GET', 'POST'])]
@@ -93,10 +93,10 @@ class BugController extends AbstractController
             $bug->publish();
             $em->flush();
 
-            return $this->redirectToRoute('bug_index');
+            return $this->redirectToRoute('bugs_list');
         }
 
-        return $this->renderForm('bug/edit.html.twig', ['bug' => $bug, 'form' => $form]);
+        return $this->render('bug/edit.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
     #[IsGranted(Permissions::READ, 'bug')]
@@ -109,7 +109,7 @@ class BugController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('bug_index');
+        return $this->redirectToRoute('bugs_list');
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
@@ -119,7 +119,7 @@ class BugController extends AbstractController
         $bug->setAssignee($this->getUser());
         $em->flush();
 
-        return $this->redirectToRoute('bug_index');
+        return $this->redirectToRoute('bugs_list');
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
@@ -128,7 +128,7 @@ class BugController extends AbstractController
     {
         $service->markAsDone($bug);
 
-        return $this->redirectToRoute('bug_index');
+        return $this->redirectToRoute('bugs_list');
     }
 
     #[IsGranted(Permissions::READ, 'bug')]
@@ -143,7 +143,7 @@ class BugController extends AbstractController
             $em->flush();
         }
 
-        return $this->renderForm('bug/add_comment.html.twig', ['bug' => $bug, 'form' => $form]);
+        return $this->render('bug/add_comment.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
     #[Route(path: '/{id}/vote', name: 'bug_vote', methods: ['GET'])]
@@ -151,6 +151,6 @@ class BugController extends AbstractController
     {
         $manager->voteForItem($bug);
 
-        return $this->redirectToRoute('bug_index');
+        return $this->redirectToRoute('bugs_list');
     }
 }

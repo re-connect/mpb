@@ -48,6 +48,9 @@ class Feature extends UserRequest
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'features')]
     private Collection $tags;
 
+    #[ORM\ManyToOne(inversedBy: 'features')]
+    private ?Center $center = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -220,5 +223,17 @@ class Feature extends UserRequest
         } else {
             $this->removeTag($tag);
         }
+    }
+
+    public function getCenter(): ?Center
+    {
+        return $this->center;
+    }
+
+    public function setCenter(?Center $center): self
+    {
+        $this->center = $center;
+
+        return $this;
     }
 }

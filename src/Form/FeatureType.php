@@ -23,9 +23,16 @@ class FeatureType extends AbstractType
                 ],
             ])
             ->add('application', StyledEntityType::class, [
-                'required' => true,
                 'class' => Application::class,
                 'placeholder' => 'application',
+            ])
+            ->add('center', null, [
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'center',
+                    'data-controller' => 'tomselect',
+                    'data-tomselect-target' => 'select',
+                ],
             ])
             ->add('content', CKEditorType::class, [
                 'label' => 'description',

@@ -15,6 +15,7 @@
             </div>
         </div>
         <div class="container py-3 px-4">
+            {{ include('bug/_toggle_application_buttons.html.twig', {applications, route : 'features_list'}) }}
             <div {{ stimulus_target('search', 'container') }}>
                 {{ include('feature/components/_list.html.twig',{features} ) }}
             </div>

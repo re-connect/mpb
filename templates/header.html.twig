@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ path('bug_index') }}">
+        <a class="navbar-brand" href="{{ path('bugs_list') }}">
             <img src="/favicon.png" alt="logo" class="img-fluid me-2" style="max-width: 35px;"/>
             {{ 'app_title'|trans }}
         </a>
@@ -16,7 +16,7 @@
         <div class="{{ not app.user ? 'd-none' : 'collapse navbar-collapse' }}" id="navbarColor01">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('bug_index') }}">
+                    <a class="nav-link" href="{{ path('bugs_list') }}">
                         <i class="fas fa-triangle-exclamation me-2"></i>
                         {{ 'all_bugs'|trans }}
                         <span class="visually-hidden"></span>

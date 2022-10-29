@@ -1,0 +1,9 @@
+<div class="row">
+    <div class="d-flex justify-content-end">
+        {% for tag in feature.tags %}
+            <span class="badge ms-2" style="background-color: {{ tag.color }}">
+                {{ tag.name }}
+        </span>
+        {% endfor %}
+    </div>
+</div>
