@@ -30,7 +30,7 @@ class BugController extends AbstractController
             'action' => $this->generateUrl('bug_search', $request->query->all()),
         ]);
 
-        return $this->renderForm('bug/index.html.twig', [
+        return $this->render('bug/index.html.twig', [
             'bugs' => $service->getAccessible($search),
             'done' => $search->getShowDone(),
             'searchForm' => $searchForm,
@@ -67,7 +67,7 @@ class BugController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->renderForm('bug/new.html.twig', ['bug' => $bug, 'form' => $form]);
+        return $this->render('bug/new.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
     #[Route(path: '/{id}/add-screenshot', name: 'add_screenshot', methods: ['GET', 'POST'])]
@@ -96,7 +96,7 @@ class BugController extends AbstractController
             return $this->redirectToRoute('bugs_list');
         }
 
-        return $this->renderForm('bug/edit.html.twig', ['bug' => $bug, 'form' => $form]);
+        return $this->render('bug/edit.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
     #[IsGranted(Permissions::READ, 'bug')]
@@ -143,7 +143,7 @@ class BugController extends AbstractController
             $em->flush();
         }
 
-        return $this->renderForm('bug/add_comment.html.twig', ['bug' => $bug, 'form' => $form]);
+        return $this->render('bug/add_comment.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
     #[Route(path: '/{id}/vote', name: 'bug_vote', methods: ['GET'])]

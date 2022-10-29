@@ -30,7 +30,7 @@ class FeatureController extends AbstractController
             'action' => $this->generateUrl('feature_search', $request->query->all()),
         ]);
 
-        return $this->renderForm('feature/index.html.twig', [
+        return $this->render('feature/index.html.twig', [
             'features' => $service->getAccessible($search),
             'done' => $search->getShowDone(),
             'searchForm' => $searchForm,
@@ -60,7 +60,7 @@ class FeatureController extends AbstractController
             return $this->redirectToRoute('features_list');
         }
 
-        return $this->renderForm('feature/new.html.twig', ['form' => $form]);
+        return $this->render('feature/new.html.twig', ['form' => $form]);
     }
 
     #[Route(path: '/show/{id}', name: 'feature_show', methods: ['GET'])]
@@ -93,7 +93,7 @@ class FeatureController extends AbstractController
             $em->flush();
         }
 
-        return $this->renderForm('feature/add_comment.html.twig', [
+        return $this->render('feature/add_comment.html.twig', [
             'feature' => $feature,
             'form' => $form,
         ]);

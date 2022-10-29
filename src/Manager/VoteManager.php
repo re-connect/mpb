@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Entity\UserRequest;
 use App\Entity\Vote;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class VoteManager
 {

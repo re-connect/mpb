@@ -7,7 +7,7 @@ use App\Entity\Comment;
 use App\Entity\Feature;
 use App\Traits\UserAwareTrait;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class TraceableEntityListener
 {
