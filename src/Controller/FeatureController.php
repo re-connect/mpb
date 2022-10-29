@@ -12,10 +12,8 @@ use App\Form\SearchType;
 use App\Manager\VoteManager;
 use App\Repository\ApplicationRepository;
 use App\Repository\TagRepository;
-use App\Security\Voter\Permissions;
 use App\Service\FeatureService;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -101,20 +99,10 @@ class FeatureController extends AbstractController
         ]);
     }
 
-    #[IsGranted(Permissions::READ, 'feature')]
     #[Route(path: '/{id}/vote', name: 'feature_vote', methods: ['GET'])]
     public function vote(Feature $feature, VoteManager $manager): Response
     {
         $manager->voteForItem($feature);
-
-        return $this->redirectToRoute('features_list');
-    }
-
-    #[IsGranted(Permissions::READ, 'feature')]
-    #[Route(path: '/{id}/unvote', name: 'feature_unvote', methods: ['GET'])]
-    public function unVote(Feature $feature, VoteManager $manager): Response
-    {
-        $manager->unVoteForItem($feature);
 
         return $this->redirectToRoute('features_list');
     }

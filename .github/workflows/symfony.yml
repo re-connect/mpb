@@ -39,7 +39,7 @@ jobs:
             -   name: Setup PostgreSQL
                 uses: Harmon758/postgresql-action@v1.0.0
                 with:
-                    postgresql db: mpb_test
+                    postgresql db: mpb_db_test
                     postgresql user: mpb
                     postgresql password: mpb
             -   name: Run Doctrine Migrations

@@ -146,20 +146,10 @@ class BugController extends AbstractController
         return $this->renderForm('bug/add_comment.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
-    #[IsGranted(Permissions::READ, 'bug')]
     #[Route(path: '/{id}/vote', name: 'bug_vote', methods: ['GET'])]
     public function vote(Bug $bug, VoteManager $manager): Response
     {
         $manager->voteForItem($bug);
-
-        return $this->redirectToRoute('bug_index');
-    }
-
-    #[IsGranted(Permissions::READ, 'bug')]
-    #[Route(path: '/{id}/unvote', name: 'bug_unvote', methods: ['GET'])]
-    public function unvote(Bug $bug, VoteManager $manager): Response
-    {
-        $manager->unVoteForItem($bug);
 
         return $this->redirectToRoute('bug_index');
     }
