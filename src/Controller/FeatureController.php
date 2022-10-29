@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/features')]
 class FeatureController extends AbstractController
@@ -71,6 +72,7 @@ class FeatureController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/tag/{tag}', name: 'feature_tag', methods: ['GET'])]
     public function addTag(Feature $feature, Tag $tag, EntityManagerInterface $em): Response
     {

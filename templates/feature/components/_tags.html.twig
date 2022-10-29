@@ -2,12 +2,18 @@
     {% for tag in tags %}
         {% if feature.taggedWith(tag) %}
             <div class="col-2">
-                <a
-                        class="btn text-white"
-                        style="background-color: {{ tag.color }}"
-                        href="{{ path('feature_tag', {'id': feature.id, 'tag': tag.id}) }}">
-                    {{ tag.name }}
-                </a>
+                {% if is_granted('ROLE_TECH_TEAM') %}
+                    <a
+                            class="btn text-white"
+                            style="background-color: {{ tag.color }}"
+                            href="{{ path('feature_tag', {'id': feature.id, 'tag': tag.id}) }}">
+                        {{ tag.name }}
+                    </a>
+                {% else %}
+                    <span class="badge p-2 text-white" style="background-color: {{ tag.color }}">
+                        {{ tag.name }}
+                    </span>
+                {% endif %}
             </div>
         {% endif %}
     {% endfor %}

@@ -1,16 +1,18 @@
-<div class="row">
-    <div class="col"></div>
-    {% for tag in tags %}
-        {% if not feature.taggedWith(tag) %}
-            <div class="col-2">
-                <a
-                        class="btn"
-                        style="border-color: {{ tag.color }}; color: {{ tag.color }};"
-                        href="{{ path('feature_tag', {'id': feature.id, 'tag': tag.id}) }}">
-                    <i class="fas fa-plus"></i>
-                    {{ tag.name }}
-                </a>
-            </div>
-        {% endif %}
-    {% endfor %}
-</div>
+{% if is_granted('ROLE_TECH_TEAM') %}
+    <div class="row">
+        <div class="col"></div>
+        {% for tag in tags %}
+            {% if not feature.taggedWith(tag) %}
+                <div class="col-2">
+                    <a
+                            class="btn"
+                            style="border-color: {{ tag.color }}; color: {{ tag.color }};"
+                            href="{{ path('feature_tag', {'id': feature.id, 'tag': tag.id}) }}">
+                        <i class="fas fa-plus"></i>
+                        {{ tag.name }}
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
