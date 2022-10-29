@@ -2,15 +2,23 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Badge;
+use App\Entity\Center;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
-class BadgeCrudController extends AbstractCrudController
+class CenterCrudController extends AbstractCrudController
 {
+    public function configureCrud(Crud $crud): Crud
+    {
+        return parent::configureCrud($crud
+            ->setEntityLabelInPlural('centers')
+            ->setEntityLabelInSingular('center')
+        );
+    }
+
     public static function getEntityFqcn(): string
     {
-        return Badge::class;
+        return Center::class;
     }
 
     /*
