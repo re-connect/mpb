@@ -2,8 +2,6 @@
 
 namespace App\Manager;
 
-use App\Entity\Bug;
-use App\Entity\Feature;
 use App\Entity\User;
 use App\Entity\UserRequest;
 use App\Entity\Vote;
@@ -18,26 +16,22 @@ class VoteManager
     ) {
     }
 
-    public function unVoteForItem(Bug|Feature $feature): void
-    {
-        /** @var ?User $user */
-        $user = $this->security->getUser();
-
-        if ($user && $vote = $user->getVoteForItem($feature)) {
-            $this->em->remove($vote);
-            $this->em->flush();
-        }
-    }
-
     public function voteForItem(UserRequest $item): void
     {
         /** @var ?User $user */
         $user = $this->security->getUser();
+        if (!$user) {
+            return;
+        }
+        $currentVote = $user->getVoteForItem($item);
 
-        if ($user && !$user->getVoteForItem($item)) {
+        if (!$currentVote) {
             $vote = (new Vote())->setItem($item)->setVoter($user);
             $this->em->persist($vote);
-            $this->em->flush();
+        } else {
+            $this->em->remove($currentVote);
         }
+
+        $this->em->flush();
     }
 }

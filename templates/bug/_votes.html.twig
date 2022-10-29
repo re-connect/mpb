@@ -1,5 +1,5 @@
 <a class="btn btn-{{ app.user.hasVotedBug(bug) ? '' : 'outline-' }}primary btn-sm mt-2"
-   href="{{ app.user.hasVotedBug(bug) ? path('bug_unvote', {'id': bug.id}) : path('bug_vote', {'id': bug.id}) }}"
+   href="{{ path('bug_vote', {'id': bug.id}) }}"
 >
     <i class="fa fa-thumbs-up"></i>
     <span>({{ bug.votes|length }})</span>
