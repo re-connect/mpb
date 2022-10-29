@@ -1,10 +1,10 @@
 <div class="row">
     {% if done != true %}
-        <a href="{{ path('bug_index', {'done': true}) }}" class="btn btn-success mt-4">
+        <a href="{{ path('bugs_list', {'done': true}) }}" class="btn btn-success mt-4">
             Voir les bugs résolus
         </a>
     {% else %}
-        <a href="{{ path('bug_index') }}" class="btn btn-warning mt-4">
+        <a href="{{ path('bugs_list') }}" class="btn btn-warning mt-4">
             Voir les bugs non résolus
         </a>
     {% endif %}

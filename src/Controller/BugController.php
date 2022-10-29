@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/bugs')]
 class BugController extends AbstractController
 {
-    #[Route(path: '/list', name: 'bug_index', methods: ['GET'])]
+    #[Route(path: '/list', name: 'bugs_list', methods: ['GET'])]
     public function index(Request $request, BugService $service, ApplicationRepository $applicationRepository): Response
     {
         $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
@@ -93,7 +93,7 @@ class BugController extends AbstractController
             $bug->publish();
             $em->flush();
 
-            return $this->redirectToRoute('bug_index');
+            return $this->redirectToRoute('bugs_list');
         }
 
         return $this->renderForm('bug/edit.html.twig', ['bug' => $bug, 'form' => $form]);
@@ -109,7 +109,7 @@ class BugController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('bug_index');
+        return $this->redirectToRoute('bugs_list');
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
@@ -119,7 +119,7 @@ class BugController extends AbstractController
         $bug->setAssignee($this->getUser());
         $em->flush();
 
-        return $this->redirectToRoute('bug_index');
+        return $this->redirectToRoute('bugs_list');
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
@@ -128,7 +128,7 @@ class BugController extends AbstractController
     {
         $service->markAsDone($bug);
 
-        return $this->redirectToRoute('bug_index');
+        return $this->redirectToRoute('bugs_list');
     }
 
     #[IsGranted(Permissions::READ, 'bug')]
@@ -151,6 +151,6 @@ class BugController extends AbstractController
     {
         $manager->voteForItem($bug);
 
-        return $this->redirectToRoute('bug_index');
+        return $this->redirectToRoute('bugs_list');
     }
 }

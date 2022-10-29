@@ -17,7 +17,7 @@ class SecurityController extends AbstractController
     #[Route(path: '/', name: 'app_home')]
     public function redirectAction(): RedirectResponse
     {
-        $redirectRoute = $this->getUser() ? 'bug_index' : 'app_login';
+        $redirectRoute = $this->getUser() ? 'bugs_list' : 'app_login';
 
         return $this->redirectToRoute($redirectRoute);
     }
