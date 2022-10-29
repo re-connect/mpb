@@ -5,7 +5,7 @@
                 <a
                         class="btn text-white"
                         style="background-color: {{ tag.color }}"
-                        href="{{ path('feature_tag', {'id': feature.id, 'tagId': tag.id}) }}">
+                        href="{{ path('feature_tag', {'id': feature.id, 'tag': tag.id}) }}">
                     {{ tag.name }}
                 </a>
             </div>

@@ -14,7 +14,6 @@ use App\Repository\ApplicationRepository;
 use App\Repository\TagRepository;
 use App\Service\FeatureService;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -72,8 +71,7 @@ class FeatureController extends AbstractController
         ]);
     }
 
-    #[ParamConverter('tag', class: Tag::class)]
-    #[Route(path: '/{id}/tag/{tagId}', name: 'feature_tag', methods: ['GET'])]
+    #[Route(path: '/{id}/tag/{tag}', name: 'feature_tag', methods: ['GET'])]
     public function addTag(Feature $feature, Tag $tag, EntityManagerInterface $em): Response
     {
         $feature->toggleTag($tag);

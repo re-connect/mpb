@@ -8,8 +8,8 @@ use App\Repository\FeatureRepository;
 use App\Traits\UserAwareTrait;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class FeatureService
 {

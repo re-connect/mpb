@@ -9,9 +9,9 @@ use App\Repository\BugRepository;
 use App\Traits\UserAwareTrait;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Uid\Uuid;
 
 class BugService

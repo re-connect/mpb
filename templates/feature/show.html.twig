@@ -15,16 +15,7 @@
         <div class="col">{{ include('feature/components/_back_to_list_button.html.twig') }}</div>
         <h1>{{ feature.title }}</h1>
         {{ include('feature/components/_tags.html.twig', {feature, tags}) }}
-        <table class="table">
-            <tbody>
-            {% for item in items %}
-                <tr>
-                    <th>{{ item.name|trans }}</th>
-                    <td>{{ item.content|raw }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {{ include('feature/components/_information.hmtl.twig', {feature}) }}
         {{ include('feature/components/_add_tags.html.twig', {feature, tags}) }}
         {{ include('feature/components/_comments.html.twig', {feature}) }}
         <a class="btn btn-info" href="{{ path('feature_add_comment', {id: feature.id}) }}">{{ 'add_comment'|trans }}</a>
