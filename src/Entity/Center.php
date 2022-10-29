@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CenterRepository::class)]
-class Center
+class Center implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,12 +18,18 @@ class Center
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    /** @var Collection<int, Feature> $features */
     #[ORM\OneToMany(mappedBy: 'center', targetEntity: Feature::class)]
     private Collection $features;
 
     public function __construct()
     {
         $this->features = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 
     public function getId(): ?int
@@ -43,9 +49,7 @@ class Center
         return $this;
     }
 
-    /**
-     * @return Collection<int, Feature>
-     */
+    /** @return Collection<int, Feature> */
     public function getFeatures(): Collection
     {
         return $this->features;

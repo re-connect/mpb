@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Badge;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class BadgeCrudController extends AbstractCrudController
