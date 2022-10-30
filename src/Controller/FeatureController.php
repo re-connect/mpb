@@ -9,6 +9,7 @@ use App\Form\CommentType;
 use App\Form\FeatureType;
 use App\Form\Model\Search;
 use App\Form\SearchType;
+use App\Manager\FeatureManager;
 use App\Manager\VoteManager;
 use App\Repository\ApplicationRepository;
 use App\Repository\TagRepository;
@@ -103,6 +104,14 @@ class FeatureController extends AbstractController
     public function vote(Feature $feature, VoteManager $manager): Response
     {
         $manager->voteForItem($feature);
+
+        return $this->redirectToRoute('features_list');
+    }
+
+    #[Route(path: '/{id}/mark-done', name: 'feature_mark_done', methods: ['GET'])]
+    public function markDone(Feature $feature, FeatureManager $manager): Response
+    {
+        $manager->markDone($feature);
 
         return $this->redirectToRoute('features_list');
     }

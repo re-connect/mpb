@@ -29,10 +29,12 @@ new_feature: Nouvelle amélioration
 no_bug_yet: Aucun Bug n'a été ajouté
 no_feature: Pas de amélioration proposée
 password: Mot de passe
+pending: 'En cours'
 pending_take_over: En attente d'assignation
 propose_new_feature: Proposer une nouvelle amélioration
 rp_login: Connexion avec Reconnect Pro
 search: Rechercher
+solved: Résolu
 status: Status
 tag: Label
 tags: Labels

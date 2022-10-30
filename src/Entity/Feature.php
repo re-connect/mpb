@@ -123,6 +123,11 @@ class Feature extends UserRequest
         return $this;
     }
 
+    public function markDone(): self
+    {
+        return $this->setDone(true);
+    }
+
     /** @return Collection<int, Comment> */
     public function getComments(): Collection
     {
@@ -156,9 +161,7 @@ class Feature extends UserRequest
         return $this->comments->count() > 0;
     }
 
-    /**
-     * @return Collection<int, Vote>
-     */
+    /** @return Collection<int, Vote> */
     public function getVotes(): Collection
     {
         return $this->votes;
