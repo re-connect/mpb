@@ -73,15 +73,6 @@ class FeatureController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_TECH_TEAM')]
-    #[Route(path: '/{id}/tag/{tag}', name: 'feature_tag', methods: ['GET'])]
-    public function addTag(Feature $feature, Tag $tag, FeatureManager $manager): Response
-    {
-        $manager->toggleTag($feature, $tag);
-
-        return $this->redirectToRoute('feature_show', ['id' => $feature->getId()]);
-    }
-
     #[Route(path: '/{id}/add-comment', name: 'feature_add_comment', methods: ['GET', 'POST'])]
     public function addComment(Request $request, Feature $feature, CommentManager $manager): Response
     {
@@ -98,6 +89,15 @@ class FeatureController extends AbstractController
             'feature' => $feature,
             'form' => $form,
         ]);
+    }
+
+    #[IsGranted('ROLE_TECH_TEAM')]
+    #[Route(path: '/{id}/tag/{tag}', name: 'feature_tag', methods: ['GET'])]
+    public function addTag(Feature $feature, Tag $tag, FeatureManager $manager): Response
+    {
+        $manager->toggleTag($feature, $tag);
+
+        return $this->redirectToRoute('feature_show', ['id' => $feature->getId()]);
     }
 
     #[Route(path: '/{id}/vote', name: 'feature_vote', methods: ['GET'])]
