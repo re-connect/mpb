@@ -31,7 +31,7 @@ class UserRequestVoter extends Voter
             return true;
         }
 
-        if ($user !== $subject->getUser()) {
+        if (Permissions::UPDATE === $attribute && $user !== $subject->getUser()) {
             return false;
         }
 
