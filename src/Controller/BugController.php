@@ -8,6 +8,7 @@ use App\Form\BugType;
 use App\Form\CommentType;
 use App\Form\Model\Search;
 use App\Form\SearchType;
+use App\Manager\BugManager;
 use App\Manager\VoteManager;
 use App\Repository\ApplicationRepository;
 use App\Security\Voter\Permissions;
@@ -64,7 +65,7 @@ class BugController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $service->create($bug);
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('bugs_list');
         }
 
         return $this->render('bug/new.html.twig', ['bug' => $bug, 'form' => $form]);
@@ -85,13 +86,11 @@ class BugController extends AbstractController
 
     #[IsGranted(Permissions::UPDATE, 'bug')]
     #[Route(path: '/{id}/edit', name: 'bug_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Bug $bug, EntityManagerInterface $em): Response
+    public function edit(Request $request, Bug $bug, BugManager $manager): Response
     {
-        $form = $this->createForm(BugType::class, $bug);
-        $form->handleRequest($request);
+        $form = $this->createForm(BugType::class, $bug)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $bug->publish();
-            $em->flush();
+            $manager->publishDraft($bug);
 
             return $this->redirectToRoute('bugs_list');
         }
@@ -101,12 +100,11 @@ class BugController extends AbstractController
 
     #[IsGranted(Permissions::READ, 'bug')]
     #[Route(path: '/{id}', name: 'bug_delete', methods: ['POST'])]
-    public function delete(Request $request, Bug $bug, EntityManagerInterface $em): Response
+    public function delete(Request $request, Bug $bug, BugManager $manager): Response
     {
         $csrfTokenName = sprintf('delete%d', $bug->getId());
         if ($this->isCsrfTokenValid($csrfTokenName, (string) $request->request->get('_token', ''))) {
-            $em->remove($bug);
-            $em->flush();
+            $manager->remove($bug);
         }
 
         return $this->redirectToRoute('bugs_list');
@@ -114,12 +112,11 @@ class BugController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/take-over', name: 'bug_take_over', methods: ['GET'])]
-    public function takeOver(Bug $bug, EntityManagerInterface $em): Response
+    public function takeOver(Bug $bug, BugManager $manager): Response
     {
-        $bug->setAssignee($this->getUser());
-        $em->flush();
+        $manager->takeOver($bug);
 
-        return $this->redirectToRoute('bugs_list');
+        return $this->refreshOrRedirect('bugs_list');
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
@@ -128,7 +125,7 @@ class BugController extends AbstractController
     {
         $service->markAsDone($bug);
 
-        return $this->redirectToRoute('bugs_list');
+        return $this->refreshOrRedirect('bugs_list');
     }
 
     #[IsGranted(Permissions::READ, 'bug')]
@@ -151,6 +148,6 @@ class BugController extends AbstractController
     {
         $manager->voteForItem($bug);
 
-        return $this->redirectToRoute('bugs_list');
+        return $this->refreshOrRedirect('bugs_list');
     }
 }

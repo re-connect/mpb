@@ -2,7 +2,8 @@
     <div class="row">
         {% for application in applications %}
             <div class="col d-flex justify-content-center">
-                <a href="{{ path(app.current_Route, {'app': application.id}) }}" class="btn btn-outline-light mt-4">
+                <a href="{{ path(app.current_Route, app.request.query.all|merge({'app': application.id})) }}"
+                   class="btn btn-outline-light mt-4">
                     {{ app_icon(application) }}
                 </a>
             </div>

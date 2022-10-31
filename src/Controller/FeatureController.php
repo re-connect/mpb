@@ -75,10 +75,9 @@ class FeatureController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/tag/{tag}', name: 'feature_tag', methods: ['GET'])]
-    public function addTag(Feature $feature, Tag $tag, EntityManagerInterface $em): Response
+    public function addTag(Feature $feature, Tag $tag, FeatureManager $manager): Response
     {
-        $feature->toggleTag($tag);
-        $em->flush();
+        $manager->toggleTag($feature, $tag);
 
         return $this->redirectToRoute('feature_show', ['id' => $feature->getId()]);
     }
@@ -105,7 +104,7 @@ class FeatureController extends AbstractController
     {
         $manager->voteForItem($feature);
 
-        return $this->redirectToRoute('features_list');
+        return $this->refreshOrRedirect('features_list');
     }
 
     #[Route(path: '/{id}/mark-done', name: 'feature_mark_done', methods: ['GET'])]
@@ -113,6 +112,6 @@ class FeatureController extends AbstractController
     {
         $manager->markDone($feature);
 
-        return $this->redirectToRoute('features_list');
+        return $this->refreshOrRedirect('features_list');
     }
 }
