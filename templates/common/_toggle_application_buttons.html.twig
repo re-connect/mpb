@@ -1,10 +1,15 @@
 {% if is_granted('ROLE_TEAM') %}
     <div class="row">
         {% for application in applications %}
+            {% set isActive = 'app='~application.id in  app.request.requestUri %}
             <div class="col d-flex justify-content-center">
                 <a href="{{ path(app.current_Route, app.request.query.all|merge({'app': application.id})) }}"
-                   class="btn btn-outline-light mt-4">
-                    {{ app_icon(application) }}
+                   class="btn btn-outline-light mt-4"
+                        {% if  isActive %}
+                            style="background-color: {{ application.color }}; color: white;"
+                        {% endif %}
+                >
+                    {{ app_icon(application, isActive) }}
                 </a>
             </div>
         {% endfor %}
