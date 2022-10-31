@@ -624,6 +624,9 @@
     "symfony/uid": {
         "version": "v5.3.3"
     },
+    "symfony/ux-turbo": {
+        "version": "v2.4.0"
+    },
     "symfony/validator": {
         "version": "6.1",
         "recipe": {
