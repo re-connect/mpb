@@ -38,8 +38,8 @@ task('deploy:assets_install', function () {
 });
 // Hooks
 
-before('deploy:assets_install', 'deploy:build_frontend');
-before('deploy:cache:clear', 'deploy:assets_install');
+before('deploy:build_frontend', 'deploy:assets_install');
+before('deploy:cache:clear', 'deploy:build_frontend');
 before('deploy:symlink', 'database:migrate');
 
 after('deploy:failed', 'deploy:unlock');
