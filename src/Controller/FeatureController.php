@@ -27,14 +27,14 @@ class FeatureController extends AbstractController
     public function index(Request $request, FeatureService $service, ApplicationRepository $applicationRepository): Response
     {
         $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
-        $searchForm = $this->createForm(SearchType::class, null, [
+        $form = $this->createForm(SearchType::class, null, [
             'action' => $this->generateUrl('feature_search', $request->query->all()),
         ]);
 
         return $this->render('feature/index.html.twig', [
             'features' => $service->getAccessible($search),
             'done' => $search->getShowDone(),
-            'searchForm' => $searchForm,
+            'form' => $form,
             'applications' => $applicationRepository->findAll(),
         ]);
     }

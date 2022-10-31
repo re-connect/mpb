@@ -1,6 +1,6 @@
 <div class="form-check form-switch ps-0" {{ stimulus_controller('switch', {
-    'offUrl': path('features_list', {'done': false}),
-    'onUrl': path('features_list', {'done': true})
+    'offUrl': path(app.current_Route, {'done': false}),
+    'onUrl': path(app.current_Route, {'done': true})
 }) }}>
     <label class="form-check-label w-100" for="solvedSwitch">
         {{ 'solved'|trans }}
