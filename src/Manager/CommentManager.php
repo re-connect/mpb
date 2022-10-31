@@ -11,7 +11,7 @@ class CommentManager
     {
     }
 
-    public function create(Comment $comment)
+    public function create(Comment $comment): void
     {
         $this->em->persist($comment);
         $this->em->flush();
