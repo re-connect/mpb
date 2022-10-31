@@ -24,7 +24,7 @@ class AppIconExtension extends AbstractExtension
      * @throws \Twig\Error\SyntaxError
      * @throws \Twig\Error\LoaderError
      */
-    public function showAppIcon(Environment $environment, ?Application $application): string
+    public function showAppIcon(Environment $environment, ?Application $application, ?bool $isActive = false): string
     {
         if (!$application) {
             return '';
@@ -32,6 +32,7 @@ class AppIconExtension extends AbstractExtension
 
         return $environment->render(name: 'bug/_application_icon.html.twig', context: [
             'application' => $application,
+            'isActive' => $isActive,
         ]);
     }
 }

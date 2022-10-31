@@ -1,6 +1,7 @@
 <div>
+    {% set color = isActive ? 'white' : application.color %}
     <i class="fas fa-{{ application.icon }} "
-       style="font-size: 50px; color: {{ application.color }}"></i><br/>
-    <b style="color: {{ application.color }}">{{ application.name }}</b>
+       style="font-size: 50px; color: {{ color }}"></i><br/>
+    <b style="color: {{ color }}">{{ application.name }}</b>
 </div>
 
