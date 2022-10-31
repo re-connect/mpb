@@ -9,12 +9,12 @@ use App\Form\CommentType;
 use App\Form\FeatureType;
 use App\Form\Model\Search;
 use App\Form\SearchType;
+use App\Manager\CommentManager;
 use App\Manager\FeatureManager;
 use App\Manager\VoteManager;
 use App\Repository\ApplicationRepository;
 use App\Repository\TagRepository;
 use App\Service\FeatureService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -83,14 +83,15 @@ class FeatureController extends AbstractController
     }
 
     #[Route(path: '/{id}/add-comment', name: 'feature_add_comment', methods: ['GET', 'POST'])]
-    public function addComment(Request $request, Feature $feature, EntityManagerInterface $em): Response
+    public function addComment(Request $request, Feature $feature, CommentManager $manager): Response
     {
-        $comment = (new Comment())->setFeature($feature);
+        $comment = (new Comment());
         $form = $this->createForm(CommentType::class, $comment)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($comment);
-            $em->flush();
+            $manager->create($comment->setFeature($feature));
+
+            return $this->redirectToRoute('feature_add_comment', ['id' => $feature->getId()]);
         }
 
         return $this->render('feature/add_comment.html.twig', [
