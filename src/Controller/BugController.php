@@ -26,14 +26,14 @@ class BugController extends AbstractController
     public function index(Request $request, BugService $service, ApplicationRepository $applicationRepository): Response
     {
         $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
-        $searchForm = $this->createForm(SearchType::class, null, [
+        $form = $this->createForm(SearchType::class, null, [
             'action' => $this->generateUrl('bug_search', $request->query->all()),
         ]);
 
         return $this->render('bug/index.html.twig', [
             'bugs' => $service->getAccessible($search),
             'done' => $search->getShowDone(),
-            'searchForm' => $searchForm,
+            'form' => $form,
             'applications' => $applicationRepository->findAll(),
         ]);
     }

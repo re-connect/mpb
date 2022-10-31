@@ -4,8 +4,11 @@ namespace App\Form\Model;
 
 class Search
 {
-    public function __construct(private ?string $text = null, private ?bool $showDone = null, private ?int $application = null)
-    {
+    public function __construct(
+        private ?string $text = null,
+        private ?bool $showDone = null,
+        private ?int $application = null
+    ) {
     }
 
     public function getText(): ?string

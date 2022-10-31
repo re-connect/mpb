@@ -4,22 +4,11 @@
 
 {% block body %}
     <div {{ stimulus_controller('search') }}>
-        <div class="row">
-            <div class="col flex-grow-1">
-                {{ form_start(searchForm, {'attr': {'data-search-target': 'form'}}) }}
-                {{ form_end(searchForm) }}
-            </div>
-            <div class="mt-2 mt-sm-0 col-12 col-sm-4 col-md-4 col-lg-3 d-flex">
-                <a class="btn btn-primary flex-grow-1"
-                   href="{{ path('bug_init') }}">{{ 'new_bug'|trans }}</a>
-            </div>
-        </div>
+        {{ include('common/_search_form.html.twig', {form, newPath: path('bug_init'), newTitle: 'new_bug'|trans}) }}
         <div class="container py-3 px-4">
-            {{ include('bug/_toggle_application_buttons.html.twig', {applications, route : 'bugs_list'}) }}
             <div {{ stimulus_target('search', 'container') }}>
                 {{ include('bug/_list.html.twig', {bugs}) }}
             </div>
-            {{ include('bug/_toggle_solved_button.html.twig', {done}) }}
         </div>
     </div>
 {% endblock %}

@@ -1,0 +1,15 @@
+<div>
+    {% if isDone %}
+        <span class="badge text-success border border-success">{{ 'solved'|trans }}</span>
+    {% else %}
+        <span class="badge text-warning border border-warning">
+            <i class="fa fa-hourglass-1"></i>
+            {{ 'pending'|trans }}
+        </span>
+        {% if is_granted('ROLE_TECH_TEAM') %}
+            <a
+                    href="{{ markDonePath }}"
+                    class="btn btn-success btn-sm mb-2"><i class="fa fa-check"></i></a>
+        {% endif %}
+    {% endif %}
+</div>
