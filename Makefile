@@ -22,5 +22,7 @@ fixer:
 	@$(PHP_CS_FIXER) fix src --allow-risky=yes
 	@$(PHP_CS_FIXER) fix tests --allow-risky=yes
 
+dep: deploy
+
 deploy:
 	@$(DEPLOYER) deploy
