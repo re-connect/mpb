@@ -9,11 +9,11 @@ use App\Form\CommentType;
 use App\Form\Model\Search;
 use App\Form\SearchType;
 use App\Manager\BugManager;
+use App\Manager\CommentManager;
 use App\Manager\VoteManager;
 use App\Repository\ApplicationRepository;
 use App\Security\Voter\Permissions;
 use App\Service\BugService;
-use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -130,14 +130,15 @@ class BugController extends AbstractController
 
     #[IsGranted(Permissions::READ, 'bug')]
     #[Route(path: '/{id}/add-comment', name: 'bug_add_comment', methods: ['GET', 'POST'])]
-    public function addComment(Request $request, Bug $bug, EntityManagerInterface $em): Response
+    public function addComment(Request $request, Bug $bug, CommentManager $manager): Response
     {
-        $comment = (new Comment())->setBug($bug);
+        $comment = (new Comment());
         $form = $this->createForm(CommentType::class, $comment)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($comment);
-            $em->flush();
+            $manager->create($comment->setBug($bug));
+
+            return $this->redirectToRoute('bug_add_comment', ['id' => $bug->getId()]);
         }
 
         return $this->render('bug/add_comment.html.twig', ['bug' => $bug, 'form' => $form]);
