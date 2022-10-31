@@ -31,14 +31,19 @@ host('155.133.130.39')
 // Tasks
 
 task('deploy:build_frontend', function () {
-    run('cd {{release_path}} && npm install && npm run build');
+    run('cd {{release_path}} && npm run build');
+});
+
+task('deploy:install_frontend', function () {
+    run('cd {{release_path}} && npm install');
 });
 task('deploy:assets_install', function () {
     run('cd {{release_path}} && php bin/console ckeditor:install && php bin/console assets:install public');
 });
 // Hooks
 
-before('deploy:build_frontend', 'deploy:assets_install');
+before('deploy:install_frontend', 'deploy:assets_install');
+before('deploy:build_frontend', 'deploy:install_frontend');
 before('deploy:cache:clear', 'deploy:build_frontend');
 before('deploy:symlink', 'database:migrate');
 

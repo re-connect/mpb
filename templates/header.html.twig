@@ -36,15 +36,15 @@
                         <span class="visually-hidden"></span>
                     </a>
                 </li>
-                <li class="nav-item {{ app.user ? '' : 'd-none' }}">
-                    <a class="nav-link" href="{{ path('app_logout') }}">
-                        <i class="fas fa-sign-out-alt me-2"></i>Logout
-                        <span class="visually-hidden"></span>
-                    </a>
-                </li>
                 <li class="nav-item {{ is_granted('ROLE_ADMIN') ? '' : 'd-none' }}">
                     <a class="nav-link" href="{{ path('admin') }}">
                         <i class="fas fa-tools me-2"></i>Admin
+                        <span class="visually-hidden"></span>
+                    </a>
+                </li>
+                <li class="nav-item {{ app.user ? '' : 'd-none' }}">
+                    <a class="nav-link" href="{{ path('app_logout') }}">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
                         <span class="visually-hidden"></span>
                     </a>
                 </li>
