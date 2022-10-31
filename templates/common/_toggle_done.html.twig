@@ -1,0 +1,13 @@
+<div class="form-check form-switch ps-0" {{ stimulus_controller('switch', {
+    'offUrl': path('features_list', {'done': false}),
+    'onUrl': path('features_list', {'done': true})
+}) }}>
+    <label class="form-check-label w-100" for="solvedSwitch">
+        {{ 'solved'|trans }}
+    </label>
+    <input class="form-check-input ms-0" style="height: 50px; width: 100px" type="checkbox" role="switch"
+           id="solvedSwitch"
+           {% if done %}checked=""{% endif %}
+            {{ stimulus_action('switch', 'toggle') }}
+    >
+</div>
