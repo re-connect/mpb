@@ -7,7 +7,7 @@
     "@hotwired/turbo": "^7.0.1",
     "@popperjs/core": "^2.11.6",
     "@symfony/stimulus-bridge": "^3.2.1",
-    "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/Resources/assets",
+    "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
     "@symfony/webpack-encore": "^4.0.0",
     "@uppy/core": "^3.0.0",
     "@uppy/dashboard": "^3.0.0",
@@ -40,5 +40,6 @@
     "build": "encore production --progress"
   },
   "dependencies": {
+
   }
 }
