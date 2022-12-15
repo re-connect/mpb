@@ -4,7 +4,7 @@
         <div class="col-12 col-sm-11 {% if loop.index is odd %}offset-sm-1{% endif %}">
             <div class="card text-bg-{{ isMine ? 'info' : 'light' }} mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">{{ comment.content }}</h5>
+                    <h5 class="card-title">{{ comment.content|nl2br }}</h5>
                     <p class="card-text">{{ comment.user }}</p>
                 </div>
             </div>
