@@ -45,3 +45,11 @@ update_bug: Modifier un bug
 user: Utilisateur
 user_kind: Type d'utilisateur
 view_code_on_github: Voire le code sur Github
+ALTERNATIVE_SOLUTION_PROPOSED: Solution alternative proposée
+BEING_DEVELOPED: En cours de développement
+IN_PRODUCTION: En production
+TO_BE_DECIDED: A statuer
+TO_BE_DEVELOPED: Va être développé
+WAITING_FOR_RECURRENCES: Attente ocurrences
+WONT_BE_DEVELOPED: Ne sera pas développé
+

@@ -51,6 +51,9 @@ class Feature extends UserRequest
     #[ORM\ManyToOne(inversedBy: 'features')]
     private ?Center $center = null;
 
+    #[ORM\Column(type: "string", enumType: FeatureStatus::class)]
+    private ?FeatureStatus $status;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -239,4 +242,15 @@ class Feature extends UserRequest
 
         return $this;
     }
+
+    public function getStatus(): ?FeatureStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?FeatureStatus $status): void
+    {
+        $this->status = $status;
+    }
+
 }
