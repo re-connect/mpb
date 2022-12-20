@@ -17,6 +17,7 @@ creation_date: Date de création
 dashboard: Accueil
 description: Description
 draft: Brouillon
+edit_status: Modifier le statut
 email: Email
 email_pwd: Email/Mot de passe
 features_list: Liste des améliorations proposées
@@ -35,7 +36,8 @@ propose_new_feature: Proposer une nouvelle amélioration
 rp_login: Connexion avec Reconnect Pro
 search: Rechercher
 solved: Résolu.e.s
-status: Status
+status: Statut
+status_edit_success: Le statut a bien été modifié
 tag: Label
 tags: Labels
 take_over: Prendre en charge

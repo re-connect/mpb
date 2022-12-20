@@ -51,7 +51,7 @@ class Feature extends UserRequest
     #[ORM\ManyToOne(inversedBy: 'features')]
     private ?Center $center = null;
 
-    #[ORM\Column(type: "string", enumType: FeatureStatus::class)]
+    #[ORM\Column(type: 'string', enumType: FeatureStatus::class)]
     private ?FeatureStatus $status;
 
     public function __construct()
@@ -59,6 +59,7 @@ class Feature extends UserRequest
         $this->comments = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->status = FeatureStatus::ToBeDecided;
     }
 
     public function getId(): ?int
@@ -251,6 +252,8 @@ class Feature extends UserRequest
     public function setStatus(?FeatureStatus $status): void
     {
         $this->status = $status;
+        if (in_array($this->status, FeatureStatus::FINAL_STATUS)) {
+            $this->done = true;
+        }
     }
-
 }
