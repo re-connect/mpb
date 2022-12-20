@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Entity\Feature;
 use App\Entity\Tag;
 use App\Form\CommentType;
+use App\Form\FeatureStatusType;
 use App\Form\FeatureType;
 use App\Form\Model\Search;
 use App\Form\SearchType;
@@ -15,6 +16,7 @@ use App\Manager\VoteManager;
 use App\Repository\ApplicationRepository;
 use App\Repository\TagRepository;
 use App\Service\FeatureService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -64,10 +66,22 @@ class FeatureController extends AbstractController
         return $this->render('feature/new.html.twig', ['form' => $form]);
     }
 
-    #[Route(path: '/show/{id}', name: 'feature_show', methods: ['GET'])]
-    public function show(Feature $feature, TagRepository $tagRepository): Response
+    #[Route(path: '/show/{id}', name: 'feature_show', methods: ['GET', 'POST'])]
+    public function show(Request $request, Feature $feature, TagRepository $tagRepository, EntityManagerInterface $em): Response
     {
+        $form = $this->createForm(FeatureStatusType::class, $feature)->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($feature);
+            $em->flush();
+
+            $this->addFlash('success', 'status_edit_success');
+
+            return $this->redirectToRoute('feature_show', ['id' => $feature->getId()]);
+        }
+
         return $this->render('feature/show.html.twig', [
+            'form' => $form,
             'feature' => $feature,
             'tags' => $tagRepository->findAll(),
         ]);
