@@ -39,6 +39,15 @@ class FeatureRepository extends ServiceEntityRepository
         }
     }
 
+    /** @return mixed */
+    public function getAllCentersForAutocomplete(): array
+    {
+        return $this->createQueryBuilder('f')
+            ->select('f.center')
+            ->where('f.center IS NOT NULL')
+            ->getQuery()->getArrayResult();
+    }
+
 //    /**
 //     * @return Feature[] Returns an array of Feature objects
 //     */

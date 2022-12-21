@@ -54,7 +54,7 @@ class FeatureController extends AbstractController
     public function new(Request $request, FeatureService $service): Response
     {
         $feature = new Feature();
-        $form = $this->createForm(FeatureType::class, $feature)->handleRequest($request);
+        $form = $this->createForm(FeatureType::class, $feature, ['centerValues' => $service->getAllCentersForAutocomplete()])->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $service->create($feature);
 
