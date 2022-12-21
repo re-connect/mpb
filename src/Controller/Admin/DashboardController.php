@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\Application;
 use App\Entity\Bug;
-use App\Entity\Center;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Entity\UserKind;
@@ -40,6 +39,5 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('application', 'fas fa-computer', Application::class);
         yield MenuItem::linkToCrud('user_kind', 'fas fa-user', UserKind::class);
         yield MenuItem::linkToCrud('tags', 'fas fa-tag', Tag::class);
-        yield MenuItem::linkToCrud('centers', 'fas fa-home', Center::class);
     }
 }

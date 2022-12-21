@@ -78,7 +78,7 @@ class FeatureService
      */
     public function getAllCentersForAutocomplete(): array
     {
-        $centers = array_unique(array_map(fn (array $center) => $center['center'], $this->repository->getAllCentersForAutocomplete()));
+        $centers = array_unique(array_column($this->repository->getAllCentersForAutocomplete(), 'center'));
 
         return array_map(fn (string $center) => ['value' => $center, 'text' => $center], $centers);
     }

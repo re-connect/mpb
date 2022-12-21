@@ -24,11 +24,14 @@ final class Version20221220153445 extends AbstractMigration
         $this->addSql('DROP INDEX idx_1fd775665932f377');
         $this->addSql('ALTER TABLE feature ADD center VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE feature DROP center_id');
+        $this->addSql('DROP SEQUENCE center_id_seq');
+        $this->addSql('DROP TABLE center');
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE SEQUENCE center_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE TABLE center (id INT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('ALTER TABLE feature ADD center_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE feature DROP center');
         $this->addSql('ALTER TABLE feature ADD CONSTRAINT fk_1fd775665932f377 FOREIGN KEY (center_id) REFERENCES center (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
