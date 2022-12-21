@@ -26,12 +26,13 @@ class FeatureType extends AbstractType
                 'class' => Application::class,
                 'placeholder' => 'application',
             ])
-            ->add('center', null, [
+            ->add('center', TextType::class, [
                 'required' => false,
-                'attr' => [
-                    'placeholder' => 'center',
-                    'data-controller' => 'tomselect',
-                    'data-tomselect-target' => 'select',
+                'autocomplete' => true,
+                'tom_select_options' => [
+                    'create' => true,
+                    'options' => $options['centerValues'],
+                    'placeholder' => 'Établissement',
                 ],
             ])
             ->add('content', CKEditorType::class, [
@@ -43,6 +44,7 @@ class FeatureType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Feature::class,
+            'centerValues' => [],
         ]);
     }
 }

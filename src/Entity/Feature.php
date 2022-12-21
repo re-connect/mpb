@@ -48,8 +48,8 @@ class Feature extends UserRequest
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'features')]
     private Collection $tags;
 
-    #[ORM\ManyToOne(inversedBy: 'features')]
-    private ?Center $center = null;
+    #[ORM\Column(length: 255)]
+    private ?string $center = null;
 
     #[ORM\Column(type: 'string', enumType: FeatureStatus::class)]
     private ?FeatureStatus $status;
@@ -232,12 +232,12 @@ class Feature extends UserRequest
         }
     }
 
-    public function getCenter(): ?Center
+    public function getCenter(): ?string
     {
         return $this->center;
     }
 
-    public function setCenter(?Center $center): self
+    public function setCenter(?string $center): self
     {
         $this->center = $center;
 
