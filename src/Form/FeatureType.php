@@ -33,7 +33,6 @@ class FeatureType extends AbstractType
                     'create' => true,
                     'options' => $options['centerValues'],
                     'placeholder' => 'Établissement',
-                    'maxItems' => 1,
                 ],
             ])
             ->add('content', CKEditorType::class, [

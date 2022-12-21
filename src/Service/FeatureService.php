@@ -78,8 +78,17 @@ class FeatureService
      */
     public function getAllCentersForAutocomplete(): array
     {
-        $centers = array_unique(array_column($this->repository->getAllCentersForAutocomplete(), 'center'));
+        return array_map(fn (string $center) => ['value' => $center, 'text' => $center], $this->getAllCenters());
+    }
 
-        return array_map(fn (string $center) => ['value' => $center, 'text' => $center], $centers);
+    /**
+     * @return array<string>
+     */
+    public function getAllCenters(): array
+    {
+        $centers = array_column($this->repository->getAllCenters(), 'center');
+        $centers = array_merge_recursive(...array_map(fn ($center) => explode(',', (string) $center), $centers));
+
+        return array_unique($centers);
     }
 }

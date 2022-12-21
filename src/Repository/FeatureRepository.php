@@ -40,7 +40,7 @@ class FeatureRepository extends ServiceEntityRepository
     }
 
     /** @return mixed[] */
-    public function getAllCentersForAutocomplete(): array
+    public function getAllCenters(): array
     {
         return $this->createQueryBuilder('f')
             ->select('f.center')
