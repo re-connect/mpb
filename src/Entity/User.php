@@ -13,11 +13,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, \Stringable
 {
+    final public const ROLE_USER = 'ROLE_USER';
+    final public const ROLE_TECH_TEAM = 'ROLE_TECH_TEAM';
+    final public const ROLE_TEAM = 'ROLE_TEAM';
+    final public const ROLE_ADMIN = 'ROLE_ADMIN';
     final public const ROLES = [
-        'ROLE_USER',
-        'ROLE_TECH_TEAM',
-        'ROLE_TEAM',
-        'ROLE_ADMIN',
+        self::ROLE_USER,
+        self::ROLE_TECH_TEAM,
+        self::ROLE_TEAM,
+        self::ROLE_ADMIN,
     ];
 
     #[ORM\Id]

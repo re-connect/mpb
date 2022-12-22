@@ -41,7 +41,7 @@ final class UserFactory extends ModelFactory
             'firstName' => self::faker()->firstName(),
             'lastName' => self::faker()->lastName(),
             'password' => self::faker()->password(),
-            'roles' => ['ROLE_USER', 'ROLE_TEAM'],
+            'roles' => [User::ROLE_USER],
         ];
     }
 
@@ -53,5 +53,10 @@ final class UserFactory extends ModelFactory
     protected static function getClass(): string
     {
         return User::class;
+    }
+
+    public static function findOrCreateWithRole(string $role): Proxy
+    {
+        return UserFactory::repository()->findOneByRole($role) ?? self::createOne(['roles' => [$role]]);
     }
 }

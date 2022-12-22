@@ -2,14 +2,18 @@
 
 namespace App\Tests\Service;
 
+use App\Entity\User;
 use App\Form\Model\Search;
-use App\Repository\UserRepository;
 use App\Service\BugService;
+use App\Tests\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Zenstruck\Foundry\Test\Factories;
 
 class BugServiceTest extends KernelTestCase
 {
+    use Factories;
+
     private BugService $service;
 
     /**
@@ -27,7 +31,7 @@ class BugServiceTest extends KernelTestCase
     protected function setUp(): void
     {
         $container = self::getContainer();
-        $this->loginUser('tester@gmail.com');
+        $this->loginUser('tester_team@gmail.com');
         $this->service = $container->get(BugService::class);
     }
 
@@ -45,7 +49,7 @@ class BugServiceTest extends KernelTestCase
 
     public function testCreate(): void
     {
-        $this->loginUser('tester_team@gmail.com');
+        $this->loginUser('tester@gmail.com');
         $bug = $this->service->initBug('');
 
         $this->assertEmpty($bug->getUserAgent());
@@ -71,8 +75,8 @@ class BugServiceTest extends KernelTestCase
     private function loginUser(string $email): void
     {
         $container = static::getContainer();
-        /** @var \App\Entity\User $user */
-        $user = $container->get(UserRepository::class)->findOneBy(['email' => $email]);
+        /** @var User $user */
+        $user = UserFactory::findOrCreate(['email' => $email])->object();
 
         $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $container->get('security.token_storage')->setToken($token);
