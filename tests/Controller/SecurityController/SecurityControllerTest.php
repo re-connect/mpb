@@ -1,33 +1,23 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Controller\SecurityController;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
-use App\Tests\Factory\UserFactory;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Zenstruck\Foundry\Test\Factories;
+use App\DataFixtures\UserFixtures;
+use App\Tests\Controller\AbstractControllerTest;
+use App\Tests\Controller\TestRouteInterface;
 
-class SecurityControllerTest extends WebTestCase
+class SecurityControllerTest extends AbstractControllerTest implements TestRouteInterface
 {
-    use Factories;
-
-    public function testDashboardAndLogout(): void
+    /** @dataProvider provideTestRoute */
+    public function testRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/');
-        $this->assertResponseRedirects('http://localhost/login');
+        $this->assertRoute($url, $expectedStatusCode, $userEmail, $expectedRedirect, $method);
+    }
 
-        $user = UserFactory::findOrCreateWithRole(User::ROLE_USER)->object();
-        $client->loginUser($user);
-
-        $client->request('GET', '/');
-        $this->assertResponseRedirects('/bugs/list');
-
-        $client->request('GET', '/logout');
-        $this->assertResponseRedirects('');
-
-        $client->request('GET', '/');
-        $this->assertResponseRedirects('http://localhost/login');
+    public function provideTestRoute(): \Generator
+    {
+        yield 'Home page should redirect to login when not connected' => ['/', 302, null, 'http://localhost/login'];
+        yield 'Home page should redirect to bugs list when not connected' => ['/', 302, UserFixtures::USER_MAIL, '/bugs/list'];
+        yield 'Logout page should redirect to home' => ['/logout', 302, UserFixtures::USER_MAIL, 'http://localhost/'];
     }
 }
