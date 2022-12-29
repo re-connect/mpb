@@ -19,9 +19,9 @@ trait TimestampableTrait
         return $this;
     }
 
-    public function setCreatedAt(): self
+    public function setCreatedAt(?\DateTimeImmutable $createdAt = null): self
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
         $this->setUpdatedAt();
 
         return $this;

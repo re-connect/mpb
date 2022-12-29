@@ -3,6 +3,7 @@
 namespace App\Tests\Controller\FeatureController;
 
 use App\DataFixtures\UserFixtures;
+use App\Repository\ApplicationRepository;
 use App\Tests\Controller\AbstractControllerTest;
 use App\Tests\Controller\TestFormInterface;
 use App\Tests\Controller\TestRouteInterface;
@@ -13,7 +14,6 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     private const FORM_VALUES = [
         'feature[title]' => 'Titre',
         'feature[content]' => 'Description',
-        'feature[application]' => 1,
     ];
 
     /** @dataProvider provideTestRoute */
@@ -39,10 +39,12 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
 
     public function provideTestFormIsValid(): \Generator
     {
+        $values = self::FORM_VALUES;
+        $values['feature[application]'] = $this->getContainer()->get(ApplicationRepository::class)->findAll()[0]->getId();
         yield 'Page should redirect to list when form is valid' => [
             self::URL,
             'create',
-            self::FORM_VALUES,
+            $values,
             UserFixtures::USER_MAIL,
             '/features/list',
         ];
@@ -62,6 +64,7 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     public function provideTestFormIsNotValid(): \Generator
     {
         $values = self::FORM_VALUES;
+        $values['feature[application]'] = $this->getContainer()->get(ApplicationRepository::class)->findAll()[0]->getId();
         $values['feature[title]'] = null;
         yield 'Should return an error when title is empty' => [
             self::URL,
@@ -78,6 +81,7 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
         ];
 
         $values = self::FORM_VALUES;
+        $values['feature[application]'] = $this->getContainer()->get(ApplicationRepository::class)->findAll()[0]->getId();
         $values['feature[content]'] = null;
         yield 'Should return an error when content is empty' => [
             self::URL,

@@ -253,11 +253,13 @@ class Feature extends UserRequest
         return $this->status;
     }
 
-    public function setStatus(?FeatureStatus $status): void
+    public function setStatus(?FeatureStatus $status): self
     {
         $this->status = $status;
         if (in_array($this->status, FeatureStatus::FINAL_STATUS)) {
             $this->done = true;
         }
+
+        return $this;
     }
 }

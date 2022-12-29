@@ -14,6 +14,7 @@ abstract class AbstractControllerTest extends WebTestCase
 
     public static function setUpBeforeClass(): void
     {
+        self::ensureKernelShutdown();
         $container = self::createClient()->getContainer();
         self::$translator = $container->get(TranslatorInterface::class);
     }

@@ -41,7 +41,7 @@ final class FeatureFactory extends ModelFactory
             'application' => ApplicationFactory::randomOrCreate(),
             'center' => null,
             'content' => self::faker()->text(),
-            'createdAt' => new \DateTime(),
+            'createdAt' => new \DateTimeImmutable(),
             'done' => false,
             'status' => FeatureStatus::ToBeDecided,
             'title' => self::faker()->text(25),
