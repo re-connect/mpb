@@ -49,7 +49,7 @@ class ShowTest extends AbstractControllerTest implements TestRouteInterface
         ];
     }
 
-    /** @dataProvider provideTestFormIsNotAccessible */
+    /** @dataProvider provideTestFormIsAccessible */
     public function testFormIsAccessible(string $email, bool $shouldAccessForm): void
     {
         $clientTest = static::createClient();
@@ -63,7 +63,7 @@ class ShowTest extends AbstractControllerTest implements TestRouteInterface
         $shouldAccessForm ? $this->assertSelectorExists('form') : $this->assertSelectorNotExists('form');
     }
 
-    public function provideTestFormIsNotAccessible(): \Generator
+    public function provideTestFormIsAccessible(): \Generator
     {
         yield 'User should not access form' => [UserFixtures::USER_MAIL, false];
         yield 'Team user should not access form' => [UserFixtures::TEAM_USER_MAIL, false];

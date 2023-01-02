@@ -23,6 +23,7 @@ class BugType extends AbstractType
                 'attr' => [
                     'placeholder' => 'title',
                 ],
+                'empty_data' => '',
             ])
             ->add('application', StyledEntityType::class, [
                 'required' => true,

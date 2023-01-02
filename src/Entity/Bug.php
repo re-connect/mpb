@@ -21,10 +21,11 @@ class Bug extends UserRequest
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private ?string $title = '';
 
-    #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private ?string $content = '';
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'bugs')]
@@ -53,6 +54,7 @@ class Bug extends UserRequest
 
     #[ORM\ManyToOne(targetEntity: Application::class, inversedBy: 'bugs')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Assert\NotNull]
     private ?Application $application = null;
 
     #[ORM\ManyToOne(targetEntity: UserKind::class, inversedBy: 'bugs')]

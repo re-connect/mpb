@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Tests\Controller\BugController;
+
+use App\DataFixtures\UserFixtures;
+use App\Tests\Controller\AbstractControllerTest;
+use App\Tests\Controller\TestRouteInterface;
+use App\Tests\Factory\BugFactory;
+use App\Tests\Factory\UserFactory;
+
+class ShowTest extends AbstractControllerTest implements TestRouteInterface
+{
+    private const URL = '/bugs/%s';
+
+    /** @dataProvider provideTestRoute */
+    public function testRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
+    {
+        $bug = BugFactory::randomOrCreate()->object();
+        $url = sprintf($url, $bug->getId());
+        $this->assertRoute($url, $expectedStatusCode, $userEmail, $expectedRedirect, $method);
+    }
+
+    public function provideTestRoute(): \Generator
+    {
+        yield 'Should redirect to login when not connected' => [self::URL, 302, null, 'http://localhost/login'];
+        yield 'Should return 200 when connected as user' => [self::URL, 200, UserFixtures::USER_MAIL];
+        yield 'Should return 200 when connected as team member' => [self::URL, 200, UserFixtures::TEAM_USER_MAIL];
+        yield 'Should return 200 when connected as tech team member' => [self::URL, 200, UserFixtures::TECH_TEAM_USER_MAIL];
+        yield 'Should return 200 when connected as admin' => [self::URL, 200, UserFixtures::ADMIN_USER_MAIL];
+    }
+
+    /** @dataProvider provideTestCanTakeOverIsAccessible */
+    public function testCanTakeOverIsAccessible(string $email, bool $shouldAccessButton): void
+    {
+        $clientTest = static::createClient();
+
+        $user = UserFactory::findOrCreate(['email' => $email])->object();
+        $clientTest->loginUser($user);
+
+        $bug = BugFactory::randomOrCreate(['assignee' => null])->object();
+        $clientTest->request('GET', sprintf(self::URL, $bug->getId()));
+
+        $shouldAccessButton ? $this->assertSelectorTextContains('a.badge', 'Prendre en charge') : $this->assertSelectorNotExists('i.fa-truck-fast');
+    }
+
+    public function provideTestCanTakeOverIsAccessible(): \Generator
+    {
+        yield 'User should not access button' => [UserFixtures::USER_MAIL, false];
+        yield 'Team user should not access button' => [UserFixtures::TEAM_USER_MAIL, false];
+        yield 'Tech team user should access button' => [UserFixtures::TECH_TEAM_USER_MAIL, true];
+        yield 'Admin user should access button' => [UserFixtures::ADMIN_USER_MAIL, true];
+    }
+
+    /** @dataProvider provideTestMarkDoneIsAccessible */
+    public function testMarkDoneIsAccessible(string $email, bool $shouldAccessButton): void
+    {
+        $clientTest = static::createClient();
+
+        $user = UserFactory::findOrCreate(['email' => $email])->object();
+        $clientTest->loginUser($user);
+
+        $bug = BugFactory::randomOrCreate(['done' => false])->object();
+        $clientTest->request('GET', sprintf(self::URL, $bug->getId()));
+
+        $shouldAccessButton ? $this->assertSelectorExists('i.fa-check') : $this->assertSelectorNotExists('i.fa-check');
+    }
+
+    public function provideTestMarkDoneIsAccessible(): \Generator
+    {
+        yield 'User should not access button' => [UserFixtures::USER_MAIL, false];
+        yield 'Team user should not access button' => [UserFixtures::TEAM_USER_MAIL, false];
+        yield 'Tech team user should access button' => [UserFixtures::TECH_TEAM_USER_MAIL, true];
+        yield 'Admin user should access button' => [UserFixtures::ADMIN_USER_MAIL, true];
+    }
+}
