@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CommentRepository;
 use App\Traits\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
@@ -17,6 +18,7 @@ class Comment
     private ?int $id = null;
 
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private ?string $content = '';
 
     #[ORM\ManyToOne(targetEntity: Bug::class, inversedBy: 'comments')]

@@ -21,32 +21,19 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findOneByRole(string $role): ?User
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $rsm = $this->createResultSetMappingBuilder('u');
 
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $rawQuery = sprintf('SELECT %s FROM users u WHERE  roles::jsonb ?? :role',
+            $rsm->generateSelectClause()
+        );
+
+        $query = $this->getEntityManager()->createNativeQuery($rawQuery, $rsm);
+        $query->setParameter('role', $role);
+        /** @var User[] $result */
+        $result = $query->getResult();
+
+        return $result[0] ?? null;
     }
-    */
 }

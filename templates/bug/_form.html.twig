@@ -11,6 +11,7 @@
             </div>
             <div class="col-12 mt-2 col-md-5 col-lg-2 mt-md-0">
                 {{ form_widget(form.application) }}
+                {{ form_errors(form.application) }}
             </div>
         </div>
         <div class="row">
@@ -37,7 +38,7 @@
     {{ form_row(form.content) }}
 </div>
 <div class="col-12 offset-sm-6 col-sm-6 offset-md-8 col-md-4 mt-3 d-flex">
-    <button class="btn btn-primary btn-lg flex-grow-1">{{ button_label }}</button>
+    <button class="btn btn-primary btn-lg flex-grow-1">{{ button_label|trans }}</button>
 </div>
 {{ form_end(form) }}
 
