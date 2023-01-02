@@ -37,7 +37,7 @@ class ShowTest extends AbstractControllerTest implements TestRouteInterface
         $user = UserFactory::findOrCreate(['email' => $email])->object();
         $clientTest->loginUser($user);
 
-        $bug = BugFactory::randomOrCreate(['assignee' => null])->object();
+        $bug = BugFactory::randomOrCreate(['assignee' => null, 'done' => false, 'draft' => false])->object();
         $clientTest->request('GET', sprintf(self::URL, $bug->getId()));
 
         $shouldAccessButton ? $this->assertSelectorTextContains('a.badge', 'Prendre en charge') : $this->assertSelectorNotExists('i.fa-truck-fast');
