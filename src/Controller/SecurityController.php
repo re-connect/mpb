@@ -51,11 +51,9 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/google-login-trigger', name: 'google_login_trigger', methods: ['GET'])]
-    public function googleLoginTrigger(ClientRegistry $clientRegistry): mixed
+    public function googleLoginTrigger(ClientRegistry $clientRegistry): RedirectResponse
     {
-        return $clientRegistry
-            ->getClient('google')
-            ->redirect([], []);
+        return $clientRegistry->getClient('google')->redirect([], []);
     }
 
     #[Route(path: '/google-check', name: 'google_login_check', methods: ['GET'])]

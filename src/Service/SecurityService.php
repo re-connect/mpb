@@ -16,9 +16,12 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class SecurityService
 {
+    use TargetPathTrait;
+
     public function __construct(
         private readonly OAuth2Client $client,
         private readonly UserAuthenticatorInterface $authenticator,
@@ -70,19 +73,22 @@ class SecurityService
 
     public function authenticateOrCreateUser(?string $email, Request $request): Response
     {
+        $redirectPath = $this->getTargetPath($request->getSession(), 'main') ?? $this->router->generate('app_home');
+
         if ($email) {
             $user = $this->repository->findOneBy(['email' => $email]);
             if (!$user) {
                 $user = (new User())->setEmail($email)->setPassword('')->addRole('ROLE_USER');
-                if (str_ends_with((string) $email, '@reconnect.fr')) {
+                if (str_ends_with($email, '@reconnect.fr')) {
                     $user->addRole('ROLE_TEAM');
                 }
                 $this->em->persist($user);
                 $this->em->flush();
             }
+
             $this->authenticator->authenticateUser($user, $this->formLoginAuthenticator, $request);
         }
 
-        return new RedirectResponse($this->router->generate('app_home'));
+        return new RedirectResponse($redirectPath);
     }
 }

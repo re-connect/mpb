@@ -17,7 +17,6 @@ return static function (RectorConfig $rectorConfig): void {
         SymfonySetList::SYMFONY_60,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
-        SymfonySetList::SYMFONY_STRICT,
         DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
     ]);
 };
