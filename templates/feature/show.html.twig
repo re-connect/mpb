@@ -20,6 +20,6 @@
         {{ include('feature/components/_information.hmtl.twig', {feature}) }}
         {{ include('feature/components/_add_tags.html.twig', {feature, tags}) }}
         {{ include('feature/components/_comments.html.twig', {feature}) }}
-        <a class="btn btn-primary" href="{{ path('feature_add_comment', {id: feature.id}) }}">{{ 'add_comment'|trans }}</a>
+        <a class="btn btn-primary" href="{{ path('feature_add_comment', {id: feature.id}) }}"><i class="fa fa-add px-1"></i>{{ 'add_comment'|trans }}</a>
     </div>
 {% endblock %}

@@ -18,8 +18,10 @@ create: Créer
 created_by: Remonté par
 creation_date: Date de création
 dashboard: Accueil
+delete: Supprimer
 description: Description
 draft: Brouillon
+edit: Modifier
 edit_status: Modifier le statut
 email: Email
 email_pwd: Email/Mot de passe
