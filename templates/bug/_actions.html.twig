@@ -2,7 +2,7 @@
     {% if is_granted('UPDATE', bug) %}
         <div class="col">
             <a class="btn btn-warning" href="{{ path('bug_edit', {'id': bug.id}) }}"><i
-                        class="fas fa-pencil-alt"></i></a>
+                        class="fas fa-pencil-alt px-1"></i>{{ 'edit'|trans }}</a>
         </div>
     {% endif %}
     <div class="col">

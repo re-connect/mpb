@@ -1,3 +1,4 @@
+account_id: ID compte
 add_attachment: Ajouter une image
 add_comment: Ajouter un commentaire
 all_bugs: Bugs
@@ -7,7 +8,9 @@ application: Application
 back_to_bug: Retour au bug
 back_to_feature: Retour à l'amélioration
 bug: Bug
+bug_description: Description du bug rencontré
 bugs_list: Liste des bugs
+bug_title: Titre du bug
 center: Établissement
 centers: Établissements
 comments: Commentaires
@@ -15,8 +18,10 @@ create: Créer
 created_by: Remonté par
 creation_date: Date de création
 dashboard: Accueil
+delete: Supprimer
 description: Description
 draft: Brouillon
+edit: Modifier
 edit_status: Modifier le statut
 email: Email
 email_pwd: Email/Mot de passe
@@ -44,6 +49,8 @@ take_over: Prendre en charge
 taken_over_by: Traité par
 title: Titre
 update_bug: Modifier un bug
+url: URL
+url_extended: "URL (exemple : https://pro.reconnect.fr/families)"
 user: Utilisateur
 user_kind: Type d'utilisateur
 view_code_on_github: Voire le code sur Github

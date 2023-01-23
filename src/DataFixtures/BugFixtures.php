@@ -17,7 +17,7 @@ class BugFixtures extends Fixture implements DependentFixtureInterface
     {
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->disableEntityListener(TraceableEntityListener::class);
         BugFactory::createMany(3, ['assignee' => null]);

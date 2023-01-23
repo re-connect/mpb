@@ -6,20 +6,24 @@
     { name: 'title', content: feature.title },
     { name: 'status', content: is_granted('ROLE_TECH_TEAM') ? include('feature/components/_status_form.html.twig') : include('feature/components/_status.html.twig')},
     { name: 'information', content: feature.content },
-    { name: 'created_by', content: feature.user },
-    { name: 'application', content: feature.application },
     { name: 'center', content: feature.center },
+    { name: 'created_by', content: feature.user },
     { name: 'creation_date', content: feature.createdAt ? feature.createdAt|date('Y-m-d H:i:s') : '' }
 ] %}
-
+{% set badges = [
+    { content: feature.application ? include('common/_styled_entity_badge.html.twig', {entity: feature.application}) : '' },
+] %}
 {% block body %}
     <div class="position-relative">
         <div class="col">{{ include('feature/components/_back_to_list_button.html.twig') }}</div>
         <h1>{{ feature.title }}</h1>
+        {% for badge in badges %}
+            <div class="float-start">{{ badge.content|raw }}</div>
+        {% endfor %}
         {{ include('feature/components/_tags.html.twig', {feature, tags}) }}
         {{ include('feature/components/_information.hmtl.twig', {feature}) }}
         {{ include('feature/components/_add_tags.html.twig', {feature, tags}) }}
         {{ include('feature/components/_comments.html.twig', {feature}) }}
-        <a class="btn btn-primary" href="{{ path('feature_add_comment', {id: feature.id}) }}">{{ 'add_comment'|trans }}</a>
+        <a class="btn btn-primary" href="{{ path('feature_add_comment', {id: feature.id}) }}"><i class="fa fa-add px-1"></i>{{ 'add_comment'|trans }}</a>
     </div>
 {% endblock %}

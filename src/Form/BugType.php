@@ -18,38 +18,38 @@ class BugType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre du Bug',
+                'label' => 'bug_title',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'title',
+                    'placeholder' => 'bug_title',
                 ],
                 'empty_data' => '',
             ])
             ->add('application', StyledEntityType::class, [
                 'required' => true,
                 'class' => Application::class,
-                'placeholder' => 'Application',
+                'placeholder' => 'application',
             ])
             ->add('userKind', StyledEntityType::class, [
                 'class' => UserKind::class,
-                'placeholder' => "Type d'utilisateur",
+                'placeholder' => 'user_kind',
             ])
             ->add('url', TextType::class, [
-                'label' => 'URL (exemple : https://pro.reconnect.fr/families)',
+                'label' => 'url_extended',
                 'attr' => [
-                    'placeholder' => 'URL (exemple : https://pro.reconnect.fr/families)',
+                    'placeholder' => 'url_extended',
                 ],
                 'required' => false,
             ])
             ->add('accountId', IntegerType::class, [
-                'label' => 'ID compte',
+                'label' => 'account_id',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'ID compte',
+                    'placeholder' => 'account_id',
                 ],
             ])
             ->add('content', CKEditorType::class, [
-                'label' => 'Description du bug rencontré',
+                'label' => 'bug_description',
             ]);
     }
 
