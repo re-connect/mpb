@@ -5,25 +5,30 @@
 {% set items_group = [
     [
         { name: 'created_by', content: bug.user },
-        { name: 'taken_over_by', content: bug.assignee },
-        { name: 'status', content: include('bug/_status.html.twig', {'bug': bug}) },
         { name: 'creation_date', content: bug.createdAt ? bug.createdAt|date('Y-m-d H:i:s') : '' },
     ],
     [
         { name: 'title', content: bug.title },
-        { name: 'application', content: bug.application ? include('common/_styled_entity_badge.html.twig', {entity: bug.application}) : ''},
-        { name: 'user_kind', content: bug.userKind ? include('common/_styled_entity_badge.html.twig', {entity: bug.userKind}) : ''},
         { name: 'url', content: bug.url },
         { name: 'account_id', content: bug.accountId },
         { name: 'information', content: bug.content },
     ],
 ]%}
 
+{% set badges = [
+    { content: bug.application ? include('common/_styled_entity_badge.html.twig', {entity: bug.application}) : '' },
+    { content: bug.userKind ? include('common/_styled_entity_badge.html.twig', {entity: bug.userKind}) : '' },
+] %}
+
 {% block body %}
     <div class="position-relative">
         <div class="col">{{ include('bug/_back_to_list_button.html.twig') }}</div>
         <div class="col">{{ include('bug/_assignee_section.html.twig', {bug}) }}</div>
         <h1>{{ bug.title }}</h1>
+        {% for badge in badges %}
+            <div class="float-start">{{ badge.content|raw }}</div>
+        {% endfor %}
+        <div class="float-end">{{ include('bug/_status.html.twig', {'bug': bug}) }}</div>
         {% for group in items_group %}
             <table class="table">
                 <tbody>
