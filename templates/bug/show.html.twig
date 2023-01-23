@@ -2,32 +2,40 @@
 
 {% block title %}{{ bug.title }}{% endblock %}
 
-{% set items = [
-    { name: 'title', content: bug.title },
-    { name: 'information', content: bug.content },
-    { name: 'created_by', content: bug.user },
-    { name: 'taken_over_by', content: bug.assignee },
-    { name: 'application', content: bug.application },
-    { name: 'user_kind', content: bug.userKind },
-    { name: 'status', content: include('bug/_status.html.twig', {'bug': bug}) },
-    { name: 'creation_date', content: bug.createdAt ? bug.createdAt|date('Y-m-d H:i:s') : '' },
-] %}
+{% set items_group = [
+    [
+        { name: 'created_by', content: bug.user },
+        { name: 'taken_over_by', content: bug.assignee },
+        { name: 'status', content: include('bug/_status.html.twig', {'bug': bug}) },
+        { name: 'creation_date', content: bug.createdAt ? bug.createdAt|date('Y-m-d H:i:s') : '' },
+    ],
+    [
+        { name: 'title', content: bug.title },
+        { name: 'application', content: bug.application ? include('common/_styled_entity_badge.html.twig', {entity: bug.application}) : ''},
+        { name: 'user_kind', content: bug.userKind ? include('common/_styled_entity_badge.html.twig', {entity: bug.userKind}) : ''},
+        { name: 'url', content: bug.url },
+        { name: 'account_id', content: bug.accountId },
+        { name: 'information', content: bug.content },
+    ],
+]%}
 
 {% block body %}
     <div class="position-relative">
         <div class="col">{{ include('bug/_back_to_list_button.html.twig') }}</div>
         <div class="col">{{ include('bug/_assignee_section.html.twig', {bug}) }}</div>
         <h1>{{ bug.title }}</h1>
-        <table class="table">
-            <tbody>
-            {% for item in items %}
-                <tr>
-                    <th>{{ item.name|trans }}</th>
-                    <td>{{ item.content|raw }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {% for group in items_group %}
+            <table class="table">
+                <tbody>
+                {% for item in group %}
+                    <tr>
+                        <th>{{ item.name|trans }}</th>
+                        <td>{{ item.content|raw }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
         {{ include('bug/_list_attachments.html.twig', {bug}) }}
         {{ include('bug/_comments.html.twig', {bug}) }}
         <a class="btn btn-primary" href="{{ path('bug_add_comment', {id: bug.id}) }}">{{ 'add_comment'|trans }}</a>
