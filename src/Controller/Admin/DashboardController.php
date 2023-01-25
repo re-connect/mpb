@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Application;
 use App\Entity\Bug;
+use App\Entity\Feature;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Entity\UserKind;
@@ -35,6 +36,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linktoDashboard('dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('bug', 'fas fa-bug', Bug::class);
+        yield MenuItem::linkToCrud('features', 'fas fa-star', Feature::class);
         yield MenuItem::linkToCrud('user', 'fas fa-users', User::class);
         yield MenuItem::linkToCrud('application', 'fas fa-computer', Application::class);
         yield MenuItem::linkToCrud('user_kind', 'fas fa-user', UserKind::class);

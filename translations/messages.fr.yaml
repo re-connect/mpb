@@ -1,4 +1,5 @@
 account_id: ID compte
+action_export: Exporter
 add_attachment: Ajouter une image
 add_comment: Ajouter un commentaire
 all_bugs: Bugs
@@ -25,6 +26,7 @@ edit: Modifier
 edit_status: Modifier le statut
 email: Email
 email_pwd: Email/Mot de passe
+features: Améliorations
 features_list: Liste des améliorations proposées
 google_login: Connexion Google
 information: Informations
@@ -54,6 +56,7 @@ url_extended: "URL (exemple : https://pro.reconnect.fr/families)"
 user: Utilisateur
 user_kind: Type d'utilisateur
 view_code_on_github: Voire le code sur Github
+votes: Votes
 ALTERNATIVE_SOLUTION_PROPOSED: Solution alternative proposée
 BEING_DEVELOPED: En cours de développement
 IN_PRODUCTION: En production

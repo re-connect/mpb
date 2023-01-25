@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Feature extends UserRequest
 {
     use TimestampableTrait;
+    final public const EXPORTABLE_FIELDS = ['id', 'application', 'title', 'description', 'user', 'status', 'votes', 'center', 'creation_date'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -261,5 +262,21 @@ class Feature extends UserRequest
         }
 
         return $this;
+    }
+
+    /** @return array<int, string|null> */
+    public function getExportableData(): array
+    {
+        return [
+            (string) $this->id,
+            $this->application?->getName(),
+            $this->title,
+            strip_tags($this->content ?? ''),
+            $this->user?->getEmail(),
+            $this->status?->value,
+            (string) count($this->votes),
+            $this->center,
+            $this->createdAt?->format('d/m/Y'),
+        ];
     }
 }
