@@ -43,7 +43,9 @@ jobs:
                     postgresql user: mpb
                     postgresql password: mpb
             -   name: Run Doctrine Migrations
-                run: php bin/console doctrine:migrations:migrate -q --env=test
+                run: php bin/console debug:dotenv --env=test
+            -   name: Run Doctrine Migrations
+                run: php bin/console doctrine:migrations:migrate -n --env=test
             -   name: Create statuses
                 run: php bin/console doctrine:fixtures:load --env=test -q
             -   name: Execute tests (Unit and Feature tests) via PHPUnit
