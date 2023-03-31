@@ -18,6 +18,7 @@ add('shared_dirs', [
     'var/oauth',
     'node_modules',
     'vendor',
+    'public/uploads',
 ]);
 
 add('writable_dirs', []);
