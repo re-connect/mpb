@@ -1,8 +1,8 @@
 <div>
     <div
             {{ stimulus_controller('upload', {
-                'url': path('add_attachment', {'id': userRequest.id}),
-                'callbackUrl': path('attachment_widget', {'id': userRequest.id}),
+                'url': path(addAttachmentRoute, {'id': userRequest.id}),
+                'callbackUrl': path(attachmentWidgetRoute, {'id': userRequest.id}),
             }) }}
             {{ stimulus_target('upload', 'container') }}
     >
