@@ -24,8 +24,10 @@ class Attachment
     private ?User $uploadedBy = null;
 
     #[ORM\ManyToOne(targetEntity: Bug::class, inversedBy: 'attachments')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Bug $bug = null;
+
+    #[ORM\ManyToOne(targetEntity: Feature::class, inversedBy: 'attachments')]
+    private ?Feature $feature = null;
 
     public function getId(): ?int
     {
@@ -76,6 +78,18 @@ class Attachment
     public function setBug(?Bug $bug): self
     {
         $this->bug = $bug;
+
+        return $this;
+    }
+
+    public function getFeature(): ?Feature
+    {
+        return $this->feature;
+    }
+
+    public function setFeature(?Feature $feature): self
+    {
+        $this->feature = $feature;
 
         return $this;
     }

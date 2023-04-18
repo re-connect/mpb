@@ -53,11 +53,15 @@ class Feature extends UserRequest
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'features')]
     private Collection $tags;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $center = null;
 
-    #[ORM\Column(type: 'string', enumType: FeatureStatus::class)]
+    #[ORM\Column(type: 'string', nullable: true, enumType: FeatureStatus::class, options: ['default' => FeatureStatus::ToBeDecided])]
     private ?FeatureStatus $status;
+
+    /** @var Collection<int, Attachment> */
+    #[ORM\OneToMany(mappedBy: 'feature', targetEntity: Attachment::class, orphanRemoval: true)]
+    private Collection $attachments;
 
     public function __construct()
     {
@@ -65,6 +69,7 @@ class Feature extends UserRequest
         $this->votes = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->status = FeatureStatus::ToBeDecided;
+        $this->attachments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -278,5 +283,35 @@ class Feature extends UserRequest
             $this->center,
             $this->createdAt?->format('d/m/Y'),
         ];
+    }
+
+    /**
+     * @return Collection<int, Attachment>
+     */
+    public function getAttachments(): Collection
+    {
+        return $this->attachments;
+    }
+
+    public function addAttachment(Attachment $attachment): self
+    {
+        if (!$this->attachments->contains($attachment)) {
+            $this->attachments->add($attachment);
+            $attachment->setFeature($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttachment(Attachment $attachment): self
+    {
+        if ($this->attachments->removeElement($attachment)) {
+            // set the owning side to null (unless already changed)
+            if ($attachment->getFeature() === $this) {
+                $attachment->setFeature(null);
+            }
+        }
+
+        return $this;
     }
 }
