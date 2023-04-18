@@ -70,9 +70,6 @@ class Bug extends UserRequest
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $attachementName = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $draft = true;
-
     /** @var Collection<int, Vote> */
     #[ORM\OneToMany(mappedBy: 'bug', targetEntity: Vote::class)]
     private Collection $votes;
@@ -269,25 +266,6 @@ class Bug extends UserRequest
     public function setAttachementName(?string $attachementName): self
     {
         $this->attachementName = $attachementName;
-
-        return $this;
-    }
-
-    public function isDraft(): bool
-    {
-        return (bool) $this->draft;
-    }
-
-    public function setDraft(bool $draft): self
-    {
-        $this->draft = $draft;
-
-        return $this;
-    }
-
-    public function publish(): self
-    {
-        $this->draft = false;
 
         return $this;
     }
