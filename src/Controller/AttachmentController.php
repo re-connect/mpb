@@ -26,7 +26,7 @@ class AttachmentController extends AbstractController
     #[IsGranted(Permissions::READ, 'bug')]
     public function getBugAttachmentWidget(Bug $bug): Response
     {
-        return $this->render('attachment/_widget.html.twig', ['bug' => $bug]);
+        return $this->render('attachment/_widget.html.twig', ['userRequest' => $bug]);
     }
 
     private function addAttachment(UserRequest $userRequest, mixed $file, AttachmentService $service): Response

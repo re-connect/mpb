@@ -1,12 +1,12 @@
 <div>
     <div
             {{ stimulus_controller('upload', {
-                'url': path('add_attachment', {'id': bug.id}),
-                'callbackUrl': path('attachment_widget', {'id': bug.id}),
+                'url': path('add_attachment', {'id': userRequest.id}),
+                'callbackUrl': path('attachment_widget', {'id': userRequest.id}),
             }) }}
             {{ stimulus_target('upload', 'container') }}
     >
-        {{ include('bug/_list_attachments.html.twig', {bug}) }}
-        {{ include('bug/_add_attachment_button.html.twig', {bug}) }}
+        {{ include('attachment/_list_attachments.html.twig', {userRequest}) }}
+        {{ include('attachment/_add_attachment_button.html.twig', {userRequest}) }}
     </div>
 </div>
