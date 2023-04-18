@@ -3,7 +3,6 @@
             {{ stimulus_controller('upload', {
                 'url': path('add_attachment', {'id': bug.id}),
                 'callbackUrl': path('attachment_widget', {'id': bug.id}),
-                'formToSubmit': 'bug-form',
             }) }}
             {{ stimulus_target('upload', 'container') }}
     >
