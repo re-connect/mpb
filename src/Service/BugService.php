@@ -23,7 +23,6 @@ class BugService
         private readonly BugRepository $repository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly NotificationService $notificator,
-        private readonly string $uploadsDirectory,
         private readonly Security $security,
     ) {
     }
@@ -87,24 +86,5 @@ class BugService
         $bug->setDone(true);
         $this->em->flush();
         $this->notificator->notifyBug($bug);
-    }
-
-    public function addAttachment(Bug $bug, mixed $file): void
-    {
-        if (!($file instanceof UploadedFile)) {
-            return;
-        }
-
-        $name = Uuid::v4().'.'.$file->guessExtension();
-        $attachment = (new Attachment())
-            ->setBug($bug)
-            ->setName($name)
-            ->setSize($file->getSize())
-            ->setUploadedBy($this->getUser());
-        $this->em->persist($attachment);
-        $this->em->flush();
-        $bug->addAttachment($attachment);
-
-        $file->move($this->uploadsDirectory, $name);
     }
 }
