@@ -61,7 +61,7 @@ class Feature extends UserRequest
 
     /** @var Collection<int, Attachment> */
     #[ORM\OneToMany(mappedBy: 'feature', targetEntity: Attachment::class, orphanRemoval: true)]
-    private Collection $attachments;
+    protected Collection $attachments;
 
     public function __construct()
     {
@@ -283,35 +283,5 @@ class Feature extends UserRequest
             $this->center,
             $this->createdAt?->format('d/m/Y'),
         ];
-    }
-
-    /**
-     * @return Collection<int, Attachment>
-     */
-    public function getAttachments(): Collection
-    {
-        return $this->attachments;
-    }
-
-    public function addAttachment(Attachment $attachment): self
-    {
-        if (!$this->attachments->contains($attachment)) {
-            $this->attachments->add($attachment);
-            $attachment->setFeature($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAttachment(Attachment $attachment): self
-    {
-        if ($this->attachments->removeElement($attachment)) {
-            // set the owning side to null (unless already changed)
-            if ($attachment->getFeature() === $this) {
-                $attachment->setFeature(null);
-            }
-        }
-
-        return $this;
     }
 }

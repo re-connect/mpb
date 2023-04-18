@@ -38,7 +38,7 @@ class Bug extends UserRequest
 
     /** @var Collection<int, Attachment> */
     #[ORM\OneToMany(mappedBy: 'bug', targetEntity: Attachment::class, orphanRemoval: true)]
-    private Collection $attachments;
+    protected Collection $attachments;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $url = null;
@@ -163,36 +163,6 @@ class Bug extends UserRequest
     public function hasComments(): bool
     {
         return $this->comments->count() > 0;
-    }
-
-    /**
-     * @return Collection<int, Attachment>
-     */
-    public function getAttachments(): Collection
-    {
-        return $this->attachments;
-    }
-
-    public function addAttachment(Attachment $attachment): self
-    {
-        if (!$this->attachments->contains($attachment)) {
-            $this->attachments[] = $attachment;
-            $attachment->setBug($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAttachment(Attachment $attachment): self
-    {
-        if ($this->attachments->removeElement($attachment)) {
-            // set the owning side to null (unless already changed)
-            if ($attachment->getBug() === $this) {
-                $attachment->setBug(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getUrl(): ?string

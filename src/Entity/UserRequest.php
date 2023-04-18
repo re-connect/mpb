@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
+use App\Traits\UploadableTrait;
 use Doctrine\Common\Collections\Collection;
 
 abstract class UserRequest
 {
+    use UploadableTrait;
+
     /** @return Collection<int, Vote> */
     abstract public function getVotes(): Collection;
 
