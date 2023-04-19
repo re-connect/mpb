@@ -21,6 +21,7 @@ class FeatureType extends AbstractType
                 'attr' => [
                     'placeholder' => 'title',
                 ],
+                'empty_data' => '',
             ])
             ->add('application', StyledEntityType::class, [
                 'class' => Application::class,
@@ -37,6 +38,7 @@ class FeatureType extends AbstractType
             ])
             ->add('content', CKEditorType::class, [
                 'label' => 'description',
+                'empty_data' => '',
             ]);
     }
 

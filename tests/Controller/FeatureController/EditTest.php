@@ -9,9 +9,9 @@ use App\Tests\Controller\TestFormInterface;
 use App\Tests\Controller\TestRouteInterface;
 use App\Tests\Factory\FeatureFactory;
 
-class CreateTest extends AbstractControllerTest implements TestRouteInterface, TestFormInterface
+class EditTest extends AbstractControllerTest implements TestRouteInterface, TestFormInterface
 {
-    private const URL = '/features/create/%s';
+    private const URL = '/features/%s/edit';
 
     private const FORM_VALUES = [
         'feature[title]' => 'Titre',
@@ -21,7 +21,7 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     /** @dataProvider provideTestRoute */
     public function testRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
     {
-        $feature = FeatureFactory::randomOrCreate()->object();
+        $feature = FeatureFactory::randomOrCreate(['draft' => false])->object();
         $url = sprintf($url, $feature->getId());
         $this->assertRoute($url, $expectedStatusCode, $userEmail, $expectedRedirect, $method);
     }
@@ -29,8 +29,8 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     public function provideTestRoute(): \Generator
     {
         yield 'Should redirect to login when not connected' => [self::URL, 302, null, 'http://localhost/login'];
-        yield 'Should return 200 when connected as user' => [self::URL, 200, UserFixtures::USER_MAIL];
-        yield 'Should return 200 when connected as team member' => [self::URL, 200, UserFixtures::TEAM_USER_MAIL];
+        yield 'Should return 403 when connected as user' => [self::URL, 403, UserFixtures::USER_MAIL];
+        yield 'Should return 403 when connected as team member' => [self::URL, 403, UserFixtures::TEAM_USER_MAIL];
         yield 'Should return 200 when connected as tech team member' => [self::URL, 200, UserFixtures::TECH_TEAM_USER_MAIL];
         yield 'Should return 200 when connected as admin' => [self::URL, 200, UserFixtures::ADMIN_USER_MAIL];
     }
@@ -49,9 +49,9 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
         $values['feature[application]'] = $this->getContainer()->get(ApplicationRepository::class)->findAll()[0]->getId();
         yield 'Page should redirect to list when form is valid' => [
             self::URL,
-            'create',
+            'Mettre à jour',
             $values,
-            UserFixtures::USER_MAIL,
+            UserFixtures::TECH_TEAM_USER_MAIL,
             '/features/list',
         ];
     }
@@ -73,11 +73,11 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     {
         $values = self::FORM_VALUES;
         $values['feature[application]'] = $this->getContainer()->get(ApplicationRepository::class)->findAll()[0]->getId();
-        $values['feature[title]'] = null;
+        $values['feature[title]'] = '';
         yield 'Should return an error when title is empty' => [
             self::URL,
-            'feature_new',
-            'create',
+            'feature_edit',
+            'Mettre à jour',
             $values,
             [
                 [
@@ -85,7 +85,7 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
                     'params' => [],
                 ],
             ],
-            UserFixtures::USER_MAIL,
+            UserFixtures::TECH_TEAM_USER_MAIL,
         ];
 
         $values = self::FORM_VALUES;
@@ -93,8 +93,8 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
         $values['feature[content]'] = null;
         yield 'Should return an error when content is empty' => [
             self::URL,
-            'feature_new',
-            'create',
+            'feature_edit',
+            'Mettre à jour',
             $values,
             [
                 [
@@ -102,15 +102,15 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
                     'params' => [],
                 ],
             ],
-            UserFixtures::USER_MAIL,
+            UserFixtures::TECH_TEAM_USER_MAIL,
         ];
 
         $values = self::FORM_VALUES;
         $values['feature[application]'] = '';
         yield 'Should return an error when application is empty' => [
             self::URL,
-            'feature_new',
-            'create',
+            'feature_edit',
+            'Mettre à jour',
             $values,
             [
                 [
@@ -118,7 +118,7 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
                     'params' => [],
                 ],
             ],
-            UserFixtures::USER_MAIL,
+            UserFixtures::TECH_TEAM_USER_MAIL,
         ];
     }
 }

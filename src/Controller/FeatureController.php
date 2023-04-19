@@ -78,7 +78,7 @@ class FeatureController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/show/{id}', name: 'feature_show', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}', name: 'feature_show', methods: ['GET', 'POST'])]
     public function show(Request $request, Feature $feature, TagRepository $tagRepository, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(FeatureStatusType::class, $feature)->handleRequest($request);
