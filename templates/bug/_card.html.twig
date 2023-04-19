@@ -2,11 +2,7 @@
      xmlns="http://www.w3.org/1999/html">
     <div class="row">
         <div class="col-3 col-sm-2 col-md-1 d-flex justify-content-center align-items-center">
-            {% if bug.draft %}
-                {{ 'draft'|trans }}
-            {% else %}
-                {{ app_icon(bug.application) }}
-            {% endif %}
+            {{ include('common/_user_request_defensive_app_icon.html.twig', {'userRequest': bug}) }}
         </div>
         <div class="col-9 col-sm-10 col-md-11">
             <div class="row">

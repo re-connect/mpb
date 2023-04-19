@@ -15,6 +15,7 @@ use App\Manager\FeatureManager;
 use App\Manager\VoteManager;
 use App\Repository\ApplicationRepository;
 use App\Repository\TagRepository;
+use App\Security\Voter\Permissions;
 use App\Service\FeatureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,18 +53,29 @@ class FeatureController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/create', name: 'feature_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, FeatureService $service): Response
+    #[Route(path: '/init', name: 'feature_init', methods: ['GET'])]
+    public function init(FeatureManager $manager): Response
     {
         $feature = new Feature();
+        $manager->create($feature);
+
+        return $this->redirectToRoute('feature_new', ['id' => $feature->getId()]);
+    }
+
+    #[Route(path: '/create/{id}', name: 'feature_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, Feature $feature, FeatureService $service, FeatureManager $manager): Response
+    {
         $form = $this->createForm(FeatureType::class, $feature, ['centerValues' => $service->getAllCentersForAutocomplete()])->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $service->create($feature);
+            $manager->publishDraft($feature);
 
             return $this->redirectToRoute('features_list');
         }
 
-        return $this->render('feature/new.html.twig', ['form' => $form]);
+        return $this->render('feature/new.html.twig', [
+            'form' => $form,
+            'feature' => $feature,
+        ]);
     }
 
     #[Route(path: '/show/{id}', name: 'feature_show', methods: ['GET', 'POST'])]
@@ -85,6 +97,20 @@ class FeatureController extends AbstractController
             'feature' => $feature,
             'tags' => $tagRepository->findAll(),
         ]);
+    }
+
+    #[IsGranted(Permissions::UPDATE, 'feature')]
+    #[Route(path: '/{id}/edit', name: 'feature_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Feature $feature, FeatureManager $manager): Response
+    {
+        $form = $this->createForm(FeatureType::class, $feature)->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->publishDraft($feature);
+
+            return $this->redirectToRoute('features_list');
+        }
+
+        return $this->render('feature/edit.html.twig', ['feature' => $feature, 'form' => $form]);
     }
 
     #[Route(path: '/{id}/add-comment', name: 'feature_add_comment', methods: ['GET', 'POST'])]
