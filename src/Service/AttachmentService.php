@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AttachmentService
 {
@@ -18,6 +19,7 @@ class AttachmentService
         private readonly EntityManagerInterface $em,
         private readonly Security $security,
         private readonly string $uploadsDirectory,
+        private readonly ValidatorInterface $validator
     ) {
     }
 
@@ -39,9 +41,14 @@ class AttachmentService
             ->setName($name)
             ->setSize($file->getSize())
             ->setUploadedBy($this->getUser());
+
+        if ($this->validator->validate($attachment)->count() > 0) {
+            return false;
+        }
+
         $this->em->persist($attachment);
-        $this->em->flush();
         $userRequest->addAttachment($attachment);
+        $this->em->flush();
 
         $file->move($this->uploadsDirectory, $name);
 

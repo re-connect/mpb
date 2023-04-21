@@ -4,8 +4,13 @@ namespace App\Entity;
 
 use App\Repository\AttachmentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AttachmentRepository::class)]
+#[Assert\Expression(
+    'this.getUserRequest() !== null',
+    message: 'user_request_not_null',
+)]
 class Attachment
 {
     #[ORM\Id]

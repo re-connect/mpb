@@ -4,9 +4,11 @@ namespace App\Traits;
 
 use App\Entity\Attachment;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait UploadableTrait
 {
+    #[Assert\Valid]
     protected Collection $attachments;
 
     /**
