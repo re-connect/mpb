@@ -4,7 +4,7 @@
 
 {% block body %}
     <div {{ stimulus_controller('search') }}>
-        {{ include('common/_search_form.html.twig', {form, newPath: path('bug_init'), newTitle: 'new_bug'|trans}) }}
+        {{ include('common/_search_form.html.twig', {form, newPath: path('bug_new'), newTitle: 'new_bug'|trans}) }}
         <div class="container py-3 px-4">
             <div {{ stimulus_target('search', 'container') }}>
                 {{ include('bug/_list.html.twig', {bugs}) }}

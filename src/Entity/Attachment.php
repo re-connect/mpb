@@ -4,8 +4,13 @@ namespace App\Entity;
 
 use App\Repository\AttachmentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AttachmentRepository::class)]
+#[Assert\Expression(
+    'this.getUserRequest() !== null',
+    message: 'user_request_not_null',
+)]
 class Attachment
 {
     #[ORM\Id]
@@ -24,8 +29,10 @@ class Attachment
     private ?User $uploadedBy = null;
 
     #[ORM\ManyToOne(targetEntity: Bug::class, inversedBy: 'attachments')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Bug $bug = null;
+
+    #[ORM\ManyToOne(targetEntity: Feature::class, inversedBy: 'attachments')]
+    private ?Feature $feature = null;
 
     public function getId(): ?int
     {
@@ -76,6 +83,34 @@ class Attachment
     public function setBug(?Bug $bug): self
     {
         $this->bug = $bug;
+
+        return $this;
+    }
+
+    public function getFeature(): ?Feature
+    {
+        return $this->feature;
+    }
+
+    public function setFeature(?Feature $feature): self
+    {
+        $this->feature = $feature;
+
+        return $this;
+    }
+
+    public function getUserRequest(): ?UserRequest
+    {
+        return $this->feature ?? $this->bug;
+    }
+
+    public function setUserRequest(?UserRequest $userRequest): self
+    {
+        if ($userRequest instanceof Feature) {
+            $this->feature = $userRequest;
+        } elseif ($userRequest instanceof Bug) {
+            $this->bug = $userRequest;
+        }
 
         return $this;
     }

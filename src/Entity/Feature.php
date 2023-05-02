@@ -21,11 +21,11 @@ class Feature extends UserRequest
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Assert\NotBlank]
     private ?string $content = null;
 
@@ -34,7 +34,7 @@ class Feature extends UserRequest
     private ?User $user = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotNull]
     private ?Application $application = null;
 
@@ -53,11 +53,15 @@ class Feature extends UserRequest
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'features')]
     private Collection $tags;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $center = null;
 
-    #[ORM\Column(type: 'string', enumType: FeatureStatus::class)]
+    #[ORM\Column(type: 'string', nullable: true, enumType: FeatureStatus::class, options: ['default' => FeatureStatus::ToBeDecided])]
     private ?FeatureStatus $status;
+
+    /** @var Collection<int, Attachment> */
+    #[ORM\OneToMany(mappedBy: 'feature', targetEntity: Attachment::class, orphanRemoval: true)]
+    protected Collection $attachments;
 
     public function __construct()
     {
@@ -65,6 +69,7 @@ class Feature extends UserRequest
         $this->votes = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->status = FeatureStatus::ToBeDecided;
+        $this->attachments = new ArrayCollection();
     }
 
     public function getId(): ?int

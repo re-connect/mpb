@@ -50,17 +50,10 @@ class BugController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/init', name: 'bug_init', methods: ['GET', 'POST'])]
-    public function init(Request $request, BugService $service): Response
+    #[Route(path: '/create', name: 'bug_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, BugService $service): Response
     {
         $bug = $service->initBug($request->headers->get('User-Agent', ''));
-
-        return $this->redirectToRoute('bug_new', ['id' => $bug->getId()]);
-    }
-
-    #[Route(path: '/create/{id}', name: 'bug_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, Bug $bug, BugService $service): Response
-    {
         $form = $this->createForm(BugType::class, $bug)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $service->create($bug);

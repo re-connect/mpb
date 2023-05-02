@@ -15,6 +15,12 @@ class FeatureManager
     ) {
     }
 
+    public function publishDraft(Feature $feature): void
+    {
+        $feature->publish();
+        $this->em->flush();
+    }
+
     public function create(Feature $feature): void
     {
         $this->em->persist($feature);

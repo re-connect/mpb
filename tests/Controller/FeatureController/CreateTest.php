@@ -11,6 +11,7 @@ use App\Tests\Controller\TestRouteInterface;
 class CreateTest extends AbstractControllerTest implements TestRouteInterface, TestFormInterface
 {
     private const URL = '/features/create';
+
     private const FORM_VALUES = [
         'feature[title]' => 'Titre',
         'feature[content]' => 'Description',

@@ -41,7 +41,7 @@
                 </tbody>
             </table>
         {% endfor %}
-        {{ include('bug/_list_attachments.html.twig', {bug}) }}
+        {{ include('attachment/_list_attachments.html.twig', {'userRequest': bug}) }}
         {{ include('bug/_comments.html.twig', {bug}) }}
         <a class="btn btn-primary" href="{{ path('bug_add_comment', {id: bug.id}) }}"><i class="fa fa-add px-1"></i>{{ 'add_comment'|trans }}</a>
         {{ include('bug/_actions.html.twig', {bug}) }}

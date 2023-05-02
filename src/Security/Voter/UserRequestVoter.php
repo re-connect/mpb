@@ -37,7 +37,7 @@ class UserRequestVoter extends Voter
 
         if (Permissions::READ === $attribute) {
             return true;
-        } elseif (Permissions::UPDATE === $attribute && $subject instanceof Bug) {
+        } elseif (Permissions::UPDATE === $attribute) {
             return $subject->isDraft();
         }
 

@@ -1,5 +1,5 @@
 <div class="row">
-    {% for attachment in bug.attachments %}
+    {% for attachment in userRequest.attachments %}
         <div class="col">
             <img class="img-fluid" src="{{ asset('uploads/'~attachment.name) }}" alt="Attachment"/>
         </div>
