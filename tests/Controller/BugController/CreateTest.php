@@ -11,7 +11,7 @@ use App\Tests\Factory\BugFactory;
 
 class CreateTest extends AbstractControllerTest implements TestRouteInterface, TestFormInterface
 {
-    private const URL = '/bugs/create/%s';
+    private const URL = '/bugs/create';
 
     private const FORM_VALUES = [
         'bug[title]' => 'Title',
@@ -21,8 +21,6 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     /** @dataProvider provideTestRoute */
     public function testRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
     {
-        $bug = BugFactory::randomOrCreate()->object();
-        $url = sprintf($url, $bug->getId());
         $this->assertRoute($url, $expectedStatusCode, $userEmail, $expectedRedirect, $method);
     }
 
@@ -38,8 +36,6 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     /**  @dataProvider provideTestFormIsValid */
     public function testFormIsValid(string $url, string $formSubmit, array $values, ?string $email, ?string $redirectUrl): void
     {
-        $bug = BugFactory::randomOrCreate()->object();
-        $url = sprintf($url, $bug->getId());
         $this->assertFormIsValid($url, $formSubmit, $values, $email, $redirectUrl);
     }
 

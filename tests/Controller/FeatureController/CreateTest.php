@@ -7,11 +7,10 @@ use App\Repository\ApplicationRepository;
 use App\Tests\Controller\AbstractControllerTest;
 use App\Tests\Controller\TestFormInterface;
 use App\Tests\Controller\TestRouteInterface;
-use App\Tests\Factory\FeatureFactory;
 
 class CreateTest extends AbstractControllerTest implements TestRouteInterface, TestFormInterface
 {
-    private const URL = '/features/create/%s';
+    private const URL = '/features/create';
 
     private const FORM_VALUES = [
         'feature[title]' => 'Titre',
@@ -21,8 +20,6 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     /** @dataProvider provideTestRoute */
     public function testRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
     {
-        $feature = FeatureFactory::randomOrCreate()->object();
-        $url = sprintf($url, $feature->getId());
         $this->assertRoute($url, $expectedStatusCode, $userEmail, $expectedRedirect, $method);
     }
 
@@ -38,8 +35,6 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     /**  @dataProvider provideTestFormIsValid */
     public function testFormIsValid(string $url, string $formSubmit, array $values, ?string $email, ?string $redirectUrl): void
     {
-        $feature = FeatureFactory::randomOrCreate()->object();
-        $url = sprintf($url, $feature->getId());
         $this->assertFormIsValid($url, $formSubmit, $values, $email, $redirectUrl);
     }
 
@@ -64,8 +59,6 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
      */
     public function testFormIsNotValid(string $url, string $route, string $formSubmit, array $values, array $errors, ?string $email, ?string $alternateSelector = null): void
     {
-        $feature = FeatureFactory::randomOrCreate()->object();
-        $url = sprintf($url, $feature->getId());
         $this->assertFormIsNotValid($url, $route, $formSubmit, $values, $errors, $email, $alternateSelector);
     }
 
