@@ -43,6 +43,7 @@ final class FeatureFactory extends ModelFactory
             'content' => self::faker()->text(),
             'createdAt' => new \DateTimeImmutable(),
             'done' => false,
+            'draft' => false,
             'status' => FeatureStatus::ToBeDecided,
             'title' => self::faker()->text(25),
             'user' => UserFactory::findOrCreateWithRole('ROLE_USER'),
