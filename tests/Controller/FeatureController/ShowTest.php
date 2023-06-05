@@ -5,11 +5,12 @@ namespace App\Tests\Controller\FeatureController;
 use App\DataFixtures\UserFixtures;
 use App\Entity\FeatureStatus;
 use App\Tests\Controller\AbstractControllerTest;
+use App\Tests\Controller\TestFormInterface;
 use App\Tests\Controller\TestRouteInterface;
 use App\Tests\Factory\FeatureFactory;
 use App\Tests\Factory\UserFactory;
 
-class ShowTest extends AbstractControllerTest implements TestRouteInterface
+class ShowTest extends AbstractControllerTest implements TestRouteInterface, TestFormInterface
 {
     private const URL = '/features/%s';
 
@@ -33,7 +34,7 @@ class ShowTest extends AbstractControllerTest implements TestRouteInterface
     /**  @dataProvider provideTestFormIsValid */
     public function testFormIsValid(string $url, string $formSubmit, array $values, ?string $email, ?string $redirectUrl): void
     {
-        $feature = FeatureFactory::randomOrCreate()->object();
+        $feature = FeatureFactory::randomOrCreate(['draft' => false])->object();
         $url = sprintf($url, $feature->getId());
         $this->assertFormIsValid($url, $formSubmit, $values, $email, $url);
     }
@@ -46,6 +47,31 @@ class ShowTest extends AbstractControllerTest implements TestRouteInterface
             ['feature_status[status]' => FeatureStatus::BeingDeveloped->value],
             UserFixtures::TECH_TEAM_USER_MAIL,
             null,
+        ];
+    }
+
+    /**  @dataProvider provideTestFormIsNotValid */
+    public function testFormIsNotValid(string $url, string $route, string $formSubmit, array $values, array $errors, ?string $email, ?string $alternateSelector = null): void
+    {
+        $feature = FeatureFactory::randomOrCreate(['draft' => true])->object();
+        $url = sprintf($url, $feature->getId());
+        $this->assertFormIsNotValid($url, $route, $formSubmit, $values, $errors, $email, $alternateSelector);
+    }
+
+    public function provideTestFormIsNotValid(): \Generator
+    {
+        yield 'Should return error if feature is a draft' => [
+            self::URL,
+            'feature_show',
+            'edit_status',
+            ['feature_status[status]' => FeatureStatus::BeingDeveloped->value],
+            [
+                [
+                    'message' => 'This value should not be blank.',
+                    'params' => [],
+                ],
+            ],
+            UserFixtures::TECH_TEAM_USER_MAIL,
         ];
     }
 
