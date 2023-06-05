@@ -24,13 +24,16 @@
         {{ include('feature/components/_information.hmtl.twig', {feature}) }}
         {{ include('feature/components/_add_tags.html.twig', {feature, tags}) }}
         {{ include('feature/components/_comments.html.twig', {feature}) }}
-        {{ include('attachment/_list_attachments.html.twig', {'userRequest': feature}) }}
+        {{ include('attachment/_list_attachments.html.twig', {userRequest: feature}) }}
         <a class="btn btn-primary" href="{{ path('feature_add_comment', {id: feature.id}) }}"><i class="fa fa-add px-1"></i>{{ 'add_comment'|trans }}</a>
 
         {% if is_granted('UPDATE', feature) %}
             <div class="col mt-3">
-                <a class="btn btn-warning" href="{{ path('feature_edit', {'id': feature.id}) }}"><i
-                            class="fas fa-pencil-alt px-1"></i>{{ 'edit'|trans }}</a>
+                <a class="btn btn-warning"
+                   href="{{ path('feature_edit', {id: feature.id}) }}"
+                   data-turbo="false"
+                >
+                    <i class="fas fa-pencil-alt px-1"></i>{{ 'edit'|trans }}</a>
             </div>
         {% endif %}
     </div>
