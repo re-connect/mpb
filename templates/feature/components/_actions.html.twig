@@ -1,0 +1,15 @@
+<div class="row mt-4">
+    {% if is_granted('UPDATE', feature) %}
+        <div class="col">
+            <a class="btn btn-warning"
+               href="{{ path('feature_edit', {id: feature.id}) }}"
+               data-turbo="false"
+            >
+                <i class="fas fa-pencil-alt px-1"></i>{{ 'edit'|trans }}
+            </a>
+        </div>
+        <div class="col">
+            {{ include('feature/components/_delete_form.html.twig') }}
+        </div>
+    {% endif %}
+</div>

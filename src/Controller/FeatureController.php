@@ -116,6 +116,18 @@ class FeatureController extends AbstractController
         return $this->render('feature/edit.html.twig', ['feature' => $feature, 'form' => $form]);
     }
 
+    #[IsGranted(Permissions::UPDATE, 'feature')]
+    #[Route(path: '/delete/{id}', name: 'feature_delete', methods: ['POST'])]
+    public function delete(Request $request, Feature $feature, UserRequestManager $manager): Response
+    {
+        $csrfTokenName = sprintf('delete%d', $feature->getId());
+        if ($this->isCsrfTokenValid($csrfTokenName, (string) $request->request->get('_token', ''))) {
+            $manager->remove($feature);
+        }
+
+        return $this->redirectToRoute('features_list');
+    }
+
     #[IsGranted(Permissions::READ, 'feature')]
     #[Route(path: '/{id}/add-comment', name: 'feature_add_comment', methods: ['GET', 'POST'])]
     public function addComment(Request $request, Feature $feature, CommentManager $manager): Response
