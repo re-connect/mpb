@@ -14,8 +14,8 @@ use Doctrine\Persistence\ObjectManager;
 class FeatureFixtures extends Fixture implements DependentFixtureInterface
 {
     use DisableEntityListener;
-    public const FEATURE_FROM_BASIC_USER = 'feature_from_basic_user';
-    public const FEATURE_FROM_TEAM_USER = 'feature_from_team_user';
+    final public const FEATURE_FROM_BASIC_USER = 'feature_from_basic_user';
+    final public const FEATURE_FROM_TEAM_USER = 'feature_from_team_user';
 
     public function __construct(private readonly EntityManagerInterface $em)
     {

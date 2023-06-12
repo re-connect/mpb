@@ -15,28 +15,10 @@ class FeatureManager
     ) {
     }
 
-    public function publishDraft(Feature $feature): void
-    {
-        $feature->publish();
-        $this->em->flush();
-    }
-
-    public function create(Feature $feature): void
-    {
-        $this->em->persist($feature);
-        $this->em->flush();
-    }
-
     /** @return Feature[] */
     public function findAll(): array
     {
         return $this->repository->findAll();
-    }
-
-    public function markDone(Feature $feature): void
-    {
-        $feature->markDone();
-        $this->em->flush();
     }
 
     public function toggleTag(Feature $feature, Tag $tag): void

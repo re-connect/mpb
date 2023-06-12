@@ -10,6 +10,7 @@ use App\Form\Model\Search;
 use App\Form\SearchType;
 use App\Manager\BugManager;
 use App\Manager\CommentManager;
+use App\Manager\UserRequestManager;
 use App\Manager\VoteManager;
 use App\Repository\ApplicationRepository;
 use App\Security\Voter\Permissions;
@@ -51,12 +52,13 @@ class BugController extends AbstractController
     }
 
     #[Route(path: '/create', name: 'bug_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, BugService $service): Response
+    public function new(Request $request, UserRequestManager $manager): Response
     {
-        $bug = $service->initBug($request->headers->get('User-Agent', ''));
+        $bug = new Bug($request->headers->get('User-Agent', ''));
+        $manager->create($bug);
         $form = $this->createForm(BugType::class, $bug)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $service->create($bug);
+            $manager->publishDraft($bug);
 
             return $this->redirectToRoute('bugs_list');
         }
@@ -79,7 +81,7 @@ class BugController extends AbstractController
 
     #[IsGranted(Permissions::UPDATE, 'bug')]
     #[Route(path: '/{id}/edit', name: 'bug_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Bug $bug, BugManager $manager): Response
+    public function edit(Request $request, Bug $bug, UserRequestManager $manager): Response
     {
         $form = $this->createForm(BugType::class, $bug)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -91,15 +93,14 @@ class BugController extends AbstractController
         return $this->render('bug/edit.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
-    #[IsGranted(Permissions::READ, 'bug')]
+    #[IsGranted(Permissions::UPDATE, 'bug')]
     #[Route(path: '/{id}', name: 'bug_delete', methods: ['POST'])]
-    public function delete(Request $request, Bug $bug, BugManager $manager): Response
+    public function delete(Request $request, Bug $bug, UserRequestManager $manager): Response
     {
         $csrfTokenName = sprintf('delete%d', $bug->getId());
         if ($this->isCsrfTokenValid($csrfTokenName, (string) $request->request->get('_token', ''))) {
             $manager->remove($bug);
         }
-
         return $this->redirectToRoute('bugs_list');
     }
 
@@ -114,9 +115,9 @@ class BugController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/mark-done', name: 'bug_mark_done', methods: ['GET'])]
-    public function markDone(Bug $bug, BugService $service): Response
+    public function markDone(Bug $bug, UserRequestManager $manager): Response
     {
-        $service->markAsDone($bug);
+        $manager->markDone($bug);
 
         return $this->refreshOrRedirect('bugs_list');
     }

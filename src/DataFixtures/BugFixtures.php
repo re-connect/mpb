@@ -14,8 +14,8 @@ use Doctrine\Persistence\ObjectManager;
 class BugFixtures extends Fixture implements DependentFixtureInterface
 {
     use DisableEntityListener;
-    public const BUG_FROM_BASIC_USER = 'bug_from_basic_user';
-    public const BUG_FROM_TEAM_USER = 'bug_from_team_user';
+    final public const BUG_FROM_BASIC_USER = 'bug_from_basic_user';
+    final public const BUG_FROM_TEAM_USER = 'bug_from_team_user';
 
     public function __construct(private readonly EntityManagerInterface $em)
     {

@@ -17,18 +17,6 @@ class BugManager
     ) {
     }
 
-    public function publishDraft(Bug $bug): void
-    {
-        $bug->publish();
-        $this->em->flush();
-    }
-
-    public function remove(Bug $bug): void
-    {
-        $this->em->remove($bug);
-        $this->em->flush();
-    }
-
     public function takeOver(Bug $bug): void
     {
         $bug->setAssignee($this->getUser());

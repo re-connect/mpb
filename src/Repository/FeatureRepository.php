@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Feature[]    findAll()
  * @method Feature[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FeatureRepository extends ServiceEntityRepository
+class FeatureRepository extends ServiceEntityRepository implements UserRequestRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -47,29 +47,4 @@ class FeatureRepository extends ServiceEntityRepository
             ->where('f.center IS NOT NULL')
             ->getQuery()->getArrayResult();
     }
-
-//    /**
-//     * @return Feature[] Returns an array of Feature objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Feature
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

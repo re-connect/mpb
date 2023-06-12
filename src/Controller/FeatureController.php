@@ -12,6 +12,7 @@ use App\Form\Model\Search;
 use App\Form\SearchType;
 use App\Manager\CommentManager;
 use App\Manager\FeatureManager;
+use App\Manager\UserRequestManager;
 use App\Manager\VoteManager;
 use App\Repository\ApplicationRepository;
 use App\Repository\TagRepository;
@@ -54,7 +55,7 @@ class FeatureController extends AbstractController
     }
 
     #[Route(path: '/create', name: 'feature_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, FeatureService $service, FeatureManager $manager): Response
+    public function new(Request $request, FeatureService $service, UserRequestManager $manager): Response
     {
         $feature = new Feature();
         $manager->create($feature);
@@ -71,6 +72,7 @@ class FeatureController extends AbstractController
         ]);
     }
 
+    #[IsGranted(Permissions::READ, 'feature')]
     #[Route(path: '/{id}', name: 'feature_show', methods: ['GET', 'POST'])]
     public function show(Request $request, Feature $feature, TagRepository $tagRepository, EntityManagerInterface $em): Response
     {
@@ -94,7 +96,7 @@ class FeatureController extends AbstractController
 
     #[IsGranted(Permissions::UPDATE, 'feature')]
     #[Route(path: '/{id}/edit', name: 'feature_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Feature $feature, FeatureManager $manager): Response
+    public function edit(Request $request, Feature $feature, UserRequestManager $manager): Response
     {
         $form = $this->createForm(FeatureType::class, $feature)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -106,6 +108,7 @@ class FeatureController extends AbstractController
         return $this->render('feature/edit.html.twig', ['feature' => $feature, 'form' => $form]);
     }
 
+    #[IsGranted(Permissions::READ, 'feature')]
     #[Route(path: '/{id}/add-comment', name: 'feature_add_comment', methods: ['GET', 'POST'])]
     public function addComment(Request $request, Feature $feature, CommentManager $manager): Response
     {
@@ -142,7 +145,7 @@ class FeatureController extends AbstractController
     }
 
     #[Route(path: '/{id}/mark-done', name: 'feature_mark_done', methods: ['GET'])]
-    public function markDone(Feature $feature, FeatureManager $manager): Response
+    public function markDone(Feature $feature, UserRequestManager $manager): Response
     {
         $manager->markDone($feature);
 

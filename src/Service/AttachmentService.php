@@ -23,9 +23,6 @@ class AttachmentService
     ) {
     }
 
-    /**
-     * @param mixed $file
-     */
     public function addAttachment(UserRequest $userRequest, mixed $file): bool
     {
         if (!$file instanceof UploadedFile || !$fileExtension = $file->guessExtension()) {
