@@ -2,12 +2,16 @@
 
 namespace App\Tests\Controller\FeatureController;
 
+use App\DataFixtures\FeatureFixtures;
 use App\DataFixtures\UserFixtures;
+use App\Entity\Feature;
+use App\Entity\User;
 use App\Repository\ApplicationRepository;
 use App\Tests\Controller\AbstractControllerTest;
 use App\Tests\Controller\TestFormInterface;
 use App\Tests\Controller\TestRouteInterface;
 use App\Tests\Factory\FeatureFactory;
+use App\Tests\Factory\UserFactory;
 
 class EditTest extends AbstractControllerTest implements TestRouteInterface, TestFormInterface
 {
@@ -29,10 +33,52 @@ class EditTest extends AbstractControllerTest implements TestRouteInterface, Tes
     public function provideTestRoute(): \Generator
     {
         yield 'Should redirect to login when not connected' => [self::URL, 302, null, 'http://localhost/login'];
-        yield 'Should return 403 when connected as user' => [self::URL, 403, UserFixtures::USER_MAIL];
-        yield 'Should return 403 when connected as team member' => [self::URL, 403, UserFixtures::TEAM_USER_MAIL];
         yield 'Should return 200 when connected as tech team member' => [self::URL, 200, UserFixtures::TECH_TEAM_USER_MAIL];
         yield 'Should return 200 when connected as admin' => [self::URL, 200, UserFixtures::ADMIN_USER_MAIL];
+    }
+
+    /**
+     * @param array<string> $roles
+     *
+     * @dataProvider provideTestUserCanNotEditFeatureHeDoesNotOwn
+     */
+    public function testUserCanNotEditFeatureHeDoesNotOwn(array $roles): void
+    {
+        /** @var Feature $feature */
+        $feature = FeatureFactory::randomOrCreate();
+        /** @var User $user */
+        $user = UserFactory::createOne(['roles' => $roles]);
+        $url = sprintf(self::URL, $feature->getId());
+        $this->assertRoute($url, 403, $user->getEmail());
+    }
+
+    public function provideTestUserCanNotEditFeatureHeDoesNotOwn(): \Generator
+    {
+        yield 'Basic user can not edit feature he does not own' => [[User::ROLE_USER]];
+        yield 'Team user can not edit feature he does not own' => [[User::ROLE_TEAM]];
+    }
+
+    /**
+     * @param array<string> $roles
+     *
+     * @dataProvider provideTestUserCanEditFeatureHeOwns
+     */
+    public function testUserCanEditFeatureHeOwns(array $roles, string $featureTitle): void
+    {
+        /** @var Feature $feature */
+        $feature = FeatureFactory::findOrCreate(['title' => FeatureFixtures::FEATURE_FROM_BASIC_USER]);
+        /** @var User $user */
+        $user = $feature->getUser();
+        $this->assertEquals(['ROLE_USER'], $user->getRoles());
+
+        $url = sprintf(self::URL, $feature->getId());
+        $this->assertRoute($url, 200, $user->getEmail());
+    }
+
+    public function provideTestUserCanEditFeatureHeOwns(): \Generator
+    {
+        yield 'Basic user can not edit feature he does not own' => [[User::ROLE_USER],  FeatureFixtures::FEATURE_FROM_BASIC_USER];
+        yield 'Team user can not edit feature he does not own' => [[User::ROLE_TEAM],  FeatureFixtures::FEATURE_FROM_TEAM_USER];
     }
 
     /**  @dataProvider provideTestFormIsValid */

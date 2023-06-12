@@ -2,12 +2,11 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Bug;
+use App\Entity\User;
 use App\Entity\UserRequest;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserRequestVoter extends Voter
 {
@@ -22,8 +21,9 @@ class UserRequestVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
+        /** @var User $user */
         $user = $token->getUser();
-        if (!$user instanceof UserInterface || !$subject instanceof UserRequest) {
+        if (!$user instanceof User || !$subject instanceof UserRequest) {
             return false;
         }
 
@@ -31,16 +31,20 @@ class UserRequestVoter extends Voter
             return true;
         }
 
-        if (Permissions::UPDATE === $attribute && $user !== $subject->getUser()) {
-            return false;
-        }
+        return match ($attribute) {
+            Permissions::READ => $this->canRead($subject, $user),
+            Permissions::UPDATE => $this->canUpdate($subject, $user),
+            default => false,
+        };
+    }
 
-        if (Permissions::READ === $attribute) {
-            return true;
-        } elseif (Permissions::UPDATE === $attribute) {
-            return $subject->isDraft();
-        }
+    private function canRead(UserRequest $subject, User $user): bool
+    {
+        return $this->checker->isGranted('ROLE_TEAM') || $user === $subject->getUser();
+    }
 
-        return false;
+    private function canUpdate(UserRequest $subject, User $user): bool
+    {
+        return $user === $subject->getUser();
     }
 }

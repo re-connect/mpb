@@ -2,11 +2,17 @@
 
 namespace App\Tests\Controller\BugController;
 
+use App\DataFixtures\BugFixtures;
 use App\DataFixtures\UserFixtures;
+use App\Entity\Bug;
+use App\Entity\User;
+use App\EventListener\TraceableEntityListener;
 use App\Tests\Controller\AbstractControllerTest;
 use App\Tests\Controller\TestRouteInterface;
 use App\Tests\Factory\BugFactory;
 use App\Tests\Factory\UserFactory;
+use Doctrine\Common\EventManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ShowTest extends AbstractControllerTest implements TestRouteInterface
 {
@@ -23,10 +29,31 @@ class ShowTest extends AbstractControllerTest implements TestRouteInterface
     public function provideTestRoute(): \Generator
     {
         yield 'Should redirect to login when not connected' => [self::URL, 302, null, 'http://localhost/login'];
-        yield 'Should return 200 when connected as user' => [self::URL, 200, UserFixtures::USER_MAIL];
         yield 'Should return 200 when connected as team member' => [self::URL, 200, UserFixtures::TEAM_USER_MAIL];
         yield 'Should return 200 when connected as tech team member' => [self::URL, 200, UserFixtures::TECH_TEAM_USER_MAIL];
         yield 'Should return 200 when connected as admin' => [self::URL, 200, UserFixtures::ADMIN_USER_MAIL];
+    }
+
+    public function testUserCanNotShowBugHeDoesNotOwn(): void
+    {
+        /** @var Bug $bug */
+        $bug = BugFactory::randomOrCreate();
+        /** @var User $user */
+        $user = UserFactory::createOne();
+        $url = sprintf(self::URL, $bug->getId());
+        $this->assertRoute($url, 403, $user->getEmail());
+    }
+
+    public function testUserCanShowBugHeOwns(): void
+    {
+        /** @var Bug $bug */
+        $bug = BugFactory::findOrCreate(['title' => BugFixtures::BUG_FROM_BASIC_USER]);
+        /** @var User $user */
+        $user = $bug->getUser();
+        $this->assertEquals(['ROLE_USER'], $user->getRoles());
+
+        $url = sprintf(self::URL, $bug->getId());
+        $this->assertRoute($url, 200, $user->getEmail());
     }
 
     /** @dataProvider provideTestCanTakeOverIsAccessible */
