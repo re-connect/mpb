@@ -54,11 +54,19 @@ class FeatureController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/create', name: 'feature_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, FeatureService $service, UserRequestManager $manager): Response
+    #[Route(path: '/init', name: 'feature_init', methods: ['GET', 'POST'])]
+    public function init(UserRequestManager $manager): Response
     {
         $feature = new Feature();
         $manager->create($feature);
+
+        return $this->redirectToRoute('feature_new', ['id' => $feature->getId()]);
+    }
+
+    #[IsGranted(Permissions::UPDATE, 'feature')]
+    #[Route(path: '/create/{id}', name: 'feature_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, Feature $feature, FeatureService $service, UserRequestManager $manager): Response
+    {
         $form = $this->createForm(FeatureType::class, $feature, ['centerValues' => $service->getAllCentersForAutocomplete()])->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->publishDraft($feature);

@@ -6,13 +6,10 @@ use App\DataFixtures\BugFixtures;
 use App\DataFixtures\UserFixtures;
 use App\Entity\Bug;
 use App\Entity\User;
-use App\EventListener\TraceableEntityListener;
 use App\Tests\Controller\AbstractControllerTest;
 use App\Tests\Controller\TestRouteInterface;
 use App\Tests\Factory\BugFactory;
 use App\Tests\Factory\UserFactory;
-use Doctrine\Common\EventManager;
-use Doctrine\ORM\EntityManagerInterface;
 
 class ShowTest extends AbstractControllerTest implements TestRouteInterface
 {

@@ -51,11 +51,19 @@ class BugController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/create', name: 'bug_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, UserRequestManager $manager): Response
+    #[Route(path: '/init', name: 'bug_init', methods: ['GET', 'POST'])]
+    public function init(Request $request, UserRequestManager $manager): Response
     {
         $bug = new Bug($request->headers->get('User-Agent', ''));
         $manager->create($bug);
+
+        return $this->redirectToRoute('bug_new', ['id' => $bug->getId()]);
+    }
+
+    #[IsGranted(Permissions::UPDATE, 'bug')]
+    #[Route(path: '/create/{id}', name: 'bug_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, Bug $bug, UserRequestManager $manager): Response
+    {
         $form = $this->createForm(BugType::class, $bug)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->publishDraft($bug);
@@ -101,6 +109,7 @@ class BugController extends AbstractController
         if ($this->isCsrfTokenValid($csrfTokenName, (string) $request->request->get('_token', ''))) {
             $manager->remove($bug);
         }
+
         return $this->redirectToRoute('bugs_list');
     }
 

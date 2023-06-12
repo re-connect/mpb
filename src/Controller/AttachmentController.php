@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Bug;
-use App\Entity\UserRequest;
 use App\Entity\Feature;
+use App\Entity\UserRequest;
 use App\Security\Voter\Permissions;
 use App\Service\AttachmentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
