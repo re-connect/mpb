@@ -27,4 +27,9 @@ trait DraftableTrait
 
         return $this;
     }
+
+    public function isPublished(): bool
+    {
+        return !$this->draft;
+    }
 }

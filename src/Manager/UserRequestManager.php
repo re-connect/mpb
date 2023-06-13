@@ -34,7 +34,7 @@ class UserRequestManager
 
     public function markDone(UserRequest $userRequest): void
     {
-        $userRequest->setDone(true);
+        $userRequest->resolve();
         $this->em->flush();
     }
 }

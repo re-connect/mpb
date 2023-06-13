@@ -322,4 +322,11 @@ class Bug extends UserRequest
 
         return $this;
     }
+
+    public function resolve(): self
+    {
+        $this->done = true;
+
+        return $this;
+    }
 }

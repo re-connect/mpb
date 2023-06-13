@@ -23,4 +23,6 @@ abstract class UserRequest
     abstract public function setUser(?User $user): self;
 
     abstract public function setDone(bool $done): self;
+
+    abstract public function resolve(): self;
 }

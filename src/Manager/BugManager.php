@@ -7,7 +7,7 @@ use App\Traits\UserAwareTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 
-class BugManager
+class BugManager extends UserRequestManager
 {
     use UserAwareTrait;
 
@@ -15,11 +15,20 @@ class BugManager
         private readonly EntityManagerInterface $em,
         private readonly Security $security,
     ) {
+        parent::__construct($em);
     }
 
     public function takeOver(Bug $bug): void
     {
         $bug->setAssignee($this->getUser());
         $this->em->flush();
+    }
+
+    public function createBug(string $userAgent): Bug
+    {
+        $bug = new Bug($userAgent);
+        $this->create($bug);
+
+        return $bug;
     }
 }

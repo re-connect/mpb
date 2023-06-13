@@ -31,9 +31,3 @@ services:
                 event: 'prePersist'
             -   name: 'doctrine.event_listener'
                 event: 'preUpdate'
-
-    App\EventListener\BugListener:
-        tags:
-            - name: 'doctrine.orm.entity_listener'
-              event: 'preUpdate'
-              entity: 'App\Entity\Bug'

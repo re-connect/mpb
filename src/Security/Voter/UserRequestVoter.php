@@ -33,8 +33,8 @@ class UserRequestVoter extends Voter
 
         return match ($attribute) {
             Permissions::READ => $this->canRead($subject, $user),
-            Permissions::UPDATE => $this->canUpdate($subject, $user),
             Permissions::DELETE => $this->canDelete($subject, $user),
+            Permissions::UPDATE => $this->canUpdate($subject, $user),
             default => false,
         };
     }
@@ -44,13 +44,13 @@ class UserRequestVoter extends Voter
         return $this->checker->isGranted('ROLE_TEAM') || $user === $subject->getUser();
     }
 
-    private function canUpdate(UserRequest $subject, User $user): bool
-    {
-        return $subject->isDraft() && $user === $subject->getUser();
-    }
-
     private function canDelete(UserRequest $subject, User $user): bool
     {
-        return $user === $subject->getUser();
+        return $this->canRead($subject, $user) && $user === $subject->getUser();
+    }
+
+    private function canUpdate(UserRequest $subject, User $user): bool
+    {
+        return $this->canDelete($subject, $user) && $subject->isDraft();
     }
 }

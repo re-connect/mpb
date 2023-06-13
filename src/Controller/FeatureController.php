@@ -12,7 +12,6 @@ use App\Form\Model\Search;
 use App\Form\SearchType;
 use App\Manager\CommentManager;
 use App\Manager\FeatureManager;
-use App\Manager\UserRequestManager;
 use App\Manager\VoteManager;
 use App\Repository\ApplicationRepository;
 use App\Repository\TagRepository;
@@ -55,17 +54,16 @@ class FeatureController extends AbstractController
     }
 
     #[Route(path: '/init', name: 'feature_init', methods: ['GET', 'POST'])]
-    public function init(UserRequestManager $manager): Response
+    public function init(FeatureManager $manager): Response
     {
-        $feature = new Feature();
-        $manager->create($feature);
+        $feature = $manager->createFeature();
 
         return $this->redirectToRoute('feature_new', ['id' => $feature->getId()]);
     }
 
     #[IsGranted(Permissions::UPDATE, 'feature')]
     #[Route(path: '/create/{id}', name: 'feature_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, Feature $feature, FeatureService $service, UserRequestManager $manager): Response
+    public function new(Request $request, Feature $feature, FeatureService $service, FeatureManager $manager): Response
     {
         $form = $this->createForm(FeatureType::class, $feature, ['centerValues' => $service->getAllCentersForAutocomplete()])->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -104,7 +102,7 @@ class FeatureController extends AbstractController
 
     #[IsGranted(Permissions::UPDATE, 'feature')]
     #[Route(path: '/{id}/edit', name: 'feature_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Feature $feature, UserRequestManager $manager): Response
+    public function edit(Request $request, Feature $feature, FeatureManager $manager): Response
     {
         $form = $this->createForm(FeatureType::class, $feature)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -118,10 +116,10 @@ class FeatureController extends AbstractController
 
     #[IsGranted(Permissions::DELETE, 'feature')]
     #[Route(path: '/delete/{id}', name: 'feature_delete', methods: ['POST'])]
-    public function delete(Request $request, Feature $feature, UserRequestManager $manager): Response
+    public function delete(Request $request, Feature $feature, FeatureManager $manager): Response
     {
         $csrfTokenName = sprintf('delete%d', $feature->getId());
-        if ($this->isCsrfTokenValid($csrfTokenName, (string) $request->request->get('_token', ''))) {
+        if ($this->isCsrfTokenValid($csrfTokenName, $request->request->getAlpha('_token'))) {
             $manager->remove($feature);
         }
 
@@ -165,7 +163,7 @@ class FeatureController extends AbstractController
     }
 
     #[Route(path: '/{id}/mark-done', name: 'feature_mark_done', methods: ['GET'])]
-    public function markDone(Feature $feature, UserRequestManager $manager): Response
+    public function markDone(Feature $feature, FeatureManager $manager): Response
     {
         $manager->markDone($feature);
 
