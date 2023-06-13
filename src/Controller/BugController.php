@@ -6,7 +6,7 @@ use App\Entity\Bug;
 use App\Entity\Comment;
 use App\Form\BugType;
 use App\Form\CommentType;
-use App\Form\Model\Search;
+use App\Form\Model\UserRequestSearch;
 use App\Form\SearchType;
 use App\Manager\BugManager;
 use App\Manager\CommentManager;
@@ -26,7 +26,7 @@ class BugController extends AbstractController
     #[Route(path: '/list', name: 'bugs_list', methods: ['GET'])]
     public function index(Request $request, BugService $service, ApplicationRepository $applicationRepository): Response
     {
-        $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $search = new UserRequestSearch(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
         $form = $this->createForm(SearchType::class, null, [
             'action' => $this->generateUrl('bug_search', $request->query->all()),
         ]);
@@ -42,7 +42,7 @@ class BugController extends AbstractController
     #[Route(path: '/search', name: 'bug_search', methods: ['POST'])]
     public function search(Request $request, BugService $service): Response
     {
-        $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $search = new UserRequestSearch(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
         $this->createForm(SearchType::class, $search)->handleRequest($request);
 
         return $this->render('bug/_list.html.twig', [
@@ -104,7 +104,7 @@ class BugController extends AbstractController
     public function delete(Request $request, Bug $bug, BugManager $manager): Response
     {
         $csrfTokenName = sprintf('delete%d', $bug->getId());
-        if ($this->isCsrfTokenValid($csrfTokenName, $request->request->getAlpha('_token'))) {
+        if ($this->isCsrfTokenValid($csrfTokenName, (string) $request->request->get('_token', ''))) {
             $manager->remove($bug);
         }
 

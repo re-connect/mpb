@@ -8,7 +8,7 @@ use App\Entity\Tag;
 use App\Form\CommentType;
 use App\Form\FeatureStatusType;
 use App\Form\FeatureType;
-use App\Form\Model\Search;
+use App\Form\Model\UserRequestSearch;
 use App\Form\SearchType;
 use App\Manager\CommentManager;
 use App\Manager\FeatureManager;
@@ -29,7 +29,7 @@ class FeatureController extends AbstractController
     #[Route('/list', name: 'features_list')]
     public function index(Request $request, FeatureService $service, ApplicationRepository $applicationRepository): Response
     {
-        $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $search = new UserRequestSearch(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
         $form = $this->createForm(SearchType::class, null, [
             'action' => $this->generateUrl('feature_search', $request->query->all()),
         ]);
@@ -45,7 +45,7 @@ class FeatureController extends AbstractController
     #[Route(path: '/search', name: 'feature_search', methods: ['POST'])]
     public function search(Request $request, FeatureService $service): Response
     {
-        $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $search = new UserRequestSearch(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
         $this->createForm(SearchType::class, $search)->handleRequest($request);
 
         return $this->render('feature/components/_list.html.twig', [
@@ -119,7 +119,7 @@ class FeatureController extends AbstractController
     public function delete(Request $request, Feature $feature, FeatureManager $manager): Response
     {
         $csrfTokenName = sprintf('delete%d', $feature->getId());
-        if ($this->isCsrfTokenValid($csrfTokenName, $request->request->getAlpha('_token'))) {
+        if ($this->isCsrfTokenValid($csrfTokenName, (string) $request->request->get('_token', ''))) {
             $manager->remove($feature);
         }
 

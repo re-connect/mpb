@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\UserRequest;
-use App\Form\Model\Search;
+use App\Form\Model\UserRequestSearch;
 use App\Repository\UserRequestRepositoryInterface;
 use App\Traits\UserAwareTrait;
 use Doctrine\Common\Collections\Criteria;
@@ -21,7 +21,7 @@ class UserRequestService
     }
 
     /** @return UserRequest[] */
-    public function getAccessibleUserRequests(Search $search, UserRequestRepositoryInterface $repository): array
+    public function getAccessibleUserRequests(UserRequestSearch $search, UserRequestRepositoryInterface $repository): array
     {
         $parameters = ['done' => $search->getShowDone() ?? false];
 
@@ -52,9 +52,6 @@ class UserRequestService
             $parameters['searchText'] = '%'.strtolower($searchText).'%';
         }
 
-        /** @var UserRequest[] $userRequests */
-        $userRequests = $qb->setParameters($parameters)->getQuery()->getResult();
-
-        return $userRequests;
+        return $qb->setParameters($parameters)->getQuery()->getResult();
     }
 }

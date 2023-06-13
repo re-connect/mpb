@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\Feature;
 use App\Entity\UserRequest;
-use App\Form\Model\Search;
+use App\Form\Model\UserRequestSearch;
 use App\Repository\FeatureRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -26,7 +26,7 @@ class FeatureService extends UserRequestService
     }
 
     /** @return UserRequest[] */
-    public function getAccessible(Search $search): array
+    public function getAccessible(UserRequestSearch $search): array
     {
         return $this->getAccessibleUserRequests($search, $this->repository);
     }

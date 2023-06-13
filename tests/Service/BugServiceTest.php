@@ -4,7 +4,7 @@ namespace App\Tests\Service;
 
 use App\DataFixtures\UserFixtures;
 use App\Entity\User;
-use App\Form\Model\Search;
+use App\Form\Model\UserRequestSearch;
 use App\Service\BugService;
 use App\Tests\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -29,10 +29,10 @@ class BugServiceTest extends KernelTestCase
     public function testGetAccessible(): void
     {
         $this->loginUser(UserFixtures::USER_MAIL);
-        $bugsTeamUser = $this->service->getAccessible(new Search());
+        $bugsTeamUser = $this->service->getAccessible(new UserRequestSearch());
 
         $this->loginUser(UserFixtures::TEAM_USER_MAIL);
-        $bugsUser = $this->service->getAccessible(new Search());
+        $bugsUser = $this->service->getAccessible(new UserRequestSearch());
         $this->assertGreaterThan(count($bugsTeamUser), count($bugsUser));
     }
 

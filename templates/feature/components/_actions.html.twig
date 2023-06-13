@@ -9,9 +9,7 @@
             </a>
         </div>
     {% endif %}
-    {% if is_granted('DELETE', feature) %}
-        <div class="col">
-            {{ include('feature/components/_delete_form.html.twig') }}
-        </div>
-    {% endif %}
+    <div class="col">
+        {{ include('user_request/components/_delete_form.html.twig', { userRequest : feature, action: 'feature_delete'}) }}
+    </div>
 </div>
