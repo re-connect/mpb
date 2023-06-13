@@ -8,6 +8,8 @@
                 <i class="fas fa-pencil-alt px-1"></i>{{ 'edit'|trans }}
             </a>
         </div>
+    {% endif %}
+    {% if is_granted('DELETE', feature) %}
         <div class="col">
             {{ include('feature/components/_delete_form.html.twig') }}
         </div>

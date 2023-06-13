@@ -16,7 +16,7 @@ class UserRequestVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [Permissions::UPDATE, Permissions::READ]) && $subject instanceof UserRequest;
+        return in_array($attribute, [Permissions::UPDATE, Permissions::READ, Permissions::DELETE]) && $subject instanceof UserRequest;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
@@ -34,6 +34,7 @@ class UserRequestVoter extends Voter
         return match ($attribute) {
             Permissions::READ => $this->canRead($subject, $user),
             Permissions::UPDATE => $this->canUpdate($subject, $user),
+            Permissions::DELETE => $this->canDelete($subject, $user),
             default => false,
         };
     }
@@ -44,6 +45,11 @@ class UserRequestVoter extends Voter
     }
 
     private function canUpdate(UserRequest $subject, User $user): bool
+    {
+        return $subject->isDraft() && $user === $subject->getUser();
+    }
+
+    private function canDelete(UserRequest $subject, User $user): bool
     {
         return $user === $subject->getUser();
     }

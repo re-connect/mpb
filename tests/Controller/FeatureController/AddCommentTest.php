@@ -68,7 +68,7 @@ class AddCommentTest extends AbstractControllerTest implements TestRouteInterfac
             self::URL,
             'add_comment',
             ['comment[content]' => 'Comment'],
-            UserFixtures::USER_MAIL,
+            UserFixtures::TECH_TEAM_USER_MAIL,
             null,
         ];
     }

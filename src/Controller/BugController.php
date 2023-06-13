@@ -101,8 +101,8 @@ class BugController extends AbstractController
         return $this->render('bug/edit.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
-    #[IsGranted(Permissions::UPDATE, 'bug')]
-    #[Route(path: '/{id}', name: 'bug_delete', methods: ['POST'])]
+    #[IsGranted(Permissions::DELETE, 'bug')]
+    #[Route(path: '/delete/{id}', name: 'bug_delete', methods: ['POST'])]
     public function delete(Request $request, Bug $bug, UserRequestManager $manager): Response
     {
         $csrfTokenName = sprintf('delete%d', $bug->getId());

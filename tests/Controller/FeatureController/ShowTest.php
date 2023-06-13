@@ -110,7 +110,7 @@ class ShowTest extends AbstractControllerTest implements TestRouteInterface, Tes
         $feature = FeatureFactory::randomOrCreate()->object();
         $clientTest->request('GET', sprintf(self::URL, $feature->getId()));
 
-        $shouldAccessForm ? $this->assertSelectorExists('form') : $this->assertSelectorNotExists('form');
+        $shouldAccessForm ? $this->assertSelectorExists('form.status-form') : $this->assertSelectorNotExists('form.status-form');
     }
 
     public function provideTestFormIsAccessible(): \Generator

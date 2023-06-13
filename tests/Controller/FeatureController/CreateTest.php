@@ -67,10 +67,10 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     public function testUserCanCreateFeatureHeOwns(array $roles, string $featureTitle): void
     {
         /** @var Feature $feature */
-        $feature = FeatureFactory::findOrCreate(['title' => FeatureFixtures::FEATURE_FROM_BASIC_USER]);
+        $feature = FeatureFactory::findOrCreate(['title' => $featureTitle]);
         /** @var User $user */
         $user = $feature->getUser();
-        $this->assertEquals(['ROLE_USER'], $user->getRoles());
+        $this->assertEquals($roles, $user->getRoles());
 
         $url = sprintf(self::URL, $feature->getId());
         $this->assertRoute($url, 200, $user->getEmail());
@@ -78,8 +78,8 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
 
     public function provideTestUserCanCreateFeatureHeOwns(): \Generator
     {
-        yield 'Basic user can not create feature he does not own' => [[User::ROLE_USER],  FeatureFixtures::FEATURE_FROM_BASIC_USER];
-        yield 'Team user can not create feature he does not own' => [[User::ROLE_TEAM],  FeatureFixtures::FEATURE_FROM_TEAM_USER];
+        yield 'Basic user can create feature he owns' => [[User::ROLE_USER],  FeatureFixtures::DRAFT_FROM_BASIC_USER];
+        yield 'Team user can create feature he owns' => [[User::ROLE_TEAM],  FeatureFixtures::DRAFT_FROM_TEAM_USER];
     }
 
     /**  @dataProvider provideTestFormIsValid */

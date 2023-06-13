@@ -2,16 +2,12 @@
 
 namespace App\Tests\Controller\BugController;
 
-use App\DataFixtures\BugFixtures;
 use App\DataFixtures\UserFixtures;
-use App\Entity\Bug;
-use App\Entity\User;
 use App\Repository\ApplicationRepository;
 use App\Tests\Controller\AbstractControllerTest;
 use App\Tests\Controller\TestFormInterface;
 use App\Tests\Controller\TestRouteInterface;
 use App\Tests\Factory\BugFactory;
-use App\Tests\Factory\UserFactory;
 
 class EditTest extends AbstractControllerTest implements TestRouteInterface, TestFormInterface
 {
@@ -32,6 +28,8 @@ class EditTest extends AbstractControllerTest implements TestRouteInterface, Tes
     public function provideTestRoute(): \Generator
     {
         yield 'Should redirect to login when not connected' => [self::URL, 302, null, 'http://localhost/login'];
+        yield 'Should return 403 when connected as user' => [self::URL, 403, UserFixtures::USER_MAIL];
+        yield 'Should return 403 when connected as team member' => [self::URL, 403, UserFixtures::TEAM_USER_MAIL];
         yield 'Should return 200 when connected as tech team member' => [self::URL, 200, UserFixtures::TECH_TEAM_USER_MAIL];
         yield 'Should return 200 when connected as admin' => [self::URL, 200, UserFixtures::ADMIN_USER_MAIL];
     }
@@ -42,50 +40,6 @@ class EditTest extends AbstractControllerTest implements TestRouteInterface, Tes
         $bug = BugFactory::randomOrCreate()->object();
         $url = sprintf($url, $bug->getId());
         $this->assertFormIsValid($url, $formSubmit, $values, $email, $redirectUrl);
-    }
-
-    /**
-     * @param array<string> $roles
-     *
-     * @dataProvider provideTestUserCanNotEditBugHeDoesNotOwn
-     */
-    public function testUserCanNotEditBugHeDoesNotOwn(array $roles): void
-    {
-        /** @var Bug $bug */
-        $bug = BugFactory::randomOrCreate();
-        /** @var User $user */
-        $user = UserFactory::createOne(['roles' => $roles]);
-        $url = sprintf(self::URL, $bug->getId());
-        $this->assertRoute($url, 403, $user->getEmail());
-    }
-
-    public function provideTestUserCanNotEditBugHeDoesNotOwn(): \Generator
-    {
-        yield 'Basic user can not edit bug he does not own' => [[User::ROLE_USER]];
-        yield 'Team user can not edit bug he does not own' => [[User::ROLE_TEAM]];
-    }
-
-    /**
-     * @param array<string> $roles
-     *
-     * @dataProvider provideTestUserCanEditBugHeOwns
-     */
-    public function testUserCanEditBugHeOwns(array $roles, string $bugTitle): void
-    {
-        /** @var Bug $bug */
-        $bug = BugFactory::findOrCreate(['title' => $bugTitle]);
-        /** @var User $user */
-        $user = $bug->getUser();
-        $this->assertEquals($roles, $user->getRoles());
-
-        $url = sprintf(self::URL, $bug->getId());
-        $this->assertRoute($url, 200, $user->getEmail());
-    }
-
-    public function provideTestUserCanEditBugHeOwns(): \Generator
-    {
-        yield 'Basic user can not edit bug he does not own' => [[User::ROLE_USER],  BugFixtures::BUG_FROM_BASIC_USER];
-        yield 'Team user can not edit bug he does not own' => [[User::ROLE_TEAM],  BugFixtures::BUG_FROM_TEAM_USER];
     }
 
     public function provideTestFormIsValid(): \Generator

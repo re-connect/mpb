@@ -45,7 +45,7 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     public function testUserCanNotCreateBugHeDoesNotOwn(array $roles): void
     {
         /** @var Bug $bug */
-        $bug = BugFactory::randomOrCreate();
+        $bug = BugFactory::randomOrCreate(['draft' => true]);
         /** @var User $user */
         $user = UserFactory::createOne(['roles' => $roles]);
         $url = sprintf(self::URL, $bug->getId());
@@ -77,8 +77,8 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
 
     public function provideTestUserCanCreateBugHeOwns(): \Generator
     {
-        yield 'Basic user can not create bug he does not own' => [[User::ROLE_USER],  BugFixtures::BUG_FROM_BASIC_USER];
-        yield 'Team user can not create bug he does not own' => [[User::ROLE_TEAM],  BugFixtures::BUG_FROM_TEAM_USER];
+        yield 'Basic user can create bug he owns' => [[User::ROLE_USER],  BugFixtures::DRAFT_FROM_BASIC_USER];
+        yield 'Team user can create bug he owns' => [[User::ROLE_TEAM],  BugFixtures::DRAFT_FROM_TEAM_USER];
     }
 
     /**  @dataProvider provideTestFormIsValid */

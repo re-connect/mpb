@@ -116,7 +116,7 @@ class FeatureController extends AbstractController
         return $this->render('feature/edit.html.twig', ['feature' => $feature, 'form' => $form]);
     }
 
-    #[IsGranted(Permissions::UPDATE, 'feature')]
+    #[IsGranted(Permissions::DELETE, 'feature')]
     #[Route(path: '/delete/{id}', name: 'feature_delete', methods: ['POST'])]
     public function delete(Request $request, Feature $feature, UserRequestManager $manager): Response
     {
