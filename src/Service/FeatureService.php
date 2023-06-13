@@ -3,30 +3,20 @@
 namespace App\Service;
 
 use App\Entity\Feature;
-use App\Form\Model\Search;
+use App\Entity\UserRequest;
+use App\Form\Model\UserRequestSearch;
 use App\Repository\FeatureRepository;
-use App\Traits\UserAwareTrait;
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class FeatureService
+class FeatureService extends UserRequestService
 {
-    use UserAwareTrait;
-
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly FeatureRepository $repository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly Security $security,
     ) {
-    }
-
-    public function create(Feature $feature): void
-    {
-        $this->em->persist($feature);
-        $this->em->flush();
+        parent::__construct($this->authorizationChecker, $this->security);
     }
 
     /** @return Feature[] */
@@ -35,42 +25,10 @@ class FeatureService
         return $this->repository->findAll();
     }
 
-    /** @return Feature[] */
-    public function getAccessible(Search $search): array
+    /** @return UserRequest[] */
+    public function getAccessible(UserRequestSearch $search): array
     {
-        $parameters = ['done' => $search->getShowDone() ?? false];
-
-        $qb = $this->repository->createQueryBuilder('f')
-            ->leftJoin('f.user', 'u')
-            ->leftJoin('f.application', 'a')
-            ->andWhere('f.done = :done')
-            ->addOrderBy('f.done', Criteria::ASC)
-            ->addOrderBy('f.createdAt', Criteria::DESC);
-
-        if ($applicationId = $search->getApplication()) {
-            $qb->andWhere('a.id = :application');
-            $parameters['application'] = $applicationId;
-        }
-        if (!$this->authorizationChecker->isGranted('ROLE_TEAM')) {
-            $qb->andWhere('f.user = :user');
-            $parameters['user'] = $this->getUser();
-        }
-        if ($searchText = $search->getText()) {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->like('LOWER(f.title)', ':searchText'),
-                    $qb->expr()->like('LOWER(f.content)', ':searchText'),
-                    $qb->expr()->like('LOWER(u.email)', ':searchText'),
-                    $qb->expr()->like('LOWER(a.name)', ':searchText'),
-                )
-            );
-            $parameters['searchText'] = '%'.strtolower($searchText).'%';
-        }
-
-        /** @var Feature[] $features */
-        $features = $qb->setParameters($parameters)->getQuery()->getResult();
-
-        return $features;
+        return $this->getAccessibleUserRequests($search, $this->repository);
     }
 
     /**

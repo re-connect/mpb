@@ -284,4 +284,11 @@ class Feature extends UserRequest
             $this->createdAt?->format('d/m/Y'),
         ];
     }
+
+    public function resolve(): self
+    {
+        $this->setDone(true);
+
+        return $this;
+    }
 }

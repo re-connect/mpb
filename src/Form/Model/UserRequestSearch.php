@@ -2,7 +2,7 @@
 
 namespace App\Form\Model;
 
-class Search
+class UserRequestSearch
 {
     public function __construct(
         private ?string $text = null,

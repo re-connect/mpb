@@ -2,89 +2,25 @@
 
 namespace App\Service;
 
-use App\Entity\Attachment;
-use App\Entity\Bug;
-use App\Form\Model\Search;
+use App\Entity\UserRequest;
+use App\Form\Model\UserRequestSearch;
 use App\Repository\BugRepository;
-use App\Traits\UserAwareTrait;
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Uid\Uuid;
 
-class BugService
+class BugService extends UserRequestService
 {
-    use UserAwareTrait;
-
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly BugRepository $repository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly NotificationService $notificator,
         private readonly Security $security,
     ) {
+        parent::__construct($this->authorizationChecker, $this->security);
     }
 
-    public function initBug(string $userAgent): Bug
+    /** @return UserRequest[] */
+    public function getAccessible(UserRequestSearch $search): array
     {
-        $bug = (new Bug())->setUserAgent($userAgent);
-        $this->em->persist($bug);
-        $this->em->flush();
-
-        return $bug;
-    }
-
-    public function create(Bug $bug): void
-    {
-        $bug->publish();
-        $this->em->flush();
-        $this->notificator->notifyBug($bug);
-    }
-
-    /** @return Bug[] */
-    public function getAccessible(Search $search): array
-    {
-        $parameters = ['done' => $search->getShowDone() ?? false];
-
-        $qb = $this->repository->createQueryBuilder('b')
-            ->leftJoin('b.user', 'u')
-            ->leftJoin('b.application', 'a')
-            ->andWhere('b.done = :done')
-            ->addOrderBy('b.done', Criteria::ASC)
-            ->addOrderBy('b.createdAt', Criteria::DESC);
-
-        if ($applicationId = $search->getApplication()) {
-            $qb->andWhere('a.id = :application');
-            $parameters['application'] = $applicationId;
-        }
-        if (!$this->authorizationChecker->isGranted('ROLE_TEAM')) {
-            $qb->andWhere('b.user = :user');
-            $parameters['user'] = $this->getUser();
-        }
-        if ($searchText = $search->getText()) {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->like('LOWER(b.title)', ':searchText'),
-                    $qb->expr()->like('LOWER(b.content)', ':searchText'),
-                    $qb->expr()->like('LOWER(u.email)', ':searchText'),
-                    $qb->expr()->like('LOWER(a.name)', ':searchText'),
-                )
-            );
-            $parameters['searchText'] = '%'.strtolower($searchText).'%';
-        }
-
-        /** @var Bug[] $bugs */
-        $bugs = $qb->setParameters($parameters)->getQuery()->getResult();
-
-        return $bugs;
-    }
-
-    public function markAsDone(Bug $bug): void
-    {
-        $bug->setDone(true);
-        $this->em->flush();
-        $this->notificator->notifyBug($bug);
+        return $this->getAccessibleUserRequests($search, $this->repository);
     }
 }

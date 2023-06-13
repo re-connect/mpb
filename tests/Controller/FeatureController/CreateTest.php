@@ -2,15 +2,20 @@
 
 namespace App\Tests\Controller\FeatureController;
 
+use App\DataFixtures\FeatureFixtures;
 use App\DataFixtures\UserFixtures;
+use App\Entity\Feature;
+use App\Entity\User;
 use App\Repository\ApplicationRepository;
 use App\Tests\Controller\AbstractControllerTest;
 use App\Tests\Controller\TestFormInterface;
 use App\Tests\Controller\TestRouteInterface;
+use App\Tests\Factory\FeatureFactory;
+use App\Tests\Factory\UserFactory;
 
 class CreateTest extends AbstractControllerTest implements TestRouteInterface, TestFormInterface
 {
-    private const URL = '/features/create';
+    private const URL = '/features/create/%s';
 
     private const FORM_VALUES = [
         'feature[title]' => 'Titre',
@@ -20,21 +25,69 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     /** @dataProvider provideTestRoute */
     public function testRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
     {
+        /** @var Feature $feature */
+        $feature = FeatureFactory::randomOrCreate(['draft' => true]);
+        $url = sprintf($url, $feature->getId());
         $this->assertRoute($url, $expectedStatusCode, $userEmail, $expectedRedirect, $method);
     }
 
     public function provideTestRoute(): \Generator
     {
         yield 'Should redirect to login when not connected' => [self::URL, 302, null, 'http://localhost/login'];
-        yield 'Should return 200 when connected as user' => [self::URL, 200, UserFixtures::USER_MAIL];
-        yield 'Should return 200 when connected as team member' => [self::URL, 200, UserFixtures::TEAM_USER_MAIL];
         yield 'Should return 200 when connected as tech team member' => [self::URL, 200, UserFixtures::TECH_TEAM_USER_MAIL];
         yield 'Should return 200 when connected as admin' => [self::URL, 200, UserFixtures::ADMIN_USER_MAIL];
+    }
+
+    /**
+     * @param array<string> $roles
+     *
+     * @dataProvider provideTestUserCanNotCreateFeatureHeDoesNotOwn
+     */
+    public function testUserCanNotCreateFeatureHeDoesNotOwn(array $roles): void
+    {
+        /** @var Feature $feature */
+        $feature = FeatureFactory::randomOrCreate();
+        /** @var User $user */
+        $user = UserFactory::createOne(['roles' => $roles]);
+        $url = sprintf(self::URL, $feature->getId());
+        $this->assertRoute($url, 403, $user->getEmail());
+    }
+
+    public function provideTestUserCanNotCreateFeatureHeDoesNotOwn(): \Generator
+    {
+        yield 'Basic user can not create feature he does not own' => [[User::ROLE_USER]];
+        yield 'Team user can not create feature he does not own' => [[User::ROLE_TEAM]];
+    }
+
+    /**
+     * @param array<string> $roles
+     *
+     * @dataProvider provideTestUserCanCreateFeatureHeOwns
+     */
+    public function testUserCanCreateFeatureHeOwns(array $roles, string $featureTitle): void
+    {
+        /** @var Feature $feature */
+        $feature = FeatureFactory::findOrCreate(['title' => $featureTitle]);
+        /** @var User $user */
+        $user = $feature->getUser();
+        $this->assertEquals($roles, $user->getRoles());
+
+        $url = sprintf(self::URL, $feature->getId());
+        $this->assertRoute($url, 200, $user->getEmail());
+    }
+
+    public function provideTestUserCanCreateFeatureHeOwns(): \Generator
+    {
+        yield 'Basic user can create feature he owns' => [[User::ROLE_USER],  FeatureFixtures::DRAFT_FROM_BASIC_USER];
+        yield 'Team user can create feature he owns' => [[User::ROLE_TEAM],  FeatureFixtures::DRAFT_FROM_TEAM_USER];
     }
 
     /**  @dataProvider provideTestFormIsValid */
     public function testFormIsValid(string $url, string $formSubmit, array $values, ?string $email, ?string $redirectUrl): void
     {
+        /** @var Feature $feature */
+        $feature = FeatureFactory::randomOrCreate(['draft' => true]);
+        $url = sprintf($url, $feature->getId());
         $this->assertFormIsValid($url, $formSubmit, $values, $email, $redirectUrl);
     }
 
@@ -46,7 +99,7 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
             self::URL,
             'create',
             $values,
-            UserFixtures::USER_MAIL,
+            UserFixtures::TECH_TEAM_USER_MAIL,
             '/features/list',
         ];
     }
@@ -59,6 +112,9 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
      */
     public function testFormIsNotValid(string $url, string $route, string $formSubmit, array $values, array $errors, ?string $email, ?string $alternateSelector = null): void
     {
+        /** @var Feature $feature */
+        $feature = FeatureFactory::randomOrCreate(['draft' => true]);
+        $url = sprintf($url, $feature->getId());
         $this->assertFormIsNotValid($url, $route, $formSubmit, $values, $errors, $email, $alternateSelector);
     }
 
@@ -78,7 +134,7 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
                     'params' => [],
                 ],
             ],
-            UserFixtures::USER_MAIL,
+            UserFixtures::TECH_TEAM_USER_MAIL,
         ];
 
         $values = self::FORM_VALUES;
@@ -95,7 +151,7 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
                     'params' => [],
                 ],
             ],
-            UserFixtures::USER_MAIL,
+            UserFixtures::TECH_TEAM_USER_MAIL,
         ];
 
         $values = self::FORM_VALUES;
@@ -111,7 +167,7 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
                     'params' => [],
                 ],
             ],
-            UserFixtures::USER_MAIL,
+            UserFixtures::TECH_TEAM_USER_MAIL,
         ];
     }
 }

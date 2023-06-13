@@ -8,7 +8,7 @@ use App\Entity\Tag;
 use App\Form\CommentType;
 use App\Form\FeatureStatusType;
 use App\Form\FeatureType;
-use App\Form\Model\Search;
+use App\Form\Model\UserRequestSearch;
 use App\Form\SearchType;
 use App\Manager\CommentManager;
 use App\Manager\FeatureManager;
@@ -29,7 +29,7 @@ class FeatureController extends AbstractController
     #[Route('/list', name: 'features_list')]
     public function index(Request $request, FeatureService $service, ApplicationRepository $applicationRepository): Response
     {
-        $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $search = new UserRequestSearch(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
         $form = $this->createForm(SearchType::class, null, [
             'action' => $this->generateUrl('feature_search', $request->query->all()),
         ]);
@@ -45,7 +45,7 @@ class FeatureController extends AbstractController
     #[Route(path: '/search', name: 'feature_search', methods: ['POST'])]
     public function search(Request $request, FeatureService $service): Response
     {
-        $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $search = new UserRequestSearch(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
         $this->createForm(SearchType::class, $search)->handleRequest($request);
 
         return $this->render('feature/components/_list.html.twig', [
@@ -53,11 +53,18 @@ class FeatureController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/create', name: 'feature_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, FeatureService $service, FeatureManager $manager): Response
+    #[Route(path: '/init', name: 'feature_init', methods: ['GET', 'POST'])]
+    public function init(FeatureManager $manager): Response
     {
-        $feature = new Feature();
-        $manager->create($feature);
+        $feature = $manager->createFeature();
+
+        return $this->redirectToRoute('feature_new', ['id' => $feature->getId()]);
+    }
+
+    #[IsGranted(Permissions::UPDATE, 'feature')]
+    #[Route(path: '/create/{id}', name: 'feature_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, Feature $feature, FeatureService $service, FeatureManager $manager): Response
+    {
         $form = $this->createForm(FeatureType::class, $feature, ['centerValues' => $service->getAllCentersForAutocomplete()])->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->publishDraft($feature);
@@ -71,6 +78,7 @@ class FeatureController extends AbstractController
         ]);
     }
 
+    #[IsGranted(Permissions::READ, 'feature')]
     #[Route(path: '/{id}', name: 'feature_show', methods: ['GET', 'POST'])]
     public function show(Request $request, Feature $feature, TagRepository $tagRepository, EntityManagerInterface $em): Response
     {
@@ -106,6 +114,19 @@ class FeatureController extends AbstractController
         return $this->render('feature/edit.html.twig', ['feature' => $feature, 'form' => $form]);
     }
 
+    #[IsGranted(Permissions::DELETE, 'feature')]
+    #[Route(path: '/delete/{id}', name: 'feature_delete', methods: ['POST'])]
+    public function delete(Request $request, Feature $feature, FeatureManager $manager): Response
+    {
+        $csrfTokenName = sprintf('delete%d', $feature->getId());
+        if ($this->isCsrfTokenValid($csrfTokenName, (string) $request->request->get('_token', ''))) {
+            $manager->remove($feature);
+        }
+
+        return $this->redirectToRoute('features_list');
+    }
+
+    #[IsGranted(Permissions::READ, 'feature')]
     #[Route(path: '/{id}/add-comment', name: 'feature_add_comment', methods: ['GET', 'POST'])]
     public function addComment(Request $request, Feature $feature, CommentManager $manager): Response
     {

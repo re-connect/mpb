@@ -49,9 +49,6 @@ class Bug extends UserRequest
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $item_id = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $userAgent = null;
-
     #[ORM\ManyToOne(targetEntity: Application::class, inversedBy: 'bugs')]
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotNull]
@@ -78,7 +75,8 @@ class Bug extends UserRequest
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'bugs')]
     private Collection $tags;
 
-    public function __construct()
+    public function __construct(#[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $userAgent = null)
     {
         $this->comments = new ArrayCollection();
         $this->attachments = new ArrayCollection();
@@ -321,6 +319,13 @@ class Bug extends UserRequest
         if ($this->tags->removeElement($tag)) {
             $tag->removeBug($this);
         }
+
+        return $this;
+    }
+
+    public function resolve(): self
+    {
+        $this->done = true;
 
         return $this;
     }

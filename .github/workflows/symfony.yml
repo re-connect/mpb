@@ -44,7 +44,7 @@ jobs:
                     postgresql password: mpb
             -   name: Run Doctrine Migrations
                 run: php bin/console doctrine:migrations:migrate -n --env=test
-            -   name: Create statuses
+            -   name: Load fixtures
                 run: php bin/console doctrine:fixtures:load --env=test -q
             -   name: Execute tests (Unit and Feature tests) via PHPUnit
                 run: vendor/bin/phpunit

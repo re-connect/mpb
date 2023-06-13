@@ -1,8 +1,8 @@
 <div class="row mt-4">
-    {% if is_granted('UPDATE', bug) %}
+    {% if is_granted('UPDATE', feature) %}
         <div class="col">
             <a class="btn btn-warning"
-               href="{{ path('bug_edit', {id: bug.id}) }}"
+               href="{{ path('feature_edit', {id: feature.id}) }}"
                data-turbo="false"
             >
                 <i class="fas fa-pencil-alt px-1"></i>{{ 'edit'|trans }}
@@ -10,6 +10,6 @@
         </div>
     {% endif %}
     <div class="col">
-        {{ include('user_request/components/_delete_form.html.twig', { userRequest : bug, action: 'bug_delete'}) }}
+        {{ include('user_request/components/_delete_form.html.twig', { userRequest : feature, action: 'feature_delete'}) }}
     </div>
 </div>

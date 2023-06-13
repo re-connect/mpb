@@ -53,6 +53,7 @@
     "twig/twig": "3.5.*"
   },
   "require-dev": {
+    "dama/doctrine-test-bundle": "^7.2",
     "deployer/deployer": "^7.0",
     "friendsofphp/php-cs-fixer": "3.*",
     "phpstan/phpstan": "1.9.*",

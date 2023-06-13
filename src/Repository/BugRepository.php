@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  *
  * @extends ServiceEntityRepository<Bug>
  */
-class BugRepository extends ServiceEntityRepository
+class BugRepository extends ServiceEntityRepository implements UserRequestRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -6,7 +6,7 @@ use App\Entity\Bug;
 use App\Entity\Comment;
 use App\Form\BugType;
 use App\Form\CommentType;
-use App\Form\Model\Search;
+use App\Form\Model\UserRequestSearch;
 use App\Form\SearchType;
 use App\Manager\BugManager;
 use App\Manager\CommentManager;
@@ -26,7 +26,7 @@ class BugController extends AbstractController
     #[Route(path: '/list', name: 'bugs_list', methods: ['GET'])]
     public function index(Request $request, BugService $service, ApplicationRepository $applicationRepository): Response
     {
-        $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $search = new UserRequestSearch(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
         $form = $this->createForm(SearchType::class, null, [
             'action' => $this->generateUrl('bug_search', $request->query->all()),
         ]);
@@ -42,7 +42,7 @@ class BugController extends AbstractController
     #[Route(path: '/search', name: 'bug_search', methods: ['POST'])]
     public function search(Request $request, BugService $service): Response
     {
-        $search = new Search(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $search = new UserRequestSearch(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
         $this->createForm(SearchType::class, $search)->handleRequest($request);
 
         return $this->render('bug/_list.html.twig', [
@@ -50,13 +50,21 @@ class BugController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/create', name: 'bug_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, BugService $service): Response
+    #[Route(path: '/init', name: 'bug_init', methods: ['GET', 'POST'])]
+    public function init(Request $request, BugManager $manager): Response
     {
-        $bug = $service->initBug($request->headers->get('User-Agent', ''));
+        $bug = $manager->createBug($request->headers->get('User-Agent', ''));
+
+        return $this->redirectToRoute('bug_new', ['id' => $bug->getId()]);
+    }
+
+    #[IsGranted(Permissions::UPDATE, 'bug')]
+    #[Route(path: '/create/{id}', name: 'bug_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, Bug $bug, BugManager $manager): Response
+    {
         $form = $this->createForm(BugType::class, $bug)->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $service->create($bug);
+            $manager->publishDraft($bug);
 
             return $this->redirectToRoute('bugs_list');
         }
@@ -91,8 +99,8 @@ class BugController extends AbstractController
         return $this->render('bug/edit.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
-    #[IsGranted(Permissions::READ, 'bug')]
-    #[Route(path: '/{id}', name: 'bug_delete', methods: ['POST'])]
+    #[IsGranted(Permissions::DELETE, 'bug')]
+    #[Route(path: '/delete/{id}', name: 'bug_delete', methods: ['POST'])]
     public function delete(Request $request, Bug $bug, BugManager $manager): Response
     {
         $csrfTokenName = sprintf('delete%d', $bug->getId());
@@ -114,9 +122,9 @@ class BugController extends AbstractController
 
     #[IsGranted('ROLE_TECH_TEAM')]
     #[Route(path: '/{id}/mark-done', name: 'bug_mark_done', methods: ['GET'])]
-    public function markDone(Bug $bug, BugService $service): Response
+    public function markDone(Bug $bug, BugManager $manager): Response
     {
-        $service->markAsDone($bug);
+        $manager->markDone($bug);
 
         return $this->refreshOrRedirect('bugs_list');
     }

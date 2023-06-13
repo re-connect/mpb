@@ -7,24 +7,13 @@ use App\Entity\Tag;
 use App\Repository\FeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class FeatureManager
+class FeatureManager extends UserRequestManager
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly FeatureRepository $repository,
     ) {
-    }
-
-    public function publishDraft(Feature $feature): void
-    {
-        $feature->publish();
-        $this->em->flush();
-    }
-
-    public function create(Feature $feature): void
-    {
-        $this->em->persist($feature);
-        $this->em->flush();
+        parent::__construct($em);
     }
 
     /** @return Feature[] */
@@ -33,15 +22,17 @@ class FeatureManager
         return $this->repository->findAll();
     }
 
-    public function markDone(Feature $feature): void
-    {
-        $feature->markDone();
-        $this->em->flush();
-    }
-
     public function toggleTag(Feature $feature, Tag $tag): void
     {
         $feature->toggleTag($tag);
         $this->em->flush();
+    }
+
+    public function createFeature(): Feature
+    {
+        $feature = new Feature();
+        $this->create($feature);
+
+        return $feature;
     }
 }

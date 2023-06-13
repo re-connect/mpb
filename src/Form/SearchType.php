@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Form\Model\Search;
+use App\Form\Model\UserRequestSearch;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,7 +23,7 @@ class SearchType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Search::class,
+            'data_class' => UserRequestSearch::class,
         ]);
     }
 }

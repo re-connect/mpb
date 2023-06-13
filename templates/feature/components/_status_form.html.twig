@@ -1,4 +1,4 @@
-{{ form_start(form) }}
+{{ form_start(form, {'attr': {'class': 'status-form'}}) }}
     <div class="d-flex">
         {{ form_widget(form.status, {'attr': {'class': 'w-75'}}) }}
         <button type="submit" class="btn btn-secondary mx-2">{{ 'edit_status'|trans }}</button>
