@@ -42,10 +42,10 @@ class BugType extends AbstractType
                 'required' => false,
             ])
             ->add('accountId', IntegerType::class, [
-                'label' => 'account_id',
+                'label' => 'accountId',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'account_id',
+                    'placeholder' => 'accountId',
                 ],
             ])
             ->add('content', CKEditorType::class, [

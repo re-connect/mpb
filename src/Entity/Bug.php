@@ -44,10 +44,10 @@ class Bug extends UserRequest
     private ?string $url = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $account_id = null;
+    private ?int $accountId = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $item_id = null;
+    private ?int $itemId = null;
 
     #[ORM\ManyToOne(targetEntity: Application::class, inversedBy: 'bugs')]
     #[ORM\JoinColumn(nullable: true)]
@@ -174,24 +174,24 @@ class Bug extends UserRequest
 
     public function getAccountId(): ?int
     {
-        return $this->account_id;
+        return $this->accountId;
     }
 
-    public function setAccountId(int $account_id): self
+    public function setAccountId(int $accountId): self
     {
-        $this->account_id = $account_id;
+        $this->accountId = $accountId;
 
         return $this;
     }
 
     public function getItemId(): ?int
     {
-        return $this->item_id;
+        return $this->itemId;
     }
 
-    public function setItemId(?int $item_id): self
+    public function setItemId(?int $itemId): self
     {
-        $this->item_id = $item_id;
+        $this->itemId = $itemId;
 
         return $this;
     }
