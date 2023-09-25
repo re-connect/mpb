@@ -11,7 +11,7 @@ class ListTest extends AbstractControllerTest implements TestRouteInterface
     private const URL = '/bugs/list';
 
     /** @dataProvider provideTestRoute */
-    public function testRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
+    public function testRoute(string $url, int $expectedStatusCode, string $userEmail = null, string $expectedRedirect = null, string $method = 'GET'): void
     {
         $this->assertRoute($url, $expectedStatusCode, $userEmail, $expectedRedirect, $method);
     }

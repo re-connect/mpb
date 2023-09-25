@@ -13,7 +13,7 @@ class InitTest extends AbstractControllerTest
     private const URL = '/bugs/init';
 
     /** @dataProvider provideTestRoute */
-    public function testRoute(string $url, int $expectedStatusCode, string $expectedRoute, ?string $userEmail = null): void
+    public function testRoute(string $url, int $expectedStatusCode, string $expectedRoute, string $userEmail = null): void
     {
         self::ensureKernelShutdown();
         $clientTest = static::createClient();

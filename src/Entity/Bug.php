@@ -76,7 +76,7 @@ class Bug extends UserRequest
     private Collection $tags;
 
     public function __construct(#[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $userAgent = null)
+        private ?string $userAgent = null)
     {
         $this->comments = new ArrayCollection();
         $this->attachments = new ArrayCollection();

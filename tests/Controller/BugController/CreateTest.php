@@ -23,7 +23,7 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     ];
 
     /** @dataProvider provideTestRoute */
-    public function testRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
+    public function testRoute(string $url, int $expectedStatusCode, string $userEmail = null, string $expectedRedirect = null, string $method = 'GET'): void
     {
         $bug = BugFactory::randomOrCreate(['draft' => true])->object();
         $url = sprintf($url, $bug->getId());
@@ -108,7 +108,7 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
      *
      * @dataProvider provideTestFormIsNotValid
      */
-    public function testFormIsNotValid(string $url, string $route, string $formSubmit, array $values, array $errors, ?string $email, ?string $alternateSelector = null): void
+    public function testFormIsNotValid(string $url, string $route, string $formSubmit, array $values, array $errors, ?string $email, string $alternateSelector = null): void
     {
         $bug = BugFactory::randomOrCreate(['draft' => true])->object();
         $url = sprintf($url, $bug->getId());

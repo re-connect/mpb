@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/', name: 'app_home')]
-    public function redirectAction(): RedirectResponse
+    public function redirectToHome(): RedirectResponse
     {
         $redirectRoute = $this->getUser() ? 'bugs_list' : 'app_login';
 

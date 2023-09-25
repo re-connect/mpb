@@ -5,15 +5,20 @@ namespace App\Manager;
 use App\Entity\Feature;
 use App\Entity\Tag;
 use App\Repository\FeatureRepository;
+use App\Traits\UserAwareTrait;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class FeatureManager extends UserRequestManager
 {
+    use UserAwareTrait;
+
     public function __construct(
         private readonly EntityManagerInterface $em,
+        private readonly Security $security,
         private readonly FeatureRepository $repository,
     ) {
-        parent::__construct($em);
+        parent::__construct($em, $security);
     }
 
     /** @return Feature[] */

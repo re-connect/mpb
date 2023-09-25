@@ -16,7 +16,7 @@ class ShowTest extends AbstractControllerTest implements TestRouteInterface
     private const URL = '/bugs/%s';
 
     /** @dataProvider provideTestRoute */
-    public function testRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
+    public function testRoute(string $url, int $expectedStatusCode, string $userEmail = null, string $expectedRedirect = null, string $method = 'GET'): void
     {
         $bug = BugFactory::randomOrCreate()->object();
         $url = sprintf($url, $bug->getId());

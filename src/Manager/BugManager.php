@@ -15,7 +15,7 @@ class BugManager extends UserRequestManager
         private readonly EntityManagerInterface $em,
         private readonly Security $security,
     ) {
-        parent::__construct($em);
+        parent::__construct($em, $security);
     }
 
     public function takeOver(Bug $bug): void
