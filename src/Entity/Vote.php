@@ -69,6 +69,11 @@ class Vote
         return $this;
     }
 
+    public function getItem(): UserRequest
+    {
+        return $this->feature ?? $this->bug;
+    }
+
     public function getVoter(): ?User
     {
         return $this->voter;

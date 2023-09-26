@@ -97,6 +97,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         return $this->getUserIdentifier();
     }
 
+    public function getFullName(): string
+    {
+        return str_replace('.', ' ', explode('@', $this->email)[0]);
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -442,13 +447,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
 
     public function getVote(UserRequest $request): ?Vote
     {
-        $vote = false;
-        if ($request->isFeature()) {
-            $vote = $this->votes->filter(fn (Vote $vote) => $vote->getBug() === $request)->first();
-        } elseif ($request->isBug()) {
-            $vote = $this->votes->filter(fn (Vote $vote) => $vote->getFeature() === $request)->first();
-        }
-
-        return false === $vote ? null : $vote;
+        return $this->votes->filter(fn (Vote $vote) => $vote->getItem() === $request)->first() ?: null;
     }
 }

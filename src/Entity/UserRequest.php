@@ -26,6 +26,8 @@ abstract class UserRequest
 
     abstract public function setDone(bool $done): self;
 
+    abstract public function isDone(): ?bool;
+
     abstract public function resolve(): self;
 
     public function isBug(): bool

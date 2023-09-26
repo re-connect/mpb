@@ -59,6 +59,7 @@ user: Utilisateur
 user_kind: Type d'utilisateur
 view_code_on_github: Voire le code sur Github
 votes: Votes
+voters: Voteurs·euses
 ALTERNATIVE_SOLUTION_PROPOSED: Solution alternative proposée
 BEING_DEVELOPED: En cours de développement
 IN_PRODUCTION: En production
