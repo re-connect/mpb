@@ -7,9 +7,9 @@
             {{ 'pending'|trans }}
         </span>
         {% if is_granted('ROLE_TECH_TEAM') %}
-            <a
-                    href="{{ get_mark_done_path(request) }}"
-                    class="btn btn-success btn-sm mb-2"><i class="fa fa-check"></i></a>
+            <div class="d-flex p-2">
+                {{ include('common/_button_link.html.twig', {path: get_mark_done_path(request), icon: 'check'}) }}
+            </div>
         {% endif %}
     {% endif %}
 </div>
