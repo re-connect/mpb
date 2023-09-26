@@ -9,7 +9,7 @@ use App\Tests\Controller\TestRouteInterface;
 class SecurityControllerTest extends AbstractControllerTest implements TestRouteInterface
 {
     /** @dataProvider provideTestRoute */
-    public function testRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
+    public function testRoute(string $url, int $expectedStatusCode, string $userEmail = null, string $expectedRedirect = null, string $method = 'GET'): void
     {
         $this->assertRoute($url, $expectedStatusCode, $userEmail, $expectedRedirect, $method);
     }

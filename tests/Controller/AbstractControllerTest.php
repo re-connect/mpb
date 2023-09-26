@@ -19,7 +19,7 @@ abstract class AbstractControllerTest extends WebTestCase
         self::$translator = $container->get(TranslatorInterface::class);
     }
 
-    public function assertRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
+    public function assertRoute(string $url, int $expectedStatusCode, string $userEmail = null, string $expectedRedirect = null, string $method = 'GET'): void
     {
         self::ensureKernelShutdown();
         $clientTest = static::createClient();
@@ -63,7 +63,7 @@ abstract class AbstractControllerTest extends WebTestCase
      * @param array<string, string> $values
      * @param array<array>          $errors
      */
-    public function assertFormIsNotValid(string $url, string $route, string $formSubmit, array $values, array $errors, ?string $email, ?string $alternateSelector = null): void
+    public function assertFormIsNotValid(string $url, string $route, string $formSubmit, array $values, array $errors, ?string $email, string $alternateSelector = null): void
     {
         self::ensureKernelShutdown();
         $client = static::createClient();

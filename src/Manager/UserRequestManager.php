@@ -5,13 +5,16 @@ namespace App\Manager;
 use App\Entity\UserRequest;
 use App\Traits\UserAwareTrait;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class UserRequestManager
 {
     use UserAwareTrait;
 
-    public function __construct(private readonly EntityManagerInterface $em)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly Security $security
+    ) {
     }
 
     public function publishDraft(UserRequest $userRequest): void

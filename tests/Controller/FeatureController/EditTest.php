@@ -19,7 +19,7 @@ class EditTest extends AbstractControllerTest implements TestRouteInterface, Tes
     ];
 
     /** @dataProvider provideTestRoute */
-    public function testRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
+    public function testRoute(string $url, int $expectedStatusCode, string $userEmail = null, string $expectedRedirect = null, string $method = 'GET'): void
     {
         $feature = FeatureFactory::randomOrCreate(['draft' => false])->object();
         $url = sprintf($url, $feature->getId());
@@ -62,7 +62,7 @@ class EditTest extends AbstractControllerTest implements TestRouteInterface, Tes
      *
      * @dataProvider provideTestFormIsNotValid
      */
-    public function testFormIsNotValid(string $url, string $route, string $formSubmit, array $values, array $errors, ?string $email, ?string $alternateSelector = null): void
+    public function testFormIsNotValid(string $url, string $route, string $formSubmit, array $values, array $errors, ?string $email, string $alternateSelector = null): void
     {
         $feature = FeatureFactory::randomOrCreate()->object();
         $url = sprintf($url, $feature->getId());

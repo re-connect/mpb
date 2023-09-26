@@ -25,6 +25,7 @@ class UserRequestService
     {
         $parameters = ['done' => $search->getShowDone() ?? false];
 
+        /* @phpstan-ignore-next-line */
         $qb = $repository->createQueryBuilder('ur')
             ->leftJoin('ur.user', 'u')
             ->leftJoin('ur.application', 'a')

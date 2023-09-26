@@ -14,7 +14,7 @@ class FeatureControllerTest extends AbstractControllerTest implements TestRouteI
     private const LIST_URL = '/features/list';
 
     /** @dataProvider provideTestRoute */
-    public function testRoute(string $url, int $expectedStatusCode, ?string $userEmail = null, ?string $expectedRedirect = null, string $method = 'GET'): void
+    public function testRoute(string $url, int $expectedStatusCode, string $userEmail = null, string $expectedRedirect = null, string $method = 'GET'): void
     {
         $feature = FeatureFactory::randomOrCreate()->object();
         $url = sprintf($url, $feature->getId());

@@ -17,26 +17,31 @@ class TraceableEntityListener
     {
     }
 
-    /* @phpstan-ignore-next-line */
     public function preUpdate(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
-        if (!$entity instanceof Comment && !$entity instanceof Bug && !$entity instanceof Feature) {
+        if (!$this->supports($entity)) {
             return;
         }
 
         $entity->setUpdatedAt();
     }
 
-    /* @phpstan-ignore-next-line */
     public function prePersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
-        if (!$entity instanceof Comment && !$entity instanceof Bug && !$entity instanceof Feature) {
+        if (!$this->supports($entity)) {
             return;
         }
 
         $entity->setCreatedAt();
-        $entity->setUser($this->getUser());
+        if ($this->getUser()) {
+            $entity->setUser($this->getUser());
+        }
+    }
+
+    public function supports(object $entity): bool
+    {
+        return $entity instanceof Comment || $entity instanceof Bug || $entity instanceof Feature;
     }
 }
