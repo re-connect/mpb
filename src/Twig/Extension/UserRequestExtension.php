@@ -13,6 +13,7 @@ class UserRequestExtension extends AbstractExtension
         return [
             new TwigFunction('get_vote_path', [UserRequestExtensionRuntime::class, 'getVotePath']),
             new TwigFunction('get_mark_done_path', [UserRequestExtensionRuntime::class, 'getMarkDonePath']),
+            new TwigFunction('get_convert_path', [UserRequestExtensionRuntime::class, 'getConvertPath']),
         ];
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Manager;
 
 use App\Entity\Bug;
+use App\Entity\Feature;
+use App\Mapper\UserRequestMapper;
 use App\Traits\UserAwareTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -30,5 +32,16 @@ class BugManager extends UserRequestManager
         $this->create($bug);
 
         return $bug;
+    }
+
+    public function convertToFeature(Bug $bug): Feature
+    {
+        $feature = UserRequestMapper::mapBugToFeature($bug);
+        $bug->resolve();
+
+        $this->em->persist($feature);
+        $this->em->flush();
+
+        return $feature;
     }
 }

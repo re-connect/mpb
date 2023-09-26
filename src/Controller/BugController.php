@@ -59,7 +59,7 @@ class BugController extends AbstractController
     }
 
     #[IsGranted(Permissions::UPDATE, 'bug')]
-    #[Route(path: '/create/{id}', name: 'bug_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/create/{id<\d+>}', name: 'bug_new', methods: ['GET', 'POST'])]
     public function new(Request $request, Bug $bug, BugManager $manager): Response
     {
         $form = $this->createForm(BugType::class, $bug)->handleRequest($request);
@@ -79,14 +79,14 @@ class BugController extends AbstractController
     }
 
     #[IsGranted(Permissions::READ, 'bug')]
-    #[Route(path: '/{id}', name: 'bug_show', methods: ['GET'])]
+    #[Route(path: '/{id<\d+>}', name: 'bug_show', methods: ['GET'])]
     public function show(Bug $bug): Response
     {
         return $this->render('bug/show.html.twig', ['bug' => $bug]);
     }
 
     #[IsGranted(Permissions::UPDATE, 'bug')]
-    #[Route(path: '/{id}/edit', name: 'bug_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id<\d+>}/edit', name: 'bug_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Bug $bug, BugManager $manager): Response
     {
         $form = $this->createForm(BugType::class, $bug)->handleRequest($request);
@@ -100,7 +100,7 @@ class BugController extends AbstractController
     }
 
     #[IsGranted(Permissions::DELETE, 'bug')]
-    #[Route(path: '/delete/{id}', name: 'bug_delete', methods: ['POST'])]
+    #[Route(path: '/delete/{id<\d+>}', name: 'bug_delete', methods: ['POST'])]
     public function delete(Request $request, Bug $bug, BugManager $manager): Response
     {
         $csrfTokenName = sprintf('delete%d', $bug->getId());
@@ -112,7 +112,7 @@ class BugController extends AbstractController
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
-    #[Route(path: '/{id}/take-over', name: 'bug_take_over', methods: ['GET'])]
+    #[Route(path: '/{id<\d+>}/take-over', name: 'bug_take_over', methods: ['GET'])]
     public function takeOver(Bug $bug, BugManager $manager): Response
     {
         $manager->takeOver($bug);
@@ -121,7 +121,7 @@ class BugController extends AbstractController
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
-    #[Route(path: '/{id}/mark-done', name: 'bug_mark_done', methods: ['GET'])]
+    #[Route(path: '/{id<\d+>}/mark-done', name: 'bug_mark_done', methods: ['GET'])]
     public function markDone(Bug $bug, BugManager $manager): Response
     {
         $manager->markDone($bug);
@@ -130,7 +130,7 @@ class BugController extends AbstractController
     }
 
     #[IsGranted(Permissions::READ, 'bug')]
-    #[Route(path: '/{id}/add-comment', name: 'bug_add_comment', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id<\d+>}/add-comment', name: 'bug_add_comment', methods: ['GET', 'POST'])]
     public function addComment(Request $request, Bug $bug, CommentManager $manager): Response
     {
         $comment = (new Comment());
@@ -145,11 +145,21 @@ class BugController extends AbstractController
         return $this->render('bug/add_comment.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
-    #[Route(path: '/{id}/vote', name: 'bug_vote', methods: ['GET'])]
+    #[Route(path: '/{id<\d+>}/vote', name: 'bug_vote', methods: ['GET'])]
     public function vote(Bug $bug, VoteManager $manager): Response
     {
         $manager->vote($bug);
 
         return $this->refreshOrRedirect('bugs_list');
+    }
+
+    #[IsGranted('ROLE_TECH_TEAM')]
+    #[Route(path: '/{id<\d+>}/convert-to-feature', name: 'bug_convert_to_feature', methods: ['GET'])]
+    public function convertToFeature(Bug $bug, BugManager $manager): Response
+    {
+        $feature = $manager->convertToFeature($bug);
+        $this->addFlash('success', 'bug_converted_to_feature');
+
+        return $this->redirectToRoute('feature_show', ['id' => $feature->getId()]);
     }
 }

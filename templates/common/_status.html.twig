@@ -9,6 +9,7 @@
         {% if is_granted('ROLE_TECH_TEAM') %}
             <div class="d-flex p-2">
                 {{ include('common/_button_link.html.twig', {path: get_mark_done_path(request), icon: 'check'}) }}
+                {{ include('common/_button_link.html.twig', {path: get_convert_path(request), icon: 'bug-slash'}) }}
             </div>
         {% endif %}
     {% endif %}

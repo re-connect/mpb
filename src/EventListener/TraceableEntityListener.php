@@ -33,8 +33,9 @@ class TraceableEntityListener
             return;
         }
 
-        $entity->setCreatedAt();
-        if ($this->getUser()) {
+        $entity->setCreatedAt($entity->getCreatedAt() ?? new \DateTimeImmutable());
+
+        if ($this->getUser() && !$entity->getUser()) {
             $entity->setUser($this->getUser());
         }
     }
