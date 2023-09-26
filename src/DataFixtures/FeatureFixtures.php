@@ -3,12 +3,10 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use App\EventListener\TraceableEntityListener;
 use App\Tests\Factory\FeatureFactory;
 use App\Tests\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class FeatureFixtures extends Fixture implements DependentFixtureInterface

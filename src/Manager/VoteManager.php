@@ -16,17 +16,17 @@ class VoteManager
     ) {
     }
 
-    public function voteForItem(UserRequest $item): void
+    public function vote(UserRequest $request): void
     {
         /** @var ?User $user */
         $user = $this->security->getUser();
         if (!$user) {
             return;
         }
-        $currentVote = $user->getVoteForItem($item);
+        $currentVote = $user->getVote($request);
 
         if (!$currentVote) {
-            $vote = (new Vote())->setItem($item)->setVoter($user);
+            $vote = (new Vote())->setItem($request)->setVoter($user);
             $this->em->persist($vote);
         } else {
             $this->em->remove($currentVote);

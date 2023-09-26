@@ -8,7 +8,7 @@
         </span>
         {% if is_granted('ROLE_TECH_TEAM') %}
             <a
-                    href="{{ markDonePath }}"
+                    href="{{ get_mark_done_path(feature) }}"
                     class="btn btn-success btn-sm mb-2"><i class="fa fa-check"></i></a>
         {% endif %}
     {% endif %}

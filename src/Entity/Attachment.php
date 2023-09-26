@@ -104,12 +104,14 @@ class Attachment
         return $this->feature ?? $this->bug;
     }
 
-    public function setUserRequest(?UserRequest $userRequest): self
+    public function setUserRequest(?UserRequest $request): self
     {
-        if ($userRequest instanceof Feature) {
-            $this->feature = $userRequest;
-        } elseif ($userRequest instanceof Bug) {
-            $this->bug = $userRequest;
+        if ($request?->isFeature()) {
+            /** @var Feature $request */
+            $this->feature = $request;
+        } elseif ($request?->isBug()) {
+            /** @var Bug $request */
+            $this->bug = $request;
         }
 
         return $this;

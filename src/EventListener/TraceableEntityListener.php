@@ -2,9 +2,8 @@
 
 namespace App\EventListener;
 
-use App\Entity\Bug;
 use App\Entity\Comment;
-use App\Entity\Feature;
+use App\Entity\UserRequest;
 use App\Traits\UserAwareTrait;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -42,6 +41,6 @@ class TraceableEntityListener
 
     public function supports(object $entity): bool
     {
-        return $entity instanceof Comment || $entity instanceof Bug || $entity instanceof Feature;
+        return $entity instanceof Comment || $entity instanceof UserRequest;
     }
 }

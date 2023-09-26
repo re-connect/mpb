@@ -56,12 +56,14 @@ class Vote
         return $this;
     }
 
-    public function setItem(UserRequest $item): self
+    public function setItem(UserRequest $request): self
     {
-        if ($item instanceof Feature) {
-            $this->feature = $item;
-        } elseif ($item instanceof Bug) {
-            $this->bug = $item;
+        if ($request->isFeature()) {
+            /** @var Feature $request */
+            $this->feature = $request;
+        } elseif ($request->isBug()) {
+            /** @var Bug $request */
+            $this->bug = $request;
         }
 
         return $this;

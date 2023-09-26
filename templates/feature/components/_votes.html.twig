@@ -1,6 +1,0 @@
-<a class="btn btn-{{ app.user.getVoteForItem(feature) ? '' : 'outline-' }}primary btn-sm mt-2"
-   href="{{ path('feature_vote', {'id': feature.id}) }}"
->
-    <i class="fa fa-thumbs-up"></i>
-    <span>({{ feature.votes|length }})</span>
-</a>

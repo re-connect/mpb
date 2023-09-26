@@ -20,9 +20,9 @@
                 </div>
                 {% if not bug.draft %}
                     <div class="col flex-grow-0 z-2 d-flex flex-column align-items-end">
-                        {{ include('common/_status.html.twig', {'isDone': bug.done, 'markDonePath' : path('bug_mark_done', {'id': bug.id})}) }}
+                        {{ include('common/_status.html.twig', {request: bug}) }}
                         {{ include('bug/_assignee_section.html.twig', {bug}) }}
-                        {{ include('bug/_votes.html.twig', {bug}) }}
+                        {{ include('user_request/components/_votes.html.twig', {request: bug}) }}
                     </div>
                 {% endif %}
             </div>

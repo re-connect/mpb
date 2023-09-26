@@ -157,7 +157,7 @@ class FeatureController extends AbstractController
     #[Route(path: '/{id}/vote', name: 'feature_vote', methods: ['GET'])]
     public function vote(Feature $feature, VoteManager $manager): Response
     {
-        $manager->voteForItem($feature);
+        $manager->vote($feature);
 
         return $this->refreshOrRedirect('features_list');
     }

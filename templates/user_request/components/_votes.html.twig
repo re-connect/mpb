@@ -1,0 +1,6 @@
+<a class="btn btn-{{ app.user.hasVoted(request) ? '' : 'outline-' }}primary btn-sm mt-2"
+   href="{{ get_vote_path(request) }}"
+>
+    <i class="fa fa-thumbs-up"></i>
+    <span>({{ request.votes|length }})</span>
+</a>

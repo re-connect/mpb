@@ -15,11 +15,8 @@ class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abst
     protected function getUser(): ?User
     {
         $user = parent::getUser();
-        if ($user instanceof User) {
-            return $user;
-        }
 
-        return null;
+        return $user instanceof User ? $user : null;
     }
 
     /** @param array<string, string> $params */

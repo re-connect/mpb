@@ -329,4 +329,9 @@ class Bug extends UserRequest
 
         return $this;
     }
+
+    public function isBug(): bool
+    {
+        return true;
+    }
 }
