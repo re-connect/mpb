@@ -3,21 +3,21 @@
 namespace App\EventListener;
 
 use App\Entity\Bug;
-use App\Service\NotificationService;
+use App\Service\Notifier\AppNotifier;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 #[AsEntityListener(event: 'preUpdate', entity: Bug::class)]
-class BugListener
+readonly class BugListener
 {
-    public function __construct(private readonly NotificationService $notificator,
-    ) {
+    public function __construct(private AppNotifier $notificator)
+    {
     }
 
     public function preUpdate(Bug $bug, PreUpdateEventArgs $event): void
     {
         if ($this->bugHasBeenPublished($event, $bug) || $this->bugIsDone($event, $bug)) {
-            $this->notificator->notifyBug($bug);
+            $this->notificator->notify($bug);
         }
     }
 

@@ -72,7 +72,7 @@ class BugController extends AbstractController
         return $this->render('bug/new.html.twig', ['bug' => $bug, 'form' => $form]);
     }
 
-    #[Route(path: '/{id}/add-screenshot', name: 'add_screenshot', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id<\d+>}/add-screenshot', name: 'add_screenshot', methods: ['GET', 'POST'])]
     public function addScreenshot(Bug $bug): Response
     {
         return $this->render('bug/add_screenshot.html.twig', ['bug' => $bug]);

@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Notifier;
 
 use App\Entity\Bug;
+use App\Entity\UserRequest;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Notifier\Bridge\Slack\Block\SlackActionsBlock;
 use Symfony\Component\Notifier\Bridge\Slack\Block\SlackDividerBlock;
 use Symfony\Component\Notifier\Bridge\Slack\Block\SlackSectionBlock;
@@ -16,20 +15,10 @@ use Symfony\Component\Notifier\Message\ChatMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-class NotificationService
+readonly class SlackNotifier implements ChannelNotifierInterface
 {
-    public function __construct(
-        private readonly ChatterInterface $chatter,
-        private readonly RouterInterface $router,
-        private readonly LoggerInterface $logger,
-        private readonly MailerInterface $mailer,
-    ) {
-    }
-
-    public function notifyBug(Bug $bug): void
+    public function __construct(private ChatterInterface $chatter, private RouterInterface $router, private LoggerInterface $logger)
     {
-        $this->sendResolvedEmail($bug);
-        $this->sentSlackMessage($bug);
     }
 
     private function createSlackOptions(Bug $bug, string $text): SlackOptions
@@ -48,33 +37,19 @@ class NotificationService
                     ));
     }
 
-    public function sentSlackMessage(Bug $bug): void
+    public function notify(UserRequest $request): void
     {
+        if (!$request->isBug()) {
+            return;
+        }
+        /** @var Bug $bug */
+        $bug = $request;
         $text = $bug->isDone() ? 'Bug résolu' : 'Nouveau bug';
 
         $chatMessage = (new ChatMessage($text))->options($this->createSlackOptions($bug, $text));
         try {
             $this->chatter->send($chatMessage);
         } catch (TransportExceptionInterface $e) {
-            $this->logger->critical(sprintf('Failure sending Slack message, cause: %s', $e->getMessage()));
-        }
-    }
-
-    private function sendResolvedEmail(Bug $bug): void
-    {
-        if (!$bug->isDone() || !$bug->getUser()?->getEmail()) {
-            return;
-        }
-
-        $email = (new Email())
-            ->from('contact@reconnect.fr')
-            ->to($bug->getUser()->getEmail())
-            ->subject('[MPB] Bug résolu')
-            ->html(sprintf('<p>Le bug suivant a été résolu :<br/><br/>%s</p>', $bug->getTitle()));
-
-        try {
-            $this->mailer->send($email);
-        } catch (\Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
             $this->logger->critical(sprintf('Failure sending Slack message, cause: %s', $e->getMessage()));
         }
     }
