@@ -17,15 +17,17 @@ use Symfony\Component\Routing\RouterInterface;
 
 readonly class SlackNotifier implements ChannelNotifierInterface
 {
+    private const CHANNELS = ['bugs' => 'C02UDN5PZFZ', 'features' => 'C05TWL4N3R9'];
+
     public function __construct(private ChatterInterface $chatter, private RouterInterface $router, private LoggerInterface $logger)
     {
     }
 
-    private function createSlackOptions(Bug $bug, string $text): SlackOptions
+    private function createSlackOptions(Bug $bug): SlackOptions
     {
         return (new SlackOptions())
             ->iconEmoji($bug->isDone() ? 'white_check_mark' : 'Bug')
-            ->username(sprintf('[MPB] %s', $text))
+            ->username(sprintf('[MPB] %s', $bug->isDone() ? 'Bug résolu' : 'Nouveau bug'))
             ->block((new SlackSectionBlock())->text($bug->getTitle() ?? ''))
             ->block(new SlackDividerBlock())
             ->block(
@@ -34,23 +36,34 @@ readonly class SlackNotifier implements ChannelNotifierInterface
                         'Voir le bug',
                         $this->router->generate('bug_show', ['id' => $bug->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
                         'primary'
-                    ));
+                    ))
+            ->recipient(self::CHANNELS['bugs']);
     }
 
     public function notify(UserRequest $request): void
     {
-        if (!$request->isBug()) {
-            return;
-        }
-        /** @var Bug $bug */
-        $bug = $request;
-        $text = $bug->isDone() ? 'Bug résolu' : 'Nouveau bug';
-
-        $chatMessage = (new ChatMessage($text))->options($this->createSlackOptions($bug, $text));
         try {
-            $this->chatter->send($chatMessage);
+            $chatMessage = $this->buildChatMessage($request);
+            if ($chatMessage) {
+                $this->chatter->send($chatMessage);
+            }
         } catch (TransportExceptionInterface $e) {
             $this->logger->critical(sprintf('Failure sending Slack message, cause: %s', $e->getMessage()));
         }
+    }
+
+    public function buildChatMessage(UserRequest $request): ?ChatMessage
+    {
+        if ($request->isBug()) {
+            /** @var Bug $request */
+            return $this->buildBugMessage($request);
+        }
+
+        return null;
+    }
+
+    public function buildBugMessage(Bug $bug): ChatMessage
+    {
+        return (new ChatMessage($bug->isDone() ? 'Bug résolu' : 'Nouveau bug'))->options($this->createSlackOptions($bug));
     }
 }
