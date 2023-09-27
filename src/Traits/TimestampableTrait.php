@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 trait TimestampableTrait
 {
     #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $createdAt = null;
+    protected ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $updatedAt = null;
+    protected ?\DateTimeInterface $updatedAt = null;
 
     public function setUpdatedAt(): self
     {
@@ -21,8 +21,7 @@ trait TimestampableTrait
 
     public function setCreatedAt(\DateTimeImmutable $createdAt = null): self
     {
-        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
-        $this->setUpdatedAt();
+        $this->createdAt = $createdAt;
 
         return $this;
     }
