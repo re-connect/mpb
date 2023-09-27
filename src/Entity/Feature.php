@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FeatureRepository;
+use App\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: FeatureRepository::class)]
 class Feature extends UserRequest
 {
+    use TimestampableTrait;
     final public const EXPORTABLE_FIELDS = ['id', 'application', 'title', 'description', 'user', 'status', 'votes', 'center', 'creation_date'];
 
     #[ORM\Id]
@@ -80,7 +82,7 @@ class Feature extends UserRequest
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
@@ -92,7 +94,7 @@ class Feature extends UserRequest
         return $this->content;
     }
 
-    public function setContent(string $content): self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 

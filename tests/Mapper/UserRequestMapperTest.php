@@ -6,7 +6,6 @@ use App\Entity\Application;
 use App\Entity\Attachment;
 use App\Entity\Bug;
 use App\Entity\Comment;
-use App\Entity\Feature;
 use App\Entity\User;
 use App\Entity\Vote;
 use App\Mapper\UserRequestMapper;
