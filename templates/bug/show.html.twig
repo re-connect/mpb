@@ -28,7 +28,7 @@
         {% for badge in badges %}
             <div class="float-start">{{ badge.content|raw }}</div>
         {% endfor %}
-        <div class="float-end">{{ include('bug/_status.html.twig', {'bug': bug}) }}</div>
+        <div class="float-end">{{ include('common/_status.html.twig', {request: bug}) }}</div>
         {% for group in items_group %}
             <table class="table">
                 <tbody>

@@ -97,6 +97,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         return $this->getUserIdentifier();
     }
 
+    public function getFullName(): string
+    {
+        return str_replace('.', ' ', explode('@', $this->email)[0]);
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -435,33 +440,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
         return $this;
     }
 
-    public function hasVotedBug(Bug $bug): bool
+    public function hasVoted(UserRequest $request): bool
     {
-        return $this->votes->exists(fn (int $key, Vote $vote) => $vote->getBug() === $bug);
+        return null !== $this->getVote($request);
     }
 
-    public function getVoteForBug(Bug $bug): ?Vote
+    public function getVote(UserRequest $request): ?Vote
     {
-        $vote = $this->votes->filter(fn (Vote $vote) => $vote->getBug() === $bug)->first();
-
-        return false === $vote ? null : $vote;
-    }
-
-    public function getVoteForFeature(Feature $feature): ?Vote
-    {
-        $vote = $this->votes->filter(fn (Vote $vote) => $vote->getFeature() === $feature)->first();
-
-        return false === $vote ? null : $vote;
-    }
-
-    public function getVoteForItem(UserRequest $item): ?Vote
-    {
-        if ($item instanceof Feature) {
-            return $this->getVoteForFeature($item);
-        } elseif ($item instanceof Bug) {
-            return $this->getVoteForBug($item);
-        }
-
-        return null;
+        return $this->votes->filter(fn (Vote $vote) => $vote->getItem() === $request)->first() ?: null;
     }
 }

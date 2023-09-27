@@ -291,4 +291,9 @@ class Feature extends UserRequest
 
         return $this;
     }
+
+    public function isFeature(): bool
+    {
+        return true;
+    }
 }

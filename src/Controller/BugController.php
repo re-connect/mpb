@@ -148,7 +148,7 @@ class BugController extends AbstractController
     #[Route(path: '/{id}/vote', name: 'bug_vote', methods: ['GET'])]
     public function vote(Bug $bug, VoteManager $manager): Response
     {
-        $manager->voteForItem($bug);
+        $manager->vote($bug);
 
         return $this->refreshOrRedirect('bugs_list');
     }

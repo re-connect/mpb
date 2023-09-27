@@ -11,6 +11,8 @@ abstract class UserRequest
     use UploadableTrait;
     use DraftableTrait;
 
+    abstract public function getId(): ?int;
+
     /** @return Collection<int, Vote> */
     abstract public function getVotes(): Collection;
 
@@ -24,5 +26,17 @@ abstract class UserRequest
 
     abstract public function setDone(bool $done): self;
 
+    abstract public function isDone(): ?bool;
+
     abstract public function resolve(): self;
+
+    public function isBug(): bool
+    {
+        return false;
+    }
+
+    public function isFeature(): bool
+    {
+        return false;
+    }
 }
