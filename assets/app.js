@@ -1,13 +1,9 @@
-global.$ = global.jQuery = require('jquery');
-
+import './bootstrap.js';
 import '@popperjs/core';
-import {Tooltip} from 'bootstrap';
 import 'tom-select/dist/scss/tom-select.scss';
-
 import './styles/app.scss';
-import enableTooltips from './scripts/turbo_helper'
+import enableTooltips from './scripts/turbo_helper';
 
-// start the Stimulus application
-import './bootstrap';
+global.$ = global.jQuery = require('jquery');
 
 enableTooltips();
