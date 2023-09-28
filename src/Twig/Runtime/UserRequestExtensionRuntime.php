@@ -33,4 +33,13 @@ readonly class UserRequestExtensionRuntime implements RuntimeExtensionInterface
 
         return '';
     }
+
+    public function getConvertPath(UserRequest $request): string
+    {
+        if ($request->isBug()) {
+            return $this->router->generate('bug_convert_to_feature', ['id' => $request->getId()]);
+        }
+
+        return '';
+    }
 }

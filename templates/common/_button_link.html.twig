@@ -1,0 +1,6 @@
+<a href="{{ path }}" class="btn btn-{{ color is defined ? color : 'success' }} btn-sm m-1">
+    {{ message is defined ? message : '' }}
+    {% if icon is defined %}
+        <i class="fa-solid fa-{{ icon }}"></i>
+    {% endif %}
+</a>

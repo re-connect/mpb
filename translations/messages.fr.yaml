@@ -9,6 +9,7 @@ application: Application
 back_to_bug: Retour au bug
 back_to_feature: Retour à l'amélioration
 bug: Bug
+bug_converted_to_feature: Le bug a bien été résolu et transformé en demande d'amélioration
 bug_description: Description du bug rencontré
 bugs_list: Liste des bugs
 bug_title: Titre du bug

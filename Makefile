@@ -5,10 +5,14 @@ PHPMD         = $(BIN)/phpmd
 PHP_CS_FIXER  = $(BIN)/php-cs-fixer
 PHPUNIT		  = $(BIN)/simple-phpunit
 DEPLOYER      = $(BIN)/dep
+CONSOLE		  = symfony console
 
 .PHONY        :
 
 cs: rector stan fixer test
+
+fixture:
+	@$(CONSOLE) doctrine:fixtures:load --env=test -q
 
 test:
 	@$(PHPUNIT) tests

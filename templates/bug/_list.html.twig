@@ -1,6 +1,6 @@
 <div class="row" {{ stimulus_target('search', 'container') }}>
     {% for bug in bugs %}
-        {{ include('bug/_card.html.twig', { bug }) }}
+        {{ include('bug/_card.html.twig', {bug}) }}
     {% else %}
         {{ 'no_bug_yet'|trans }}
     {% endfor %}

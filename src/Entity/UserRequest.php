@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Traits\DraftableTrait;
+use App\Traits\TimestampableTrait;
 use App\Traits\UploadableTrait;
 use Doctrine\Common\Collections\Collection;
 
@@ -10,6 +11,7 @@ abstract class UserRequest
 {
     use UploadableTrait;
     use DraftableTrait;
+    use TimestampableTrait;
 
     abstract public function getId(): ?int;
 
