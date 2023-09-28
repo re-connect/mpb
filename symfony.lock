@@ -511,9 +511,14 @@
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "2.8",
-            "ref": "9e33a8a3794b603fb4be6c04ee5ecab901ce549e"
-        }
+            "version": "2.9",
+            "ref": "05c45071c7ecacc1e48f94bc43c1f8d4405fb2b2"
+        },
+        "files": [
+            "assets/bootstrap.js",
+            "assets/controllers.json",
+            "assets/controllers/hello_controller.js"
+        ]
     },
     "symfony/stopwatch": {
         "version": "v5.3.0"
@@ -612,18 +617,15 @@
         ]
     },
     "symfony/webpack-encore-bundle": {
-        "version": "1.16",
+        "version": "2.1",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "1.10",
-            "ref": "5878c7c28468ca0fdce2497a04cfc66bab0dc3ef"
+            "version": "2.0",
+            "ref": "082d754b3bd54b3fc669f278f1eea955cfd23cf5"
         },
         "files": [
             "assets/app.js",
-            "assets/bootstrap.js",
-            "assets/controllers.json",
-            "assets/controllers/hello_controller.js",
             "assets/styles/app.css",
             "config/packages/webpack_encore.yaml",
             "package.json",
