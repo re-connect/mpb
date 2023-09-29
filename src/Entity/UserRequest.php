@@ -59,4 +59,9 @@ abstract class UserRequest
     {
         return false;
     }
+
+    public function getAssignee(): ?User
+    {
+        return null;
+    }
 }

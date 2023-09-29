@@ -1,16 +1,20 @@
-<div>
+<div class="z-2 mt-2">
     {% if request.isDone %}
         <span class="badge text-success border border-success">{{ 'solved'|trans }}</span>
     {% else %}
-        <span class="badge text-warning border border-warning">
+        {% if request.assignee %}
+            <span class="badge text-warning border border-warning"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="left"
+                  title="Traité par {{ request.assignee.fullName }}">
             <i class="fa fa-hourglass-1"></i>
             {{ 'pending'|trans }}
         </span>
-        {% if is_granted('ROLE_TECH_TEAM') %}
-            <div class="d-flex p-2">
-                {{ include('common/_button_link.html.twig', {path: get_mark_done_path(request), icon: 'check'}) }}
-                {{ include('common/_button_link.html.twig', {path: get_convert_path(request), icon: 'bug-slash'}) }}
-            </div>
+        {% else %}
+            <span class="badge border border-warning text-warning">
+            <i class="fa fa-hourglass-1"></i>
+            {{ 'pending_take_over'|trans }}
+        </span>
         {% endif %}
     {% endif %}
 </div>

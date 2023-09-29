@@ -53,4 +53,13 @@ readonly class UserRequestExtensionRuntime implements RuntimeExtensionInterface
 
         return '';
     }
+
+    public function getTakeOverPath(UserRequest $request): string
+    {
+        if ($request->isBug()) {
+            return $this->urlGenerator->generate('bug_take_over', ['id' => $request->getId()]);
+        }
+
+        return '';
+    }
 }

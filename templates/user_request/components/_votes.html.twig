@@ -1,10 +1,12 @@
-<a class="btn btn-{{ app.user.hasVoted(request) ? '' : 'outline-' }}primary btn-sm mt-2"
+<a class="btn btn-{{ app.user.hasVoted(request) ? '' : 'outline-' }}primary btn-sm"
    href="{{ get_vote_path(request) }}"
-   data-bs-toggle="tooltip"
-   data-bs-placement="left"
-   data-bs-html="true"
-   title="<div class='text-white'><ul>{% for vote in request.votes %}<li>{{ vote.voter.fullName }}</li>{% endfor %}</ul></div>"
-    >
+        {% if request.votes|length > 0 %}
+            data-bs-toggle="tooltip"
+            data-bs-placement="left"
+            data-bs-html="true"
+            title="<div class='text-white'><ul>{% for vote in request.votes %}<li>{{ vote.voter.fullName }}</li>{% endfor %}</ul></div>"
+        {% endif %}
+>
     <i class="fa fa-thumbs-up"></i>
     <span>({{ request.votes|length }})</span>
 </a>
