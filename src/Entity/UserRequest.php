@@ -6,6 +6,7 @@ use App\Traits\DraftableTrait;
 use App\Traits\TimestampableTrait;
 use App\Traits\UploadableTrait;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ReadableCollection;
 
 abstract class UserRequest
 {
@@ -64,4 +65,14 @@ abstract class UserRequest
     {
         return null;
     }
+
+    /**
+     * @return ReadableCollection<int, string>
+     */
+     public function getVotersEmail(): ReadableCollection
+     {
+         return $this->getVotes()
+             ->map(fn (Vote $vote) => $vote->getVoter()->getEmail())
+             ->filter(fn (?string $email) => null !== $email && '' !== $email);
+     }
 }

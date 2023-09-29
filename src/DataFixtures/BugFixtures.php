@@ -15,6 +15,8 @@ class BugFixtures extends Fixture implements DependentFixtureInterface
     final public const BUG_FROM_BASIC_USER = 'bug_from_basic_user';
     final public const DRAFT_FROM_TEAM_USER = 'draft_from_team_user';
     final public const BUG_FROM_TEAM_USER = 'bug_from_team_user';
+    final public const BUG_NOT_DONE_FROM_TEAM_USER = 'bug_not_done_from_team_user';
+    final public const BUG_DONE_FROM_TEAM_USER = 'bug_done_from_team_user';
 
     public function load(ObjectManager $manager): void
     {
@@ -24,6 +26,8 @@ class BugFixtures extends Fixture implements DependentFixtureInterface
         BugFactory::createOne(['draft' => false, 'title' => self::BUG_FROM_BASIC_USER]);
         BugFactory::createOne(['draft' => true, 'title' => self::DRAFT_FROM_TEAM_USER, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]])]);
         BugFactory::createOne(['draft' => false, 'title' => self::BUG_FROM_TEAM_USER, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]])]);
+        BugFactory::createOne(['done' => false, 'title' => self::BUG_NOT_DONE_FROM_TEAM_USER, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]])]);
+        BugFactory::createOne(['done' => true, 'title' => self::BUG_DONE_FROM_TEAM_USER, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]])]);
     }
 
     public function getDependencies(): array

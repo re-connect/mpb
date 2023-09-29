@@ -15,6 +15,8 @@ class FeatureFixtures extends Fixture implements DependentFixtureInterface
     final public const DRAFT_FROM_BASIC_USER = 'draft_from_basic_user';
     final public const FEATURE_FROM_TEAM_USER = 'feature_from_team_user';
     final public const DRAFT_FROM_TEAM_USER = 'draft_from_team_user';
+    final public const DONE_WITH_VOTE_FROM_TEAM_USER = 'done_with_vote_from_team_user';
+    final public const NOT_DONE_FROM_TEAM_USER = 'note_done_from_team_user';
 
     public function load(ObjectManager $manager): void
     {
@@ -24,6 +26,8 @@ class FeatureFixtures extends Fixture implements DependentFixtureInterface
         FeatureFactory::createOne(['draft' => false, 'title' => self::FEATURE_FROM_BASIC_USER]);
         FeatureFactory::createOne(['draft' => true, 'title' => self::DRAFT_FROM_TEAM_USER, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]])]);
         FeatureFactory::createOne(['draft' => false, 'title' => self::FEATURE_FROM_TEAM_USER, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]])]);
+        FeatureFactory::createOne(['title' => self::DONE_WITH_VOTE_FROM_TEAM_USER, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]]), 'done' => true]);
+        FeatureFactory::createOne(['title' => self::NOT_DONE_FROM_TEAM_USER, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]]), 'done' => false]);
     }
 
     public function getDependencies(): array
