@@ -7,6 +7,7 @@
     { name: 'status', content: is_granted('ROLE_TECH_TEAM') and feature.isPublished ? include('feature/components/_status_form.html.twig') : include('feature/components/_status.html.twig')},
     { name: 'information', content: feature.content },
     { name: 'center', content: feature.center },
+    { name: 'requester', content: feature.requestedBy },
     { name: 'created_by', content: feature.user },
     { name: 'creation_date', content: feature.createdAt ? feature.createdAt|date('Y-m-d H:i:s') : '' }
 ] %}
