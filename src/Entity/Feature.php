@@ -63,6 +63,10 @@ class Feature extends UserRequest implements ExportableEntityInterface
     #[ORM\OneToMany(mappedBy: 'feature', targetEntity: Attachment::class, orphanRemoval: true)]
     protected Collection $attachments;
 
+    #[ORM\ManyToOne(targetEntity: Requester::class, inversedBy: 'features')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Requester $requestedBy = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -300,5 +304,17 @@ class Feature extends UserRequest implements ExportableEntityInterface
     public function __toString(): string
     {
         return $this->id;
+    }
+
+    public function getRequestedBy(): ?Requester
+    {
+        return $this->requestedBy;
+    }
+
+    public function setRequestedBy(?Requester $requestedBy): static
+    {
+        $this->requestedBy = $requestedBy;
+
+        return $this;
     }
 }

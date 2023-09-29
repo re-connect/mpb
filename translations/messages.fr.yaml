@@ -49,6 +49,9 @@ password: Mot de passe
 pending: 'En cours'
 pending_take_over: En attente d'assignation
 propose_new_feature: Proposer une nouvelle amélioration
+Requester: Demande de
+requester: Demande de
+requestedBy: Demande de
 rp_login: Connexion avec Reconnect Pro
 search: Rechercher
 solved: Résolu
