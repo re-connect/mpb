@@ -331,4 +331,9 @@ class Bug extends UserRequest
     {
         return true;
     }
+
+    public function __toString(): string
+    {
+        return $this->id;
+    }
 }
