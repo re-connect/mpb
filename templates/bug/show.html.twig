@@ -23,12 +23,18 @@
 {% block body %}
     <div class="position-relative">
         <div class="col">{{ include('bug/_back_to_list_button.html.twig') }}</div>
-        <div class="col">{{ include('bug/_assignee_section.html.twig', {bug}) }}</div>
         <h1>{{ bug.title }}</h1>
-        {% for badge in badges %}
-            <div class="float-start">{{ badge.content|raw }}</div>
-        {% endfor %}
-        <div class="float-end">{{ include('common/_status.html.twig', {request: bug}) }}</div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+                {% for badge in badges %}
+                    {{ badge.content|raw }}
+                {% endfor %}
+            </div>
+            <div class="text-end">
+                {{ include('user_request/_actions.html.twig', {request: bug}) }}
+                {{ include('common/_status.html.twig', {request: bug}) }}
+            </div>
+        </div>
         {% for group in items_group %}
             <table class="table">
                 <tbody>
