@@ -4,6 +4,7 @@ namespace App\Tests\Controller\FeatureController;
 
 use App\DataFixtures\UserFixtures;
 use App\Repository\ApplicationRepository;
+use App\Repository\RequesterRepository;
 use App\Tests\Controller\AbstractControllerTest;
 use App\Tests\Controller\TestFormInterface;
 use App\Tests\Controller\TestRouteInterface;
@@ -47,6 +48,8 @@ class EditTest extends AbstractControllerTest implements TestRouteInterface, Tes
     {
         $values = self::FORM_VALUES;
         $values['feature[application]'] = $this->getContainer()->get(ApplicationRepository::class)->findAll()[0]->getId();
+        $values['feature[requestedBy]'] = $this->getContainer()->get(RequesterRepository::class)->findAll()[0]->getId();
+
         yield 'Page should redirect to list when form is valid' => [
             self::URL,
             'Mettre à jour',
@@ -73,6 +76,7 @@ class EditTest extends AbstractControllerTest implements TestRouteInterface, Tes
     {
         $values = self::FORM_VALUES;
         $values['feature[application]'] = $this->getContainer()->get(ApplicationRepository::class)->findAll()[0]->getId();
+        $values['feature[requestedBy]'] = $this->getContainer()->get(RequesterRepository::class)->findAll()[0]->getId();
         $values['feature[title]'] = '';
         yield 'Should return an error when title is empty' => [
             self::URL,
@@ -89,7 +93,6 @@ class EditTest extends AbstractControllerTest implements TestRouteInterface, Tes
         ];
 
         $values = self::FORM_VALUES;
-        $values['feature[application]'] = $this->getContainer()->get(ApplicationRepository::class)->findAll()[0]->getId();
         $values['feature[content]'] = null;
         yield 'Should return an error when content is empty' => [
             self::URL,
