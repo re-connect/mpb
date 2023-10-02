@@ -12,7 +12,7 @@ class VoteFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        VoteFactory::createOne(['feature' => FeatureFactory::find(['title' => FeatureFixtures::DONE_WITH_VOTE_FROM_TEAM_USER])],);
+        VoteFactory::createOne(['feature' => FeatureFactory::find(['title' => FeatureFixtures::DONE_WITH_VOTE_FROM_TEAM_USER])]);
     }
 
     public function getDependencies(): array

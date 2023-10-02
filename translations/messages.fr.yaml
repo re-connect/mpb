@@ -20,6 +20,7 @@ bug_converted_to_feature: Le bug a bien été résolu et transformé en demande 
 bug_description: Description du bug rencontré
 bug_title: Titre du bug
 bugs_list: Liste des bugs
+categories: Catégories
 center: Établissement
 centers: Établissements
 comments: Commentaires

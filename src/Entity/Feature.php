@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Feature extends UserRequest implements ExportableEntityInterface
 {
     use TimestampableTrait;
-    final public const EXPORTABLE_FIELDS = ['id', 'application', 'title', 'description', 'user', 'status', 'votes', 'center', 'creation_date'];
+    final public const EXPORTABLE_FIELDS = ['id', 'application', 'title', 'categories', 'description', 'user', 'requester', 'status', 'votes', 'center', 'creation_date'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -246,6 +246,12 @@ class Feature extends UserRequest implements ExportableEntityInterface
         }
     }
 
+    /** @return string[] */
+    public function getTagNames(): array
+    {
+        return $this->tags->map(fn (Tag $tag) => $tag->getName())->toArray();
+    }
+
     public function getCenter(): ?string
     {
         return $this->center;
@@ -280,8 +286,10 @@ class Feature extends UserRequest implements ExportableEntityInterface
             (string) $this->id,
             $this->application?->getName(),
             $this->title,
+            implode(', ', $this->getTagNames()),
             strip_tags($this->content ?? ''),
             $this->user?->getEmail(),
+            $this->requestedBy?->getName(),
             $this->status?->value,
             (string) count($this->votes),
             $this->center,
