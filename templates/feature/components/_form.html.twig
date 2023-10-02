@@ -3,21 +3,12 @@
 <div class="row">
     <div class="col-12">
         <div class="row">
-            <div class="col-12 col-lg-6">
-                {{ form_errors(form.title) }}
-                <div class="form-floating">
-                    {{ form_widget(form.title) }}
-                    {{ form_label(form.title) }}
+            {% set alignedFields = [form.title, form.application, form.center, form.requestedBy] %}
+            {% for field in alignedFields %}
+                <div class="col-12 mt-2 col-md-6 col-lg-3">
+                    {{ form_row(field) }}
                 </div>
-            </div>
-            <div class="col-12 mt-2 col-md-6 col-lg-3 mt-lg-0">
-                {{ form_errors(form.application) }}
-                {{ form_widget(form.application) }}
-            </div>
-            <div class="col-12 mt-2 col-md-6 col-lg-3 mt-lg-0">
-                {{ form_errors(form.center) }}
-                {{ form_widget(form.center) }}
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -25,9 +16,7 @@
 <div class="col-12 ">
     {{ form_row(form.content) }}
 </div>
-<div class="col-12 offset-sm-6 col-sm-6 offset-md-8 col-md-4 mt-3 d-flex">
-    <button class="btn btn-primary btn-lg flex-grow-1">{{ button_label }}</button>
-</div>
+{{ include('common/_form_submit.html.twig', {buttonLabel}) }}
 {{ form_end(form) }}
 
 {{ include('feature/components/_attachment_widget.html.twig', {feature}) }}

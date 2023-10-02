@@ -39,6 +39,7 @@ final class FeatureFactory extends ModelFactory
     {
         return [
             'application' => ApplicationFactory::randomOrCreate(),
+            'requestedBy' => RequesterFactory::randomOrCreate(),
             'center' => null,
             'content' => self::faker()->text(),
             'createdAt' => new \DateTimeImmutable(),

@@ -42,7 +42,7 @@ class EmailNotifierTest extends AbstractNotifierTest
             $this->getMailerMessage(),
             $bug->getUser()->getEmail(),
             [
-                "Le bug suivant a été résolu",
+                'Le bug suivant a été résolu',
                 $this->urlGenerator->generate('bug_show', ['id' => $bug->getId()], $this->urlGenerator::ABSOLUTE_URL),
             ],
         );

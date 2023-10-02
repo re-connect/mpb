@@ -13,6 +13,7 @@ class StyledEntityType extends AbstractType
     {
         $resolver->setDefaults([
             'required' => false,
+            'label' => false,
             'choice_attr' => fn (StyledEntityKind $choice) => [
                 'data-color' => $choice->getColor(),
                 'data-icon' => $choice->getIcon(),

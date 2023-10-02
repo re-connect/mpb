@@ -20,6 +20,7 @@ bug_converted_to_feature: Le bug a bien été résolu et transformé en demande 
 bug_description: Description du bug rencontré
 bug_title: Titre du bug
 bugs_list: Liste des bugs
+categories: Catégories
 center: Établissement
 centers: Établissements
 comments: Commentaires
@@ -49,6 +50,9 @@ password: Mot de passe
 pending: 'En cours'
 pending_take_over: En attente d'assignation
 propose_new_feature: Proposer une nouvelle amélioration
+Requester: Demande de
+requester: Demande de
+requestedBy: Demande de
 rp_login: Connexion avec Reconnect Pro
 search: Rechercher
 solved: Résolu
