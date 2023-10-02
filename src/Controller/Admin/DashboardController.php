@@ -8,6 +8,7 @@ use App\Entity\Feature;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Entity\UserKind;
+use App\Entity\Vote;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -41,5 +42,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('application', 'fas fa-computer', Application::class);
         yield MenuItem::linkToCrud('user_kind', 'fas fa-user', UserKind::class);
         yield MenuItem::linkToCrud('tags', 'fas fa-tag', Tag::class);
+        yield MenuItem::linkToCrud('votes', 'fas fa-check-to-slot', Vote::class);
     }
 }

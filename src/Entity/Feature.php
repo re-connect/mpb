@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FeatureRepository::class)]
-class Feature extends UserRequest
+class Feature extends UserRequest implements ExportableEntityInterface
 {
     use TimestampableTrait;
     final public const EXPORTABLE_FIELDS = ['id', 'application', 'title', 'description', 'user', 'status', 'votes', 'center', 'creation_date'];
@@ -295,5 +295,10 @@ class Feature extends UserRequest
     public function isFeature(): bool
     {
         return true;
+    }
+
+    public function __toString(): string
+    {
+        return $this->id;
     }
 }

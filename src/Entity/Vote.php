@@ -6,8 +6,10 @@ use App\Repository\VoteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VoteRepository::class)]
-class Vote
+class Vote implements ExportableEntityInterface
 {
+    final public const EXPORTABLE_FIELDS = ['id', 'voter', 'bug', 'feature'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -84,5 +86,16 @@ class Vote
         $this->voter = $voter;
 
         return $this;
+    }
+
+    /** @return array<int, string|null> */
+    public function getExportableData(): array
+    {
+        return [
+            (string) $this->id,
+            $this->voter?->getEmail(),
+            $this->feature?->getTitle(),
+            $this->bug?->getTitle(),
+        ];
     }
 }

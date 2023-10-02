@@ -8,7 +8,7 @@ use App\Traits\UploadableTrait;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ReadableCollection;
 
-abstract class UserRequest
+abstract class UserRequest implements \Stringable
 {
     use UploadableTrait;
     use DraftableTrait;
