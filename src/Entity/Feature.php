@@ -42,11 +42,11 @@ class Feature extends UserRequest implements ExportableEntityInterface
     private ?bool $done = false;
 
     /** @var Collection<int, Comment> $comments */
-    #[ORM\OneToMany(mappedBy: 'feature', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'feature', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
     /** @var Collection<int, Vote> */
-    #[ORM\OneToMany(mappedBy: 'feature', targetEntity: Vote::class)]
+    #[ORM\OneToMany(mappedBy: 'feature', targetEntity: Vote::class, orphanRemoval: true)]
     private Collection $votes;
 
     /** @var Collection<int, Tag> */
@@ -207,6 +207,11 @@ class Feature extends UserRequest implements ExportableEntityInterface
         return $this;
     }
 
+    public function getVotersNamesAsString(): string
+    {
+        return implode(', ', array_map(fn (Vote $vote) => ucwords($vote->getVoter()?->getFullName()), $this->votes->toArray()));
+    }
+
     /** @return Collection<int, Tag> */
     public function getTags(): Collection
     {
@@ -311,7 +316,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
 
     public function __toString(): string
     {
-        return $this->id;
+        return $this->id ?? '';
     }
 
     public function getRequestedBy(): ?Requester

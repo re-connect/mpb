@@ -293,6 +293,11 @@ class Bug extends UserRequest
         return $this;
     }
 
+    public function getVotersNamesAsString(): string
+    {
+        return implode(', ', array_map(fn (Vote $vote) => ucwords($vote->getVoter()?->getFullName()), $this->votes->toArray()));
+    }
+
     /**
      * @return Collection<int, Tag>
      */
@@ -334,6 +339,6 @@ class Bug extends UserRequest
 
     public function __toString(): string
     {
-        return $this->id;
+        return $this->id ?? '';
     }
 }
