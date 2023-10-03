@@ -4,7 +4,7 @@
             data-bs-toggle="tooltip"
             data-bs-placement="left"
             data-bs-html="true"
-            title="<div class='text-white'><ul>{% for vote in request.votes %}<li>{{ vote.voter.fullName }}</li>{% endfor %}</ul></div>"
+            title="{{ request.getVotersNamesAsString }}"
         {% endif %}
 >
     <i class="fa fa-thumbs-up"></i>
