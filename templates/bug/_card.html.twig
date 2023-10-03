@@ -1,32 +1,11 @@
-<div class="col-12 my-2 rounded position-relative shadow-lg btn btn-outline-light text-dark"
-     xmlns="http://www.w3.org/1999/html">
+<div class="col-12 my-2 rounded position-relative shadow-lg btn btn-outline-light text-dark">
     <div class="row">
-        <div class="col-3 col-sm-2 col-md-1 d-flex justify-content-center align-items-center">
-            {{ include('common/_user_request_defensive_app_icon.html.twig', {'userRequest': bug}) }}
+        <div class="col-3 col-sm-2 col-md-1 d-flex align-items-center">
+            {{ include('common/_user_request_defensive_app_icon.html.twig', {userRequest: bug}) }}
         </div>
         <div class="col-9 col-sm-10 col-md-11">
-            <div class="row">
-                <div class="col">
-                    <div class="text-start">
-                        <span class="h5">{{ bug.title }}</span>
-                    </div>
-                    <div class="text-start">
-                        <span class="fw-bolder text-decoration-underline">Remonté par :</span>
-                        <small>{{ bug.user.userIdentifier }}</small>
-                        <br/>
-                        <span class="fw-bolder text-decoration-underline">Le :</span>
-                        <small>{{ bug.createdAt|date("d/m/Y") }}</small>
-                    </div>
-                </div>
-                {% if not bug.draft %}
-                    <div class="col flex-grow-0 z-2 d-flex flex-column align-items-end">
-                        {{ include('common/_status.html.twig', {request: bug}) }}
-                        {{ include('bug/_assignee_section.html.twig', {bug}) }}
-                        {{ include('user_request/components/_votes.html.twig', {request: bug}) }}
-                    </div>
-                {% endif %}
-            </div>
+            {{ include('bug/_card_body.html.twig', {bug}) }}
         </div>
-        <a href="{{ path('bug_show', {'id': bug.id}) }}" class="stretched-link"></a>
+        <a href="{{ path('bug_show', {id: bug.id}) }}" class="stretched-link"></a>
     </div>
 </div>

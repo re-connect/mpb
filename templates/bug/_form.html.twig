@@ -37,9 +37,7 @@
 <div class="col-12 ">
     {{ form_row(form.content) }}
 </div>
-<div class="col-12 offset-sm-6 col-sm-6 offset-md-8 col-md-4 mt-3 d-flex">
-    <button class="btn btn-primary btn-lg flex-grow-1">{{ button_label|trans }}</button>
-</div>
+{{ include('common/_form_submit.html.twig', {buttonLabel}) }}
 {{ form_end(form) }}
 
 {{ include('bug/_attachment_widget.html.twig', {bug}) }}

@@ -5,9 +5,11 @@ namespace App\Controller\Admin;
 use App\Entity\Application;
 use App\Entity\Bug;
 use App\Entity\Feature;
+use App\Entity\Requester;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Entity\UserKind;
+use App\Entity\Vote;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -39,7 +41,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('features', 'fas fa-star', Feature::class);
         yield MenuItem::linkToCrud('user', 'fas fa-users', User::class);
         yield MenuItem::linkToCrud('application', 'fas fa-computer', Application::class);
+        yield MenuItem::linkToCrud('requester', 'fas fa-hand', Requester::class);
         yield MenuItem::linkToCrud('user_kind', 'fas fa-user', UserKind::class);
         yield MenuItem::linkToCrud('tags', 'fas fa-tag', Tag::class);
+        yield MenuItem::linkToCrud('votes', 'fas fa-check-to-slot', Vote::class);
     }
 }

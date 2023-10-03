@@ -11,10 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FeatureRepository::class)]
-class Feature extends UserRequest
+class Feature extends UserRequest implements ExportableEntityInterface
 {
     use TimestampableTrait;
-    final public const EXPORTABLE_FIELDS = ['id', 'application', 'title', 'description', 'user', 'status', 'votes', 'center', 'creation_date'];
+    final public const EXPORTABLE_FIELDS = ['id', 'application', 'title', 'categories', 'description', 'user', 'requester', 'status', 'votes', 'center', 'creation_date'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -62,6 +62,10 @@ class Feature extends UserRequest
     /** @var Collection<int, Attachment> */
     #[ORM\OneToMany(mappedBy: 'feature', targetEntity: Attachment::class, orphanRemoval: true)]
     protected Collection $attachments;
+
+    #[ORM\ManyToOne(targetEntity: Requester::class, inversedBy: 'features')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Requester $requestedBy = null;
 
     public function __construct()
     {
@@ -242,6 +246,12 @@ class Feature extends UserRequest
         }
     }
 
+    /** @return string[] */
+    public function getTagNames(): array
+    {
+        return $this->tags->map(fn (Tag $tag) => $tag->getName())->toArray();
+    }
+
     public function getCenter(): ?string
     {
         return $this->center;
@@ -276,8 +286,10 @@ class Feature extends UserRequest
             (string) $this->id,
             $this->application?->getName(),
             $this->title,
+            implode(', ', $this->getTagNames()),
             strip_tags($this->content ?? ''),
             $this->user?->getEmail(),
+            $this->requestedBy?->getName(),
             $this->status?->value,
             (string) count($this->votes),
             $this->center,
@@ -295,5 +307,22 @@ class Feature extends UserRequest
     public function isFeature(): bool
     {
         return true;
+    }
+
+    public function __toString(): string
+    {
+        return $this->id;
+    }
+
+    public function getRequestedBy(): ?Requester
+    {
+        return $this->requestedBy;
+    }
+
+    public function setRequestedBy(?Requester $requestedBy): static
+    {
+        $this->requestedBy = $requestedBy;
+
+        return $this;
     }
 }

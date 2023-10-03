@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col z-0">
+        <div class="text-start">
+            <span class="h5">{{ bug.title }}</span>
+        </div>
+        <div class="text-start">
+            <span class="fw-bolder text-decoration-underline">Remonté par :</span>
+            <small>{{ bug.user.userIdentifier }}</small>
+            <br/>
+            <span class="fw-bolder text-decoration-underline">Le :</span>
+            <small>{{ bug.createdAt|date("d/m/Y") }}</small>
+        </div>
+    </div>
+    {% if not bug.draft %}
+        <div class="col flex-grow-1 z-2 d-flex flex-column align-items-end">
+            {{ include('user_request/_actions.html.twig', {request: bug}) }}
+            {{ include('common/_status.html.twig', {request: bug}) }}
+        </div>
+    {% endif %}
+</div>

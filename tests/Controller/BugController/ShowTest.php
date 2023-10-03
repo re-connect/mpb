@@ -64,7 +64,7 @@ class ShowTest extends AbstractControllerTest implements TestRouteInterface
         $bug = BugFactory::randomOrCreate(['assignee' => null, 'done' => false, 'draft' => false])->object();
         $clientTest->request('GET', sprintf(self::URL, $bug->getId()));
 
-        $shouldAccessButton ? $this->assertSelectorTextContains('a.badge', 'Prendre en charge') : $this->assertSelectorNotExists('i.fa-truck-fast');
+        $shouldAccessButton ? $this->assertSelectorExists('i.fa-truck-fast') : $this->assertSelectorNotExists('i.fa-truck-fast');
     }
 
     public function provideTestCanTakeOverIsAccessible(): \Generator

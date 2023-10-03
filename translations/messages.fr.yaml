@@ -1,3 +1,10 @@
+ALTERNATIVE_SOLUTION_PROPOSED: Solution alternative proposée
+BEING_DEVELOPED: En cours de développement
+IN_PRODUCTION: En production
+TO_BE_DECIDED: A statuer
+TO_BE_DEVELOPED: Va être développé
+WAITING_FOR_RECURRENCES: Attente ocurrences
+WONT_BE_DEVELOPED: Ne sera pas développé
 accountId: ID compte
 action_export: Exporter
 add_attachment: Ajouter une image
@@ -11,8 +18,9 @@ back_to_feature: Retour à l'amélioration
 bug: Bug
 bug_converted_to_feature: Le bug a bien été résolu et transformé en demande d'amélioration
 bug_description: Description du bug rencontré
-bugs_list: Liste des bugs
 bug_title: Titre du bug
+bugs_list: Liste des bugs
+categories: Catégories
 center: Établissement
 centers: Établissements
 comments: Commentaires
@@ -32,6 +40,7 @@ features_list: Liste des améliorations proposées
 google_login: Connexion Google
 information: Informations
 login: Connexion
+mark_done: Marquer terminé
 message: Message
 new_bug: Déclarer un bug
 new_feature: Nouvelle amélioration
@@ -41,9 +50,12 @@ password: Mot de passe
 pending: 'En cours'
 pending_take_over: En attente d'assignation
 propose_new_feature: Proposer une nouvelle amélioration
+Requester: Demande de
+requester: Demande de
+requestedBy: Demande de
 rp_login: Connexion avec Reconnect Pro
 search: Rechercher
-solved: Résolu.e.s
+solved: Résolu
 status: Statut
 status_edit_success: Le statut a bien été modifié
 tag: Label
@@ -51,6 +63,7 @@ tags: Labels
 take_over: Prendre en charge
 taken_over_by: Traité par
 title: Titre
+to_feature: Transformer en feature
 update: Mettre à jour
 update_bug: Modifier un bug
 update_feature: Modifier une amélioration
@@ -59,13 +72,5 @@ url_extended: "URL (exemple : https://pro.reconnect.fr/families)"
 user: Utilisateur
 user_kind: Type d'utilisateur
 view_code_on_github: Voire le code sur Github
-votes: Votes
 voters: Voteurs·euses
-ALTERNATIVE_SOLUTION_PROPOSED: Solution alternative proposée
-BEING_DEVELOPED: En cours de développement
-IN_PRODUCTION: En production
-TO_BE_DECIDED: A statuer
-TO_BE_DEVELOPED: Va être développé
-WAITING_FOR_RECURRENCES: Attente ocurrences
-WONT_BE_DEVELOPED: Ne sera pas développé
-
+votes: Votes

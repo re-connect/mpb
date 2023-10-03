@@ -1,0 +1,10 @@
+<div>
+    {% if is_granted('ROLE_TECH_TEAM') and not request.done%}
+        {{ include('common/_button_link.html.twig', {path: get_mark_done_path(request), icon: 'check', label: 'mark_done'|trans}) }}
+        {{ include('common/_button_link.html.twig', {path: get_convert_path(request), icon: 'bug-slash', label: 'to_feature'|trans}) }}
+        {% if not request.assignee %}
+            {{ include('common/_button_link.html.twig', {path: get_take_over_path(request), icon: 'truck-fast', label: 'take_over'|trans }) }}
+        {% endif %}
+    {% endif %}
+    {{ include('user_request/components/_votes.html.twig', {request}) }}
+</div>

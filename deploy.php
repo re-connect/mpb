@@ -7,6 +7,7 @@ require 'recipe/symfony.php';
 // Config
 
 set('repository', 'git@github.com:re-connect/mpb.git');
+set('branch', 'main');
 
 add('shared_files', [
     '.env',
