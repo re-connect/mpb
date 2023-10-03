@@ -36,7 +36,7 @@ class FeatureType extends AbstractType
                 'tom_select_options' => [
                     'create' => true,
                     'options' => $options['centerValues'],
-                    'placeholder' => 'Établissement',
+                    'placeholder' => 'Choisir ou ajouter un établissement',
                 ],
             ])
             ->add('requestedBy', StyledEntityType::class, [
