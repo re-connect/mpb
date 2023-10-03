@@ -10,9 +10,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FeatureType extends AbstractType
 {
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -36,7 +41,7 @@ class FeatureType extends AbstractType
                 'tom_select_options' => [
                     'create' => true,
                     'options' => $options['centerValues'],
-                    'placeholder' => 'Choisir ou ajouter un établissement',
+                    'placeholder' => $this->translator->trans('choose_center'),
                 ],
             ])
             ->add('requestedBy', StyledEntityType::class, [
