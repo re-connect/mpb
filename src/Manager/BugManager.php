@@ -47,7 +47,6 @@ class BugManager extends UserRequestManager
     public function convertToFeature(Bug $bug): Feature
     {
         $feature = UserRequestMapper::mapBugToFeature($bug);
-        $bug->resolve();
         $this->bugLifecycleStateMachine->apply($bug, 'dismiss');
 
         $this->em->persist($feature);
@@ -59,12 +58,12 @@ class BugManager extends UserRequestManager
     public function solve(Bug $bug): void
     {
         $this->bugLifecycleStateMachine->apply($bug, 'solve');
-        $this->markDone($bug);
+        $this->em->flush();
     }
 
     public function dismiss(Bug $bug): void
     {
         $this->bugLifecycleStateMachine->apply($bug, 'dismiss');
-        $this->markDone($bug);
+        $this->em->flush();
     }
 }
