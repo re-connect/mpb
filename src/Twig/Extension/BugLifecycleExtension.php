@@ -16,7 +16,7 @@ class BugLifecycleExtension extends AbstractExtension
         ];
     }
 
-    public function getTransitionIcon(string $transition): string
+    public function getTransitionIcon(?string $transition): string
     {
         return match ($transition) {
             'take_over' => 'truck-fast',
@@ -27,7 +27,7 @@ class BugLifecycleExtension extends AbstractExtension
         };
     }
 
-    public function getStateIcon(string $state): string
+    public function getStateIcon(?string $state): string
     {
         return match ($state) {
             'pending_take_over' => 'hourglass-1',
@@ -39,7 +39,7 @@ class BugLifecycleExtension extends AbstractExtension
         };
     }
 
-    public function getStateColor(string $state): string
+    public function getStateColor(?string $state): string
     {
         return match ($state) {
             'pending_take_over' => '#FFA41E',
