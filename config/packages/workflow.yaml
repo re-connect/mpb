@@ -1,2 +1,29 @@
 framework:
-    workflows: null
+    workflows:
+        bug_lifecycle:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Entity\Bug
+            initial_marking: pending_take_over
+            places:
+                - pending_take_over
+                - pending
+                - low_priority
+                - solved
+                - not_a_bug
+            transitions:
+                take_over:
+                    from: [pending_take_over, low_priority]
+                    to: pending
+                lower_priority:
+                    from: [pending_take_over, pending]
+                    to: low_priority
+                dismiss:
+                    from: [pending_take_over, pending]
+                    to: not_a_bug
+                solve:
+                    from: pending
+                    to: solved
