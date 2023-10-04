@@ -130,10 +130,10 @@ class BugController extends AbstractController
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
-    #[Route(path: '/{id<\d+>}/lower-priority', name: 'bug_lower_priority', methods: ['GET'])]
+    #[Route(path: '/{id<\d+>}/unprioritize', name: 'bug_unprioritize', methods: ['GET'])]
     public function lowerPriority(Bug $bug, BugManager $manager): Response
     {
-        $manager->lowerPriority($bug);
+        $manager->unprioritize($bug);
 
         return $this->refreshOrRedirect('bugs_list');
     }

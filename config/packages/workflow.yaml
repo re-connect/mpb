@@ -18,7 +18,7 @@ framework:
                 take_over:
                     from: [pending_take_over, low_priority]
                     to: pending
-                lower_priority:
+                unprioritize:
                     from: [pending_take_over, pending]
                     to: low_priority
                 dismiss:

@@ -43,7 +43,7 @@ google_login: Connexion Google
 information: Informations
 login: Connexion
 low_priority: Pas prioritaire
-lower_priority: Pas prioritaire
+unprioritize: Pas prioritaire
 mark_done: Marquer terminé
 message: Message
 new_bug: Déclarer un bug

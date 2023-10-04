@@ -29,9 +29,9 @@ class BugManager extends UserRequestManager
         $this->em->flush();
     }
 
-    public function lowerPriority(Bug $bug): void
+    public function unprioritize(Bug $bug): void
     {
-        $this->bugLifecycleStateMachine->apply($bug, 'lower_priority');
+        $this->bugLifecycleStateMachine->apply($bug, 'unprioritize');
         $this->em->flush();
     }
 

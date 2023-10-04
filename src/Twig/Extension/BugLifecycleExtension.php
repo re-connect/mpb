@@ -20,7 +20,7 @@ class BugLifecycleExtension extends AbstractExtension
     {
         return match ($transition) {
             'take_over' => 'truck-fast',
-            'lower_priority' => 'clock',
+            'unprioritize' => 'clock',
             'dismiss' => 'bug-slash',
             'solve' => 'check',
             default => ''
