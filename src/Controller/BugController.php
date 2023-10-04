@@ -121,10 +121,28 @@ class BugController extends AbstractController
     }
 
     #[IsGranted('ROLE_TECH_TEAM')]
-    #[Route(path: '/{id<\d+>}/mark-done', name: 'bug_mark_done', methods: ['GET'])]
-    public function markDone(Bug $bug, BugManager $manager): Response
+    #[Route(path: '/{id<\d+>}/dismiss', name: 'bug_dismiss', methods: ['GET'])]
+    public function dismiss(Bug $bug, BugManager $manager): Response
     {
-        $manager->markDone($bug);
+        $manager->dismiss($bug);
+
+        return $this->refreshOrRedirect('bugs_list');
+    }
+
+    #[IsGranted('ROLE_TECH_TEAM')]
+    #[Route(path: '/{id<\d+>}/unprioritize', name: 'bug_unprioritize', methods: ['GET'])]
+    public function lowerPriority(Bug $bug, BugManager $manager): Response
+    {
+        $manager->unprioritize($bug);
+
+        return $this->refreshOrRedirect('bugs_list');
+    }
+
+    #[IsGranted('ROLE_TECH_TEAM')]
+    #[Route(path: '/{id<\d+>}/solve', name: 'bug_solve', methods: ['GET'])]
+    public function solve(Bug $bug, BugManager $manager): Response
+    {
+        $manager->solve($bug);
 
         return $this->refreshOrRedirect('bugs_list');
     }

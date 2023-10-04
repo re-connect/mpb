@@ -72,6 +72,9 @@ class Bug extends UserRequest
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'bugs')]
     private Collection $tags;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $status = null;
+
     public function __construct(#[ORM\Column(type: 'string', length: 255, nullable: true)]
         private ?string $userAgent = null)
     {
@@ -328,6 +331,18 @@ class Bug extends UserRequest
     public function resolve(): self
     {
         $this->done = true;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): Bug
+    {
+        $this->status = $status;
 
         return $this;
     }

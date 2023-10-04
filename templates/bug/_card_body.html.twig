@@ -13,8 +13,8 @@
     </div>
     {% if not bug.draft %}
         <div class="col flex-grow-1 z-2 d-flex flex-column align-items-end">
-            {{ include('user_request/_actions.html.twig', {request: bug}) }}
-            {{ include('common/_status.html.twig', {request: bug}) }}
+            {{ include('bug/_workflow_actions.html.twig', {request: bug}) }}
+            {{ include('bug/_status.html.twig', {request: bug}) }}
         </div>
     {% endif %}
 </div>

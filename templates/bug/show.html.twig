@@ -31,8 +31,8 @@
                 {% endfor %}
             </div>
             <div class="text-end">
-                {{ include('user_request/_actions.html.twig', {request: bug}) }}
-                {{ include('common/_status.html.twig', {request: bug}) }}
+                {{ include('bug/_workflow_actions.html.twig', {request: bug}) }}
+                {{ include('bug/_status.html.twig', {request: bug}) }}
             </div>
         </div>
         {% for group in items_group %}
