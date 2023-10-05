@@ -94,7 +94,7 @@ class Bug extends UserRequest
         return $this->title;
     }
 
-    public function setTitle(?string $title): self
+    public function setTitle(?string $title): static
     {
         $this->title = $title;
 
@@ -106,7 +106,7 @@ class Bug extends UserRequest
         return $this->content;
     }
 
-    public function setContent(?string $content): self
+    public function setContent(?string $content): static
     {
         $this->content = $content;
 
@@ -118,7 +118,7 @@ class Bug extends UserRequest
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
@@ -133,7 +133,7 @@ class Bug extends UserRequest
         return $this->comments;
     }
 
-    public function addComment(Comment $comment): self
+    public function addComment(Comment $comment): static
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
@@ -143,7 +143,7 @@ class Bug extends UserRequest
         return $this;
     }
 
-    public function removeComment(Comment $comment): self
+    public function removeComment(Comment $comment): static
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
@@ -165,7 +165,7 @@ class Bug extends UserRequest
         return $this->url;
     }
 
-    public function setUrl(?string $url): self
+    public function setUrl(?string $url): static
     {
         $this->url = $url;
 
@@ -177,7 +177,7 @@ class Bug extends UserRequest
         return $this->accountId;
     }
 
-    public function setAccountId(int $accountId): self
+    public function setAccountId(int $accountId): static
     {
         $this->accountId = $accountId;
 
@@ -189,7 +189,7 @@ class Bug extends UserRequest
         return $this->itemId;
     }
 
-    public function setItemId(?int $itemId): self
+    public function setItemId(?int $itemId): static
     {
         $this->itemId = $itemId;
 
@@ -201,7 +201,7 @@ class Bug extends UserRequest
         return $this->userAgent;
     }
 
-    public function setUserAgent(?string $userAgent): self
+    public function setUserAgent(?string $userAgent): static
     {
         $this->userAgent = $userAgent;
 
@@ -213,7 +213,7 @@ class Bug extends UserRequest
         return $this->application;
     }
 
-    public function setApplication(?Application $application): self
+    public function setApplication(?Application $application): static
     {
         $this->application = $application;
 
@@ -225,7 +225,7 @@ class Bug extends UserRequest
         return $this->done;
     }
 
-    public function setDone(bool $done): self
+    public function setDone(bool $done): static
     {
         $this->done = $done;
 
@@ -237,7 +237,7 @@ class Bug extends UserRequest
         return $this->assignee;
     }
 
-    public function setAssignee(?User $assignee): self
+    public function setAssignee(?User $assignee): static
     {
         $this->assignee = $assignee;
 
@@ -249,7 +249,7 @@ class Bug extends UserRequest
         return $this->userKind;
     }
 
-    public function setUserKind(?UserKind $userKind): self
+    public function setUserKind(?UserKind $userKind): static
     {
         $this->userKind = $userKind;
 
@@ -261,7 +261,7 @@ class Bug extends UserRequest
         return $this->attachementName;
     }
 
-    public function setAttachementName(?string $attachementName): self
+    public function setAttachementName(?string $attachementName): static
     {
         $this->attachementName = $attachementName;
 
@@ -274,7 +274,7 @@ class Bug extends UserRequest
         return $this->votes;
     }
 
-    public function addVote(Vote $vote): self
+    public function addVote(Vote $vote): static
     {
         if (!$this->votes->contains($vote)) {
             $this->votes->add($vote);
@@ -284,7 +284,7 @@ class Bug extends UserRequest
         return $this;
     }
 
-    public function removeVote(Vote $vote): self
+    public function removeVote(Vote $vote): static
     {
         if ($this->votes->removeElement($vote)) {
             // set the owning side to null (unless already changed)
@@ -309,7 +309,7 @@ class Bug extends UserRequest
         return $this->tags;
     }
 
-    public function addTag(Tag $tag): self
+    public function addTag(Tag $tag): static
     {
         if (!$this->tags->contains($tag)) {
             $this->tags->add($tag);
@@ -319,7 +319,7 @@ class Bug extends UserRequest
         return $this;
     }
 
-    public function removeTag(Tag $tag): self
+    public function removeTag(Tag $tag): static
     {
         if ($this->tags->removeElement($tag)) {
             $tag->removeBug($this);
@@ -328,7 +328,7 @@ class Bug extends UserRequest
         return $this;
     }
 
-    public function resolve(): self
+    public function resolve(): static
     {
         $this->done = true;
 

@@ -15,7 +15,8 @@ class UserRequestMapperTest extends KernelTestCase
 {
     public function testMap(): void
     {
-        $bug = (new Bug())
+        $bug = new Bug;
+        $bug
             ->setUser((new User())->setFirstName('testUser'))
             ->setTitle('testTitle')
             ->setContent('testContent')

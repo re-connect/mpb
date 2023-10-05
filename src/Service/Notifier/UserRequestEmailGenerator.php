@@ -59,6 +59,9 @@ readonly class UserRequestEmailGenerator
         return '';
     }
 
+    /**
+     * @return array<string>
+     */
     private function getRecipients(UserRequest $request): array
     {
         $creatorEmail = $request->getUser()->getEmail();

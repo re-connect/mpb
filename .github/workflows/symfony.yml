@@ -48,3 +48,5 @@ jobs:
                 run: php bin/console doctrine:fixtures:load --env=test -q
             -   name: Execute tests (Unit and Feature tests) via PHPUnit
                 run: composer test
+            -   name: Static code analysis
+                run: vendor/bin/phpstan analyse -c phpstan.neon.dist

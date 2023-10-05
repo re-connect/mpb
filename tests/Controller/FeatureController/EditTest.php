@@ -36,7 +36,10 @@ class EditTest extends AbstractControllerTest implements TestRouteInterface, Tes
         yield 'Should return 200 when connected as admin' => [self::URL, 200, UserFixtures::ADMIN_USER_MAIL];
     }
 
-    /**  @dataProvider provideTestFormIsValid */
+    /**
+     * @param array<string, string> $values
+     * @dataProvider provideTestFormIsValid
+     */
     public function testFormIsValid(string $url, string $formSubmit, array $values, ?string $email, ?string $redirectUrl): void
     {
         $feature = FeatureFactory::randomOrCreate()->object();
@@ -61,7 +64,7 @@ class EditTest extends AbstractControllerTest implements TestRouteInterface, Tes
 
     /**
      * @param array<string, string> $values
-     * @param array<array>          $errors
+     * @param array<int, array<string, string|array<string, string>>> $errors
      *
      * @dataProvider provideTestFormIsNotValid
      */
