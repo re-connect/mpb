@@ -11,7 +11,9 @@
     </description>
 
     <!-- Import an entire rule set -->
-    <rule ref="rulesets/unusedcode.xml" />
+    <rule ref="rulesets/unusedcode.xml">
+        <exclude name="UnusedFormalParameter"/>
+    </rule>
     <rule ref="rulesets/controversial.xml" />
 
     <!-- Import a specific rule from a ruleset -->
