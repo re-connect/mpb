@@ -1,0 +1,11 @@
+<div>
+    {% if is_granted('ROLE_TECH_TEAM') %}
+        {% for transition in workflow_transitions(bug) %}
+            {{ include('common/_button_link.html.twig', {path: path('bug_' ~ transition.name, {id: bug.id}), icon: bug_lifecycle_transition_icon(transition.name), label: transition.name|trans}) }}
+        {% endfor %}
+        {% if not bug.done %}
+            {{ include('common/_button_link.html.twig', {path: get_convert_path(request), icon: 'wand-magic-sparkles', label: 'to_feature'|trans}) }}
+        {% endif %}
+    {% endif %}
+    {{ include('user_request/components/_votes.html.twig', {request}) }}
+</div>

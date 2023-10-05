@@ -27,6 +27,8 @@ abstract class UserRequest implements \Stringable
 
     abstract public function removeVote(Vote $vote);
 
+    abstract public function getVotersNamesAsString(): string;
+
     abstract public function getComments(): Collection;
 
     abstract public function addComment(Comment $comment);
@@ -69,10 +71,10 @@ abstract class UserRequest implements \Stringable
     /**
      * @return ReadableCollection<int, string>
      */
-     public function getVotersEmail(): ReadableCollection
-     {
-         return $this->getVotes()
-             ->map(fn (Vote $vote) => $vote->getVoter()->getEmail())
-             ->filter(fn (?string $email) => null !== $email && '' !== $email);
-     }
+    public function getVotersEmail(): ReadableCollection
+    {
+        return $this->getVotes()
+            ->map(fn (Vote $vote) => $vote->getVoter()->getEmail())
+            ->filter(fn (?string $email) => null !== $email && '' !== $email);
+    }
 }

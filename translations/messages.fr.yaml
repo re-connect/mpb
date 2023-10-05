@@ -23,6 +23,7 @@ bugs_list: Liste des bugs
 categories: Catégories
 center: Établissement
 centers: Établissements
+choose_center: Choisir ou ajouter un établissement
 comments: Commentaires
 create: Créer
 created_by: Remonté par
@@ -30,6 +31,7 @@ creation_date: Date de création
 dashboard: Accueil
 delete: Supprimer
 description: Description
+dismiss: Pas un bug
 draft: Brouillon
 edit: Modifier
 edit_status: Modifier le statut
@@ -40,12 +42,15 @@ features_list: Liste des améliorations proposées
 google_login: Connexion Google
 information: Informations
 login: Connexion
+low_priority: Pas prioritaire
+unprioritize: Pas prioritaire
 mark_done: Marquer terminé
 message: Message
 new_bug: Déclarer un bug
 new_feature: Nouvelle amélioration
 no_bug_yet: Aucun Bug n'a été ajouté
 no_feature: Pas de amélioration proposée
+not_a_bug: Pas un bug
 password: Mot de passe
 pending: 'En cours'
 pending_take_over: En attente d'assignation
@@ -55,6 +60,7 @@ requester: Demande de
 requestedBy: Demande de
 rp_login: Connexion avec Reconnect Pro
 search: Rechercher
+solve: Résoudre
 solved: Résolu
 status: Statut
 status_edit_success: Le statut a bien été modifié

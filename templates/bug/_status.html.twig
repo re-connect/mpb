@@ -1,0 +1,6 @@
+<div class="mt-2">
+    <span class="badge status-badge" style="border-color: {{ bug_lifecycle_state_color(bug.status) }}; color: {{ bug_lifecycle_state_color(bug.status) }};">
+            <i class="fa fa-{{ bug_lifecycle_state_icon(bug.status) }}"></i>
+            {{ bug.status|trans }}
+    </span>
+</div>
