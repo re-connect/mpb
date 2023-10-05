@@ -9,7 +9,7 @@ CONSOLE		  = symfony console
 
 .PHONY        :
 
-cs: rector stan fixer test
+cs: rector stan md fixer test
 
 fixture:
 	@$(CONSOLE) doctrine:fixtures:load --env=test -q
@@ -24,6 +24,7 @@ stan:
 	@$(PHPSTAN) analyse
 
 md:
+	echo 'Running Phpmd...'
 	@$(PHPMD) src text phpmd-ruleset.xml
 
 fixer:
