@@ -36,6 +36,7 @@ class EditTest extends AbstractControllerTest implements TestRouteInterface, Tes
 
     /**
      * @param array<string, string> $values
+     *
      * @dataProvider provideTestFormIsValid
      */
     public function testFormIsValid(string $url, string $formSubmit, array $values, ?string $email, ?string $redirectUrl): void
@@ -59,7 +60,7 @@ class EditTest extends AbstractControllerTest implements TestRouteInterface, Tes
     }
 
     /**
-     * @param array<string, string> $values
+     * @param array<string, string>                                   $values
      * @param array<int, array<string, string|array<string, string>>> $errors
      *
      * @dataProvider provideTestFormIsNotValid

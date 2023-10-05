@@ -56,6 +56,7 @@ class ShowTest extends AbstractControllerTest implements TestRouteInterface
 
     /**
      * @dataProvider provideTestFormIsValid
+     *
      * @param array<string, string> $values
      */
     public function testFormIsValid(string $url, string $formSubmit, array $values, ?string $email, ?string $redirectUrl): void
