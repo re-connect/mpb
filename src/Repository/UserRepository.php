@@ -25,9 +25,7 @@ class UserRepository extends ServiceEntityRepository
     {
         $rsm = $this->createResultSetMappingBuilder('u');
 
-        $rawQuery = sprintf('SELECT %s FROM users u WHERE  roles::jsonb ?? :role',
-            $rsm->generateSelectClause()
-        );
+        $rawQuery = sprintf('SELECT %s FROM users u WHERE  roles::jsonb ?? :role', $rsm->generateSelectClause());
 
         $query = $this->getEntityManager()->createNativeQuery($rawQuery, $rsm);
         $query->setParameter('role', $role);
