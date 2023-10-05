@@ -30,6 +30,9 @@ abstract class AbstractNotifierTest extends KernelTestCase
         );
     }
 
+    /**
+     * @param array<string> $textBodyElements
+     */
     public function assertEmail(RawMessage $email, string $recipients, array $textBodyElements): void
     {
         $this->assertEmailHeaderSame($email, 'To', $recipients);
