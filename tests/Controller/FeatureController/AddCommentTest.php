@@ -56,6 +56,7 @@ class AddCommentTest extends AbstractControllerTest implements TestRouteInterfac
 
     /**
      * @dataProvider provideTestFormIsValid
+     *
      * @param array<string, string> $values
      */
     public function testFormIsValid(string $url, string $formSubmit, array $values, ?string $email, ?string $redirectUrl): void
@@ -77,7 +78,7 @@ class AddCommentTest extends AbstractControllerTest implements TestRouteInterfac
     }
 
     /**
-     * @param array<string, string> $values
+     * @param array<string, string>                                   $values
      * @param array<int, array<string, string|array<string, string>>> $errors
      *
      * @dataProvider provideTestFormIsNotValid
