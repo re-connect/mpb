@@ -63,7 +63,7 @@ abstract class AbstractControllerTest extends WebTestCase
     }
 
     /**
-     * @param array<string, string> $values
+     * @param array<string, string>                                   $values
      * @param array<int, array<string, string|array<string, string>>> $errors
      */
     public function assertFormIsNotValid(string $url, string $route, string $formSubmit, array $values, array $errors, ?string $email, string $alternateSelector = null): void
