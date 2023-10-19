@@ -4,6 +4,7 @@ namespace App\Tests\Controller;
 
 use App\Entity\User;
 use App\Tests\Factory\UserFactory;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zenstruck\Foundry\Test\Factories;
@@ -11,7 +12,7 @@ use Zenstruck\Foundry\Test\Factories;
 abstract class AbstractControllerTest extends WebTestCase
 {
     use Factories;
-    protected static object $translator;
+    protected static TranslatorInterface|MockObject $translator;
 
     public static function setUpBeforeClass(): void
     {

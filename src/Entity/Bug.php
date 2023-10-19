@@ -354,6 +354,6 @@ class Bug extends UserRequest
 
     public function __toString(): string
     {
-        return strval($this->id);
+        return (string) $this->id;
     }
 }

@@ -60,7 +60,7 @@ readonly class UserRequestEmailGenerator
     }
 
     /**
-     * @return array<int, string>
+     * @return string[]
      */
     private function getRecipients(UserRequest $request): array
     {

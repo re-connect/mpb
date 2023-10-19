@@ -316,7 +316,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
 
     public function __toString(): string
     {
-        return strval($this->id);
+        return (string) $this->id;
     }
 
     public function getRequestedBy(): ?Requester
