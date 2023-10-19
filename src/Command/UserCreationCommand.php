@@ -34,14 +34,23 @@ class UserCreationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $email = $input->getArgument('email');
+        $firstname = $input->getArgument('firstName');
+        $lastname = $input->getArgument('lastName');
+        $password = $input->getArgument('password');
+
+        if (!is_string($email) || !is_string($firstname) || !is_string($lastname) || !is_string($password)) {
+            return Command::FAILURE;
+        }
+
         $io = new SymfonyStyle($input, $output);
         $user = (new User())
-            ->setEmail($input->getArgument('email'))
-            ->setFirstName($input->getArgument('firstName'))
-            ->setLastName($input->getArgument('lastName'))
+            ->setEmail($email)
+            ->setFirstName($firstname)
+            ->setLastName($lastname)
             ->setLastLogin(new \DateTime('now'))
             ->addRole('ROLE_ADMIN');
-        $user->setPassword($this->hasher->hashPassword($user, $input->getArgument('password')));
+        $user->setPassword($this->hasher->hashPassword($user, $password));
         try {
             $this->em->persist($user);
             $this->em->flush();
