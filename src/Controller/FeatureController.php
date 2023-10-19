@@ -102,9 +102,9 @@ class FeatureController extends AbstractController
 
     #[IsGranted(Permissions::UPDATE, 'feature')]
     #[Route(path: '/{id}/edit', name: 'feature_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Feature $feature, FeatureManager $manager): Response
+    public function edit(Request $request, Feature $feature, FeatureService $service, FeatureManager $manager): Response
     {
-        $form = $this->createForm(FeatureType::class, $feature)->handleRequest($request);
+        $form = $this->createForm(FeatureType::class, $feature, ['centerValues' => $service->getAllCentersForAutocomplete()])->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->publishDraft($feature);
 

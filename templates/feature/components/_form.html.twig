@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-12">
         <div class="row">
-            {% set alignedFields = [form.title, form.application, form.center, form.requestedBy] %}
+            {% set alignedFields = [form.title, form.application, form.requestedBy, form.center] %}
             {% for field in alignedFields %}
                 <div class="col-12 mt-2 col-md-6 col-lg-3">
                     {{ form_row(field) }}
