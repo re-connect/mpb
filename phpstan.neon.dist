@@ -7,7 +7,7 @@ includes:
 parameters:
     treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: false
-    level: 7
+    level: 8
     paths:
         - ./src
         - ./tests

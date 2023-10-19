@@ -298,7 +298,7 @@ class Bug extends UserRequest
 
     public function getVotersNamesAsString(): string
     {
-        return implode(', ', array_map(fn (Vote $vote) => ucwords($vote->getVoter()?->getFullName()), $this->votes->toArray()));
+        return implode(', ', array_map(fn (Vote $vote) => ucwords($vote->getVoter()?->getFullName() ?? ''), $this->votes->toArray()));
     }
 
     /**

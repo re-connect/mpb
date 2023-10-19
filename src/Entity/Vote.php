@@ -71,7 +71,7 @@ class Vote implements ExportableEntityInterface
         return $this;
     }
 
-    public function getItem(): UserRequest
+    public function getItem(): ?UserRequest
     {
         return $this->feature ?? $this->bug;
     }

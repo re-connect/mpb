@@ -69,12 +69,12 @@ abstract class UserRequest implements \Stringable
     }
 
     /**
-     * @return ReadableCollection<int, string|null>
+     * @return ReadableCollection<int, string>
      */
     public function getVotersEmail(): ReadableCollection
     {
         return $this->getVotes()
-            ->map(fn (Vote $vote) => $vote->getVoter()?->getEmail())
-            ->filter(fn (?string $email) => null !== $email && '' !== $email);
+            ->map(fn (Vote $vote) => $vote->getVoter()?->getEmail() ?? '')
+            ->filter(fn (string $email) => '' !== $email);
     }
 }

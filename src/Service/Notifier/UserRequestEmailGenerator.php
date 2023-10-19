@@ -60,11 +60,11 @@ readonly class UserRequestEmailGenerator
     }
 
     /**
-     * @return array<string>
+     * @return array<int, string>
      */
     private function getRecipients(UserRequest $request): array
     {
-        $creatorEmail = $request->getUser()->getEmail();
+        $creatorEmail = $request->getUser()?->getEmail() ?? '';
 
         if ($request->isBug()) {
             return [$creatorEmail];

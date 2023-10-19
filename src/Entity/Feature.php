@@ -209,7 +209,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
 
     public function getVotersNamesAsString(): string
     {
-        return implode(', ', array_map(fn (Vote $vote) => ucwords($vote->getVoter()?->getFullName()), $this->votes->toArray()));
+        return implode(', ', array_map(fn (Vote $vote) => ucwords($vote->getVoter()?->getFullName() ?? ''), $this->votes->toArray()));
     }
 
     /** @return Collection<int, Tag> */
@@ -251,7 +251,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         }
     }
 
-    /** @return string[] */
+    /** @return array<int, string|null> */
     public function getTagNames(): array
     {
         return $this->tags->map(fn (Tag $tag) => $tag->getName())->toArray();

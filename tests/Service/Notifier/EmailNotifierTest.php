@@ -6,6 +6,7 @@ use App\DataFixtures\BugFixtures;
 use App\DataFixtures\FeatureFixtures;
 use App\Tests\Factory\BugFactory;
 use App\Tests\Factory\FeatureFactory;
+use Symfony\Component\Mime\RawMessage;
 
 class EmailNotifierTest extends AbstractNotifierTest
 {
@@ -24,7 +25,7 @@ class EmailNotifierTest extends AbstractNotifierTest
         $this->emailNotifier->notify($feature);
 
         $this->assertEmail(
-            $this->getMailerMessage(),
+            $this->getMailerMessage() ?? new RawMessage(''),
             $recipients,
             [
                 "La demande d'amélioration suivante a été traitée",
@@ -39,7 +40,7 @@ class EmailNotifierTest extends AbstractNotifierTest
         $bug = BugFactory::createOne(['done' => true])->object();
         $this->emailNotifier->notify($bug);
         $this->assertEmail(
-            $this->getMailerMessage(),
+            $this->getMailerMessage() ?? new RawMessage(''),
             $bug->getUser()->getEmail(),
             [
                 'Le bug suivant a été résolu',
