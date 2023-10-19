@@ -7,10 +7,21 @@ includes:
 parameters:
     treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: false
-    level: 6
+    level: max
     paths:
         - ./src
         - ./tests
+    excludePaths:
+        - ./test/Factory/
+    ignoreErrors:
+        - message: "#^Call to an undefined method.{1,}$#"
+          path: ./tests
+        - message: "#^.{1,}Proxy.{1,}#"
+          path: ./tests
+        - message: "#^.{1,}object given.{1,}#"
+          path: ./tests
+        - message: "#^.{1,}object\\|null.{1,}#"
+          path: ./tests
     bootstrapFiles:
         - ./vendor/bin/.phpunit/phpunit/vendor/autoload.php
         - ./vendor/autoload.php
