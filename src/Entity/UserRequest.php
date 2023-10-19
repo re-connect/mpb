@@ -74,7 +74,7 @@ abstract class UserRequest implements \Stringable
     public function getVotersEmail(): ReadableCollection
     {
         return $this->getVotes()
-            ->map(fn (Vote $vote) => $vote->getVoter()->getEmail())
-            ->filter(fn (?string $email) => null !== $email && '' !== $email);
+            ->map(fn (Vote $vote) => $vote->getVoter()?->getEmail() ?? '')
+            ->filter(fn (string $email) => '' !== $email);
     }
 }
