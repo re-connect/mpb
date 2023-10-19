@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use App\Tests\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -10,7 +11,7 @@ use Zenstruck\Foundry\Test\Factories;
 abstract class AbstractControllerTest extends WebTestCase
 {
     use Factories;
-    protected static TranslatorInterface $translator;
+    protected static object $translator;
 
     public static function setUpBeforeClass(): void
     {

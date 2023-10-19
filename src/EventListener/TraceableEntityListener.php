@@ -2,12 +2,23 @@
 
 namespace App\EventListener;
 
+use App\Entity\Bug;
 use App\Entity\Comment;
+use App\Entity\Feature;
 use App\Entity\UserRequest;
 use App\Traits\UserAwareTrait;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Events;
 use Symfony\Bundle\SecurityBundle\Security;
 
+#[AsEntityListener(event: Events::preUpdate, method: 'preUpdate', entity: Comment::class)]
+#[AsEntityListener(event: Events::preUpdate, method: 'preUpdate', entity: Feature::class)]
+#[AsEntityListener(event: Events::preUpdate, method: 'preUpdate', entity: Bug::class)]
+#[AsEntityListener(event: Events::prePersist, method: 'prePersist', entity: Comment::class)]
+#[AsEntityListener(event: Events::prePersist, method: 'prePersist', entity: Feature::class)]
+#[AsEntityListener(event: Events::prePersist, method: 'prePersist', entity: Bug::class)]
 class TraceableEntityListener
 {
     use UserAwareTrait;
@@ -16,32 +27,17 @@ class TraceableEntityListener
     {
     }
 
-    public function preUpdate(LifecycleEventArgs $args): void
+    public function preUpdate(UserRequest|Comment $entity, PreUpdateEventArgs $args): void
     {
-        $entity = $args->getObject();
-        if (!$this->supports($entity)) {
-            return;
-        }
-
         $entity->setUpdatedAt();
     }
 
-    public function prePersist(LifecycleEventArgs $args): void
+    public function prePersist(UserRequest|Comment $entity, PrePersistEventArgs $args): void
     {
-        $entity = $args->getObject();
-        if (!$this->supports($entity)) {
-            return;
-        }
-
-        $entity->setCreatedAt($entity->getCreatedAt() ?? new \DateTimeImmutable());
+        $entity->setCreatedAt($entity->getCreatedAt() ? \DateTimeImmutable::createFromInterface($entity->getCreatedAt()) : new \DateTimeImmutable());
 
         if ($this->getUser() && !$entity->getUser()) {
             $entity->setUser($this->getUser());
         }
-    }
-
-    public function supports(object $entity): bool
-    {
-        return $entity instanceof Comment || $entity instanceof UserRequest;
     }
 }
