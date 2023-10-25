@@ -22,6 +22,8 @@ Encore
    */
   .addEntry('app', './assets/app.js')
 
+  .addStyleEntry('style', './assets/styles/app.scss')
+
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
   .enableStimulusBridge('./assets/controllers.json')
 
@@ -47,27 +49,27 @@ Encore
 
   // configure Babel
   .configureBabel((config) => {
-    //     config.plugins.push('@babel/a-babel-plugin');
+    config.plugins.push('@babel/plugin-transform-class-properties');
   })
 
   // enables and configure @babel/preset-env polyfills
-  // .configureBabelPresetEnv((config) => {
-  //     config.useBuiltIns = 'usage';
-  //     config.corejs = '3.0';
-  // })
+  .configureBabelPresetEnv((config) => {
+    config.useBuiltIns = 'usage';
+    config.corejs = '3.23';
+  })
 
   // enables Sass/SCSS support
   .enableSassLoader()
 
-// uncomment if you use TypeScript
-//.enableTypeScriptLoader()
+  // uncomment if you use TypeScript
+  //.enableTypeScriptLoader()
 
-// uncomment if you use React
-//.enableReactPreset()
+  // uncomment if you use React
+  //.enableReactPreset()
 
-// uncomment to get integrity="..." attributes on your script & link tags
-// requires WebpackEncoreBundle 1.4 or higher
-//.enableIntegrityHashes(Encore.isProduction())
+  // uncomment to get integrity="..." attributes on your script & link tags
+  // requires WebpackEncoreBundle 1.4 or higher
+  .enableIntegrityHashes(Encore.isProduction())
 
 // uncomment if you're having problems with a jQuery plugin
 //.autoProvidejQuery()
