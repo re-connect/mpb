@@ -86,7 +86,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         return $this->title;
     }
 
-    public function setTitle(?string $title): self
+    public function setTitle(?string $title): static
     {
         $this->title = $title;
 
@@ -98,7 +98,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         return $this->content;
     }
 
-    public function setContent(?string $content): self
+    public function setContent(?string $content): static
     {
         $this->content = $content;
 
@@ -110,7 +110,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
@@ -122,7 +122,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         return $this->application;
     }
 
-    public function setApplication(?Application $application): self
+    public function setApplication(?Application $application): static
     {
         $this->application = $application;
 
@@ -134,7 +134,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         return $this->done;
     }
 
-    public function setDone(bool $done): self
+    public function setDone(bool $done): static
     {
         $this->done = $done;
 
@@ -152,7 +152,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         return $this->comments;
     }
 
-    public function addComment(Comment $comment): self
+    public function addComment(Comment $comment): static
     {
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
@@ -162,7 +162,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         return $this;
     }
 
-    public function removeComment(Comment $comment): self
+    public function removeComment(Comment $comment): static
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
@@ -185,7 +185,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         return $this->votes;
     }
 
-    public function addVote(Vote $vote): self
+    public function addVote(Vote $vote): static
     {
         if (!$this->votes->contains($vote)) {
             $this->votes->add($vote);
@@ -195,7 +195,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         return $this;
     }
 
-    public function removeVote(Vote $vote): self
+    public function removeVote(Vote $vote): static
     {
         if ($this->votes->removeElement($vote)) {
             // set the owning side to null (unless already changed)
@@ -209,7 +209,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
 
     public function getVotersNamesAsString(): string
     {
-        return implode(', ', array_map(fn (Vote $vote) => ucwords($vote->getVoter()?->getFullName()), $this->votes->toArray()));
+        return implode(', ', array_map(fn (Vote $vote) => ucwords($vote->getVoter()?->getFullName() ?? ''), $this->votes->toArray()));
     }
 
     /** @return Collection<int, Tag> */
@@ -251,7 +251,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         }
     }
 
-    /** @return string[] */
+    /** @return array<int, string|null> */
     public function getTagNames(): array
     {
         return $this->tags->map(fn (Tag $tag) => $tag->getName())->toArray();
@@ -302,7 +302,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         ];
     }
 
-    public function resolve(): self
+    public function resolve(): static
     {
         $this->setDone(true);
 
@@ -316,7 +316,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
 
     public function __toString(): string
     {
-        return $this->id ?? '';
+        return (string) $this->id;
     }
 
     public function getRequestedBy(): ?Requester

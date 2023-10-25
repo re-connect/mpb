@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Tests\Factory\UserFactory;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zenstruck\Foundry\Test\Factories;
@@ -10,7 +11,7 @@ use Zenstruck\Foundry\Test\Factories;
 abstract class AbstractControllerTest extends WebTestCase
 {
     use Factories;
-    protected static TranslatorInterface $translator;
+    protected static TranslatorInterface|MockObject $translator;
 
     public static function setUpBeforeClass(): void
     {
@@ -37,6 +38,9 @@ abstract class AbstractControllerTest extends WebTestCase
         }
     }
 
+    /**
+     * @param array<string, string> $values
+     */
     public function assertFormIsValid(string $url, string $formSubmit, array $values, ?string $email, ?string $redirectUrl): void
     {
         self::ensureKernelShutdown();
@@ -60,8 +64,8 @@ abstract class AbstractControllerTest extends WebTestCase
     }
 
     /**
-     * @param array<string, string> $values
-     * @param array<array>          $errors
+     * @param array<string, string>                                   $values
+     * @param array<int, array<string, string|array<string, string>>> $errors
      */
     public function assertFormIsNotValid(string $url, string $route, string $formSubmit, array $values, array $errors, ?string $email, string $alternateSelector = null): void
     {

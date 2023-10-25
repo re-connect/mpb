@@ -11,6 +11,7 @@ $light: #ecf0f1;
 @import "~bootstrap/scss/bootstrap";
 @import '~bootswatch/dist/zephyr/bootstrap.min.css';
 @import '~@fortawesome/fontawesome-free/css/all.css';
+@import 'tom-select/dist/css/tom-select.bootstrap5.min.css';
 
 label.required {
   position: relative;

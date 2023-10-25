@@ -29,7 +29,7 @@ readonly class SlackNotifier implements ChannelNotifierInterface
     private function createSlackFeatureOptions(Feature $feature): SlackOptions
     {
         return $this->createSlackOptions(
-            $feature->isDone() ? 'white_check_mark' : 'hourglass',
+            $feature->isDone() ? 'white_check_mark' : 'hourglass_flowing_sand',
             $feature->isDone() ? 'Fonctionnalité développée' : 'Fonctionnalité demandée',
             $feature->getTitle() ?? '',
             $this->requestExtension->getShowPath($feature),

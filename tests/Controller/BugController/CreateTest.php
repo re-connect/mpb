@@ -81,7 +81,11 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
         yield 'Team user can create bug he owns' => [[User::ROLE_TEAM],  BugFixtures::DRAFT_FROM_TEAM_USER];
     }
 
-    /**  @dataProvider provideTestFormIsValid */
+    /**
+     * @dataProvider provideTestFormIsValid
+     *
+     * @param array<string, string> $values
+     */
     public function testFormIsValid(string $url, string $formSubmit, array $values, ?string $email, ?string $redirectUrl): void
     {
         $bug = BugFactory::randomOrCreate(['draft' => true])->object();
@@ -103,8 +107,8 @@ class CreateTest extends AbstractControllerTest implements TestRouteInterface, T
     }
 
     /**
-     * @param array<string, string> $values
-     * @param array<array>          $errors
+     * @param array<string, string>                                   $values
+     * @param array<int, array<string, string|array<string, string>>> $errors
      *
      * @dataProvider provideTestFormIsNotValid
      */

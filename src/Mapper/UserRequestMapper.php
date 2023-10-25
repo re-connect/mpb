@@ -12,7 +12,7 @@ class UserRequestMapper
         $feature = (new Feature())->setUser($bug->getUser())
             ->setTitle($bug->getTitle())
             ->setContent($bug->getContent())
-            ->setCreatedAt(\DateTimeImmutable::createFromInterface($bug->getCreatedAt()))
+            ->setCreatedAt(\DateTimeImmutable::createFromInterface($bug->getCreatedAt() ?? new \DateTime()))
             ->setDraft(false)
             ->setApplication($bug->getApplication());
 

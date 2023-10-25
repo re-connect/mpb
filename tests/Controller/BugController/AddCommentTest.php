@@ -54,7 +54,11 @@ class AddCommentTest extends AbstractControllerTest implements TestRouteInterfac
         $this->assertRoute($url, 200, $user->getEmail());
     }
 
-    /**  @dataProvider provideTestFormIsValid */
+    /**
+     * @dataProvider provideTestFormIsValid
+     *
+     * @param array<string, string> $values
+     */
     public function testFormIsValid(string $url, string $formSubmit, array $values, ?string $email, ?string $redirectUrl): void
     {
         $bug = BugFactory::randomOrCreate()->object();
@@ -74,10 +78,10 @@ class AddCommentTest extends AbstractControllerTest implements TestRouteInterfac
     }
 
     /**
-     * @param array<string, string> $values
-     * @param array<array>          $errors
-     *
      * @dataProvider provideTestFormIsNotValid
+     *
+     * @param array<string, string>                                   $values
+     * @param array<int, array<string, string|array<string, string>>> $errors
      */
     public function testFormIsNotValid(string $url, string $route, string $formSubmit, array $values, array $errors, ?string $email, string $alternateSelector = null): void
     {

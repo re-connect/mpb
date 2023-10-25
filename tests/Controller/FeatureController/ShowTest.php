@@ -54,7 +54,11 @@ class ShowTest extends AbstractControllerTest implements TestRouteInterface
         $this->assertRoute($url, 200, $user->getEmail());
     }
 
-    /**  @dataProvider provideTestFormIsValid */
+    /**
+     * @dataProvider provideTestFormIsValid
+     *
+     * @param array<string, string> $values
+     */
     public function testFormIsValid(string $url, string $formSubmit, array $values, ?string $email, ?string $redirectUrl): void
     {
         $feature = FeatureFactory::randomOrCreate(['draft' => false])->object();
