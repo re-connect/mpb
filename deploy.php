@@ -40,7 +40,7 @@ task('deploy:install_frontend', function () {
     run('cd {{release_path}} && npm install');
 });
 task('deploy:assets_install', function () {
-    run('cd {{release_path}} && php bin/console ckeditor:install && php bin/console assets:install public');
+    run('cd {{release_path}} && php bin/console ckeditor:install --clear=drop --tag=4.22.1 && php bin/console assets:install public');
 });
 // Hooks
 
