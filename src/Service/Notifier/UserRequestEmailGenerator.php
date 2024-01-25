@@ -8,14 +8,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 readonly class UserRequestEmailGenerator
 {
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator, private string $mailerSender)
     {
     }
 
     public function generate(UserRequest $request): ?Email
     {
         return (new Email())
-            ->from('contact@reconnect.fr')
+            ->from($this->mailerSender)
             ->to(...$this->getRecipients($request))
             ->subject($this->getSubject($request))
             ->html($this->getContent($request));
