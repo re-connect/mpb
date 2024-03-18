@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Application;
 use App\Entity\Feature;
 use App\Entity\Requester;
+use App\Entity\Tag;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -49,8 +50,13 @@ class FeatureType extends AbstractType
                 'placeholder' => 'requester',
             ])
             ->add('content', CKEditorType::class, [
-                'label' => 'description',
+                'label' => 'problematic',
                 'empty_data' => '',
+            ])
+            ->add('tags', StyledEntityType::class, [
+                'class' => Tag::class,
+                'multiple' => true,
+                'expanded' => false,
             ]);
     }
 

@@ -50,7 +50,10 @@ class Feature extends UserRequest implements ExportableEntityInterface
     private Collection $votes;
 
     /** @var Collection<int, Tag> */
-    #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: 'features')]
+    #[ORM\JoinTable(name: 'tag_feature')]
+    #[ORM\JoinColumn(name: 'feature_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'tag_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Tag::class)]
     private Collection $tags;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -222,7 +225,6 @@ class Feature extends UserRequest implements ExportableEntityInterface
     {
         if (!$this->tags->contains($tag)) {
             $this->tags->add($tag);
-            $tag->addFeature($this);
         }
 
         return $this;
@@ -230,9 +232,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
 
     public function removeTag(Tag $tag): self
     {
-        if ($this->tags->removeElement($tag)) {
-            $tag->removeFeature($this);
-        }
+        $this->tags->removeElement($tag);
 
         return $this;
     }
