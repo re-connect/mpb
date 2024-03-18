@@ -9,7 +9,7 @@ CONSOLE		  = symfony console
 
 .PHONY        :
 
-cs: rector stan md fixer test
+cs: rector stan md fixer fixture test
 
 fixture:
 	@$(CONSOLE) doctrine:fixtures:load --env=test -q
