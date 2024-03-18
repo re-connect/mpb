@@ -22,6 +22,11 @@ export default class extends Controller {
       render: {
         option: getRichOption,
         item: getRichOption,
+      },
+      plugins: {
+        remove_button:{
+          title:'Remove this item',
+        }
       }
     });
   }

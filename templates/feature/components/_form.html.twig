@@ -3,12 +3,21 @@
 <div class="row">
     <div class="col-12">
         <div class="row">
-            {% set alignedFields = [form.title, form.application, form.requestedBy, form.center] %}
-            {% for field in alignedFields %}
-                <div class="col-12 mt-2 col-md-6 col-lg-3">
-                    {{ form_row(field) }}
-                </div>
-            {% endfor %}
+            <div class="col-8 mt-2">
+                {{ form_row(form.title) }}
+            </div>
+            <div class="col-4 mt-2 ">
+                {{ form_row(form.application) }}
+            </div>
+            <div class="col-3 mt-2 ">
+                {{ form_row(form.requestedBy) }}
+            </div>
+            <div class="col-3 mt-2 ">
+                {{ form_row(form.center) }}
+            </div>
+            <div class="col-6 mt-2 ">
+                {{ form_row(form.tags) }}
+            </div>
         </div>
     </div>
 </div>
