@@ -16,7 +16,7 @@
 ] %}
 {% block body %}
     <div class="position-relative mb-2">
-        <div class="col">{{ include('feature/components/_back_to_list_button.html.twig') }}</div>
+        <div class="col">{{ include('user_request/components/_back_button.html.twig') }}</div>
         <h1>{{ feature.title }}</h1>
         {% for badge in badges %}
             <div class="float-start">{{ badge.content|raw }}</div>
