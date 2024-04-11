@@ -110,7 +110,7 @@ readonly class SlackNotifier implements ChannelNotifierInterface
     {
         return match ($bug->getStatus()) {
             'solved' => 'white_check_mark',
-            'not_a_bug' => 'x',
+            'not_a_bug' => 'no_entry_sign',
             default => 'bug',
         };
     }
@@ -120,6 +120,7 @@ readonly class SlackNotifier implements ChannelNotifierInterface
         return match ($feature->getStatus()) {
             FeatureStatus::WontBeDeveloped => 'Fonctionnalité qui ne sera pas développée',
             FeatureStatus::InProduction => 'Fonctionnalité développée',
+            FeatureStatus::AlternativeSolutionProposed => 'Solution alternative proposée',
             default => 'Fonctionnalité demandée',
         };
     }
@@ -129,6 +130,7 @@ readonly class SlackNotifier implements ChannelNotifierInterface
         return match ($feature->getStatus()) {
             FeatureStatus::WontBeDeveloped => 'x',
             FeatureStatus::InProduction => 'white_check_mark',
+            FeatureStatus::AlternativeSolutionProposed => 'arrows_counterclockwise',
             default => 'hourglass_flowing_sand',
         };
     }
