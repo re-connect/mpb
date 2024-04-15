@@ -4,6 +4,7 @@ namespace App\Service\Notifier;
 
 use App\Entity\Bug;
 use App\Entity\Feature;
+use App\Entity\FeatureStatus;
 use App\Entity\UserRequest;
 use App\Twig\Runtime\UserRequestExtensionRuntime;
 use Psr\Log\LoggerInterface;
@@ -29,8 +30,8 @@ readonly class SlackNotifier implements ChannelNotifierInterface
     private function createSlackFeatureOptions(Feature $feature): SlackOptions
     {
         return $this->createSlackOptions(
-            $feature->isDone() ? 'white_check_mark' : 'hourglass_flowing_sand',
-            $feature->isDone() ? 'Fonctionnalité développée' : 'Fonctionnalité demandée',
+            $this->getFeatureIcon($feature),
+            $this->getFeatureTitle($feature),
             $feature->getTitle() ?? '',
             $this->requestExtension->getShowPath($feature),
             self::CHANNELS['features']
@@ -40,8 +41,8 @@ readonly class SlackNotifier implements ChannelNotifierInterface
     private function createSlackBugOptions(Bug $bug): SlackOptions
     {
         return $this->createSlackOptions(
-            $bug->isDone() ? 'white_check_mark' : 'bug',
-            $bug->isDone() ? 'Bug résolu' : 'Nouveau bug',
+            $this->getBugIcon($bug),
+            $this->getBugTitle($bug),
             $bug->getTitle() ?? '',
             $this->requestExtension->getShowPath($bug),
             self::CHANNELS['bugs']
@@ -94,5 +95,43 @@ readonly class SlackNotifier implements ChannelNotifierInterface
     {
         return (new ChatMessage($request->isDone() ? 'Fonctionnalité développée' : 'Nouvelle fonctionnalité proposée'))
             ->options($this->createSlackFeatureOptions($request));
+    }
+
+    private function getBugTitle(Bug $bug): string
+    {
+        return match ($bug->getStatus()) {
+            'solved' => 'Bug résolu',
+            'not_a_bug' => 'Pas un bug',
+            default => 'Nouveau bug',
+        };
+    }
+
+    private function getBugIcon(Bug $bug): string
+    {
+        return match ($bug->getStatus()) {
+            'solved' => 'white_check_mark',
+            'not_a_bug' => 'no_entry_sign',
+            default => 'bug',
+        };
+    }
+
+    private function getFeatureTitle(Feature $feature): string
+    {
+        return match ($feature->getStatus()) {
+            FeatureStatus::WontBeDeveloped => 'Fonctionnalité qui ne sera pas développée',
+            FeatureStatus::InProduction => 'Fonctionnalité développée',
+            FeatureStatus::AlternativeSolutionProposed => 'Solution alternative proposée',
+            default => 'Fonctionnalité demandée',
+        };
+    }
+
+    private function getFeatureIcon(Feature $feature): string
+    {
+        return match ($feature->getStatus()) {
+            FeatureStatus::WontBeDeveloped => 'x',
+            FeatureStatus::InProduction => 'white_check_mark',
+            FeatureStatus::AlternativeSolutionProposed => 'arrows_counterclockwise',
+            default => 'hourglass_flowing_sand',
+        };
     }
 }

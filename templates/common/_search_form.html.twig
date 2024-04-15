@@ -1,11 +1,17 @@
+<div class="row mx-auto">
+    {{ form_start(form, {'attr': {'data-search-target': 'form'}}) }}
+    <div class="col d-flex justify-content-between">
+        <div class="{{ shouldHideTags ? 'col-10': 'col-5' }}">{{ form_row(form.text) }}</div>
+        <div class="{{ shouldHideTags ? 'd-none': '' }} col-4 mx-2">
+            {{ form_row(form.tags, {'attr': {'data-action': 'search#search', 'placeholder': " Sélectionnez un label..."}}) }}
+        </div>
+        <div  class="col-3 mt-2 mt-sm-0 d-flex mx-3">
+            <a class="btn btn-primary d-flex align-items-center" href="{{ newPath }}" data-turbo="false">{{ newTitle }}</a>
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>
 <div class="row">
-    <div class="col flex-grow-1">
-        {{ form_start(form, {'attr': {'data-search-target': 'form'}}) }}
-        {{ form_end(form) }}
-    </div>
-    <div class="mt-2 mt-sm-0 col-12 col-sm-4 col-md-4 col-lg-3 d-flex">
-        <a class="btn btn-primary flex-grow-1" href="{{ newPath }}" data-turbo="false">{{ newTitle }}</a>
-    </div>
     <div class="col-12 col-sm-10">
         {{ include('common/_toggle_application_buttons.html.twig', {applications}) }}
     </div>

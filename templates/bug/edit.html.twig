@@ -3,7 +3,7 @@
 {% block title %}{{ 'update_bug'|trans }}{% endblock %}
 
 {% block body %}
-    {{ include('bug/_back_to_list_button.html.twig') }}
+    {{ include('user_request/components/_back_button.html.twig') }}
     <h1>{{ 'update_bug'|trans }}</h1>
 
     {{ include('bug/_form.html.twig', {'buttonLabel': 'update'|trans}) }}

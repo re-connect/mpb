@@ -2,9 +2,12 @@
 
 namespace App\Form\Model;
 
+use Doctrine\Common\Collections\Collection;
+
 class UserRequestSearch
 {
     public function __construct(
+        private ?Collection $tags = null,
         private ?string $text = null,
         private ?bool $showDone = null,
         private ?int $application = null
@@ -43,6 +46,18 @@ class UserRequestSearch
     public function setShowDone(?bool $showDone): self
     {
         $this->showDone = $showDone;
+
+        return $this;
+    }
+
+    public function getTags(): ?Collection
+    {
+        return $this->tags;
+    }
+
+    public function setTags(?Collection $tags): self
+    {
+        $this->tags = $tags;
 
         return $this;
     }
