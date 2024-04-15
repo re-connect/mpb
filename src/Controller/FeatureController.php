@@ -29,7 +29,7 @@ class FeatureController extends AbstractController
     #[Route('/list', name: 'features_list')]
     public function index(Request $request, FeatureService $service, ApplicationRepository $applicationRepository): Response
     {
-        $search = new UserRequestSearch(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $search = new UserRequestSearch(null, null, $request->query->getBoolean('done'), $request->query->getInt('app'));
         $form = $this->createForm(SearchType::class, null, [
             'action' => $this->generateUrl('feature_search', $request->query->all()),
         ]);
@@ -45,7 +45,7 @@ class FeatureController extends AbstractController
     #[Route(path: '/search', name: 'feature_search', methods: ['POST'])]
     public function search(Request $request, FeatureService $service): Response
     {
-        $search = new UserRequestSearch(null, $request->query->getBoolean('done'), $request->query->getInt('app'));
+        $search = new UserRequestSearch(null, null, $request->query->getBoolean('done'), $request->query->getInt('app'));
         $this->createForm(SearchType::class, $search)->handleRequest($request);
 
         return $this->render('feature/components/_list.html.twig', [

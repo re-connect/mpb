@@ -53,6 +53,13 @@ class UserRequestService
             $parameters['searchText'] = '%'.strtolower($searchText).'%';
         }
 
+        $tags = $search->getTags();
+        if ($tags && !$tags->isEmpty()) {
+            $qb->leftJoin('ur.tags', 't')
+                ->andWhere('t.id IN (:tags)');
+            $parameters['tags'] = $tags;
+        }
+
         return $qb->setParameters($parameters)->getQuery()->getResult();
     }
 }
