@@ -3,8 +3,10 @@ BEING_DEVELOPED: En cours de développement
 IN_PRODUCTION: En production
 TO_BE_DECIDED: A statuer
 TO_BE_DEVELOPED: Va être développé
-WAITING_FOR_RECURRENCES: Attente ocurrences
 WONT_BE_DEVELOPED: Ne sera pas développé
+LOW_PRIORITY: Pas prioritaire
+TECHNICAL_STUDY: Étude technique et fonctionnelle
+COMPLICATED_FEATURE: Amélioration laborieuse
 accountId: ID compte
 action_export: Exporter
 add_attachment: Ajouter une image
