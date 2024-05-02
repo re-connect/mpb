@@ -5,7 +5,9 @@ namespace App\Entity;
 enum FeatureStatus: string
 {
     case ToBeDecided = 'TO_BE_DECIDED';
-    case WaitingForRecurrences = 'WAITING_FOR_RECURRENCES';
+    case LowPriority = 'LOW_PRIORITY';
+    case TechnicalStudy = 'TECHNICAL_STUDY';
+    case ComplicatedFeature = 'COMPLICATED_FEATURE';
     case ToBeDeveloped = 'TO_BE_DEVELOPED';
     case WontBeDeveloped = 'WONT_BE_DEVELOPED';
     case BeingDeveloped = 'BEING_DEVELOPED';
@@ -22,12 +24,14 @@ enum FeatureStatus: string
     {
         return match ($this) {
             FeatureStatus::ToBeDecided => '#bdc3c7',
-            FeatureStatus::WaitingForRecurrences => '#FFA41E',
             FeatureStatus::ToBeDeveloped => '#3498db',
             FeatureStatus::WontBeDeveloped => '#e74c3c',
             FeatureStatus::BeingDeveloped => '#0E6F73',
             FeatureStatus::InProduction => '#28AD7A',
             FeatureStatus::AlternativeSolutionProposed => '#754eb1',
+            FeatureStatus::LowPriority => '#FFA41E',
+            FeatureStatus::TechnicalStudy => '#733310',
+            FeatureStatus::ComplicatedFeature => '#cf69a6',
         };
     }
 
@@ -35,12 +39,14 @@ enum FeatureStatus: string
     {
         return match ($this) {
             FeatureStatus::ToBeDecided => 'hourglass-1',
-            FeatureStatus::WaitingForRecurrences => 'clock-rotate-left',
             FeatureStatus::ToBeDeveloped => 'truck-fast',
             FeatureStatus::WontBeDeveloped => 'circle-xmark',
-            FeatureStatus::BeingDeveloped => 'person-digging',
+            FeatureStatus::BeingDeveloped => 'road-barrier',
             FeatureStatus::InProduction => 'check',
             FeatureStatus::AlternativeSolutionProposed => 'comments',
+            FeatureStatus::LowPriority => 'clock',
+            FeatureStatus::TechnicalStudy => 'microscope',
+            FeatureStatus::ComplicatedFeature => 'person-digging',
         };
     }
 }
