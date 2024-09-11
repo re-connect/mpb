@@ -8,6 +8,8 @@ require 'recipe/symfony.php';
 
 set('repository', 'git@github.com:re-connect/mpb.git');
 set('branch', 'main');
+set('flush_cache_file_name', 'flush-cache.php');
+set('flush_cache_file_path', '{{current_path}}/public/{{flush_cache_file_name}}');
 
 add('shared_files', [
     '.env',
@@ -42,11 +44,18 @@ task('deploy:install_frontend', function () {
 task('deploy:assets_install', function () {
     run('cd {{release_path}} && php bin/console ckeditor:install --clear=drop --tag=4.22.1 && php bin/console assets:install public');
 });
+task('deploy:reset-opcache', function () {
+    run('sleep 5');
+    run('echo "<?php opcache_reset(); ?>" >> {{flush_cache_file_path}}');
+    run('sleep 5');
+    run('wget "{{homepage_url}}/{{flush_cache_file_name}}" --spider --retry-connrefused -t 5');
+    run('rm {{flush_cache_file_path}}');
+});
 // Hooks
 
 before('deploy:install_frontend', 'deploy:assets_install');
 before('deploy:build_frontend', 'deploy:install_frontend');
-before('deploy:cache:clear', 'deploy:build_frontend');
-before('deploy:symlink', 'database:migrate');
+before('deploy:symlink', 'deploy:reset-opcache');
+after('deploy:reset-opcache', 'database:migrate');
 
 after('deploy:failed', 'deploy:unlock');
