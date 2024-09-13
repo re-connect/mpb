@@ -33,5 +33,8 @@ fixer:
 
 dep: deploy
 
-deploy:
-	@$(DEPLOYER) deploy
+deploy-preprod:
+	@$(DEPLOYER) deploy stage=preprod
+
+deploy-prod:
+	@$(DEPLOYER) deploy stage=prod
