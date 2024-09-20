@@ -56,9 +56,7 @@ task('deploy:build_frontend', function () {
 task('deploy:install_frontend', function () {
     run('cd {{release_path}} && npm install');
 });
-task('deploy:assets_install', function () {
-    run('cd {{release_path}} && php bin/console ckeditor:install --clear=drop --tag=4.22.1 && php bin/console assets:install public');
-});
+
 task('deploy:reset-opcache', function () {
     run('sleep 5');
     run('echo "<?php opcache_reset(); ?>" >> {{flush_cache_file_path}}');
@@ -69,7 +67,6 @@ task('deploy:reset-opcache', function () {
 // Hooks
 
 before('deploy:build_frontend', 'deploy:install_frontend');
-before('deploy:install_frontend', 'deploy:assets_install');
 before('deploy:cache:clear', 'deploy:build_frontend');
 before('deploy:symlink', 'deploy:reset-opcache');
 after('deploy:reset-opcache', 'database:migrate');
