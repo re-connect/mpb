@@ -52,6 +52,10 @@ class FeatureType extends AbstractType
             ->add('content', TextareaType::class, [
                 'label' => 'problematic',
                 'empty_data' => '',
+                'attr' => [
+                    'class' => 'd-none',
+                    'data-controller' => 'quill-editor',
+                ],
             ])
             ->add('tags', StyledEntityType::class, [
                 'class' => Tag::class,

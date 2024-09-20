@@ -50,6 +50,10 @@ class BugType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'bug_description',
+                'attr' => [
+                    'class' => 'd-none',
+                    'data-controller' => 'quill-editor',
+                ],
             ]);
     }
 
