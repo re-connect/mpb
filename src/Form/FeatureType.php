@@ -6,8 +6,8 @@ use App\Entity\Application;
 use App\Entity\Feature;
 use App\Entity\Requester;
 use App\Entity\Tag;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -49,7 +49,7 @@ class FeatureType extends AbstractType
                 'class' => Requester::class,
                 'placeholder' => 'requester',
             ])
-            ->add('content', CKEditorType::class, [
+            ->add('content', TextareaType::class, [
                 'label' => 'problematic',
                 'empty_data' => '',
             ])
