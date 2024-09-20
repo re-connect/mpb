@@ -50,11 +50,11 @@ host('prod')
 // Tasks
 
 task('deploy:build_frontend', function () {
-    run('cd {{release_path}} && npm run build');
+    run('cd {{release_path}} && yarn build');
 });
 
 task('deploy:install_frontend', function () {
-    run('cd {{release_path}} && npm install');
+    run('cd {{release_path}} && yarn install');
 });
 
 task('deploy:reset-opcache', function () {
