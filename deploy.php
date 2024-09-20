@@ -26,6 +26,7 @@ add('shared_dirs', [
     'node_modules/',
     'vendor/',
     'public/uploads',
+    'public/build',
 ]);
 
 add('writable_dirs', []);
