@@ -27,6 +27,7 @@ add('shared_dirs', [
     'vendor/',
     'public/uploads',
     'public/build',
+    'public/bundles',
 ]);
 
 add('writable_dirs', []);
