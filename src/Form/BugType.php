@@ -5,9 +5,9 @@ namespace App\Form;
 use App\Entity\Application;
 use App\Entity\Bug;
 use App\Entity\UserKind;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -48,8 +48,12 @@ class BugType extends AbstractType
                     'placeholder' => 'accountId',
                 ],
             ])
-            ->add('content', CKEditorType::class, [
+            ->add('content', TextareaType::class, [
                 'label' => 'bug_description',
+                'attr' => [
+                    'class' => 'd-none',
+                    'data-controller' => 'quill-editor',
+                ],
             ]);
     }
 
