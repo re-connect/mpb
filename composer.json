@@ -13,7 +13,6 @@
     "doctrine/doctrine-migrations-bundle": "3.2.*",
     "easycorp/easyadmin-bundle": "4.8.*",
     "firebase/php-jwt": "6.9.*",
-    "friendsofsymfony/ckeditor-bundle": "2.4.*",
     "knpuniversity/oauth2-client-bundle": "2.16.*",
     "league/oauth2-google": "^4.0",
     "phpdocumentor/reflection-docblock": "5.3.*",
@@ -27,6 +26,7 @@
     "symfony/flex": "2.4.*",
     "symfony/form": "6.3.*",
     "symfony/framework-bundle": "6.3.*",
+    "symfony/html-sanitizer": "6.3.*",
     "symfony/http-client": "6.3.*",
     "symfony/intl": "6.3.*",
     "symfony/mailer": "6.3.*",
@@ -101,9 +101,7 @@
   },
   "scripts": {
     "auto-scripts": {
-      "cache:clear": "symfony-cmd",
-      "ckeditor:install --clear=drop --tag=4.22.1": "symfony-cmd",
-      "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+      "cache:clear": "symfony-cmd"
     },
     "post-install-cmd": [
       "@auto-scripts"
