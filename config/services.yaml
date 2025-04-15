@@ -13,6 +13,7 @@ services:
             $reconnectProJwtPublicKey: '%kernel.project_dir%%env(resolve:RECONNECT_PRO_JWT_PUBLIC_KEY)%'
             $uploadsDirectory: '%kernel.project_dir%/public/uploads'
             $mailerSender: '%env(MAILER_SENDER)%'
+            $techTeamEmail: '%env(TECH_TEAM_EMAIL)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
