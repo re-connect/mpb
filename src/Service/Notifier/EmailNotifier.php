@@ -6,6 +6,7 @@ use App\Entity\UserRequest;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 readonly class EmailNotifier implements ChannelNotifierInterface
 {
@@ -13,6 +14,7 @@ readonly class EmailNotifier implements ChannelNotifierInterface
         private LoggerInterface $logger,
         private MailerInterface $mailer,
         private UserRequestEmailGenerator $emailGenerator,
+        private string $mailerSender,
     ) {
     }
 
@@ -29,6 +31,21 @@ readonly class EmailNotifier implements ChannelNotifierInterface
             }
         } catch (TransportExceptionInterface $e) {
             $this->logger->critical(sprintf('Failure sending Slack message, cause: %s', $e->getMessage()));
+        }
+    }
+
+    public function sendEmail(string $subject, string $text, string $recipients): void
+    {
+        try {
+            $this->mailer->send(
+                (new Email())
+                    ->from($this->mailerSender)
+                    ->subject($subject)
+                    ->text($text)
+                    ->to($recipients),
+            );
+        } catch (TransportExceptionInterface $e) {
+            $this->logger->critical(sprintf('Failure sending email, cause: %s', $e->getMessage()));
         }
     }
 }
