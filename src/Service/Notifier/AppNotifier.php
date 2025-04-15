@@ -9,14 +9,17 @@ readonly class AppNotifier
 {
     public function __construct(
         /** @var iterable<ChannelNotifierInterface> */
-        #[TaggedIterator('app.notifier')] private iterable $notifiers
+        #[TaggedIterator('app.notifier')] private iterable $notifiers,
+        private string $env,
     ) {
     }
 
     public function notify(UserRequest $userRequest): void
     {
-        foreach ($this->notifiers as $notifier) {
-            $notifier->notify($userRequest);
+        if ('prod' === $this->env) {
+            foreach ($this->notifiers as $notifier) {
+                $notifier->notify($userRequest);
+            }
         }
     }
 }
