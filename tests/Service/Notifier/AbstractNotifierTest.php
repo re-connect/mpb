@@ -27,6 +27,7 @@ abstract class AbstractNotifierTest extends KernelTestCase
             $this->createMock(LoggerInterface::class),
             $this->getContainer()->get(MailerInterface::class),
             $this->emailGenerator,
+            'noreply@reconnect.fr',
         );
     }
 
