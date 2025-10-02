@@ -53,6 +53,8 @@ abstract class UserRequest implements \Stringable
 
     abstract public function resolve(): static;
 
+    abstract public function getScore(): int;
+
     public function isBug(): bool
     {
         return false;

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\FeatureRepository;
 use App\Traits\TimestampableTrait;
+use ContainerDGXjYRg\get_Console_Command_About_LazyService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -329,5 +330,10 @@ class Feature extends UserRequest implements ExportableEntityInterface
         $this->requestedBy = $requestedBy;
 
         return $this;
+    }
+
+    public function getScore(): int
+    {
+        return $this->votes->count() + $this->comments->count();
     }
 }

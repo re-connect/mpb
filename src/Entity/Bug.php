@@ -352,6 +352,11 @@ class Bug extends UserRequest
         return true;
     }
 
+    public function getScore(): int
+    {
+        return $this->votes->count();
+    }
+
     public function __toString(): string
     {
         return (string) $this->id;
