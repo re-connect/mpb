@@ -332,7 +332,7 @@ class Feature extends UserRequest implements ExportableEntityInterface
         return $this;
     }
 
-    public function getScore(): int
+    public function getLikes(): int
     {
         return $this->votes->count() + $this->comments->count();
     }

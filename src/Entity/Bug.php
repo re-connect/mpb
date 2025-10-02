@@ -352,7 +352,7 @@ class Bug extends UserRequest
         return true;
     }
 
-    public function getScore(): int
+    public function getLikes(): int
     {
         return $this->votes->count();
     }
