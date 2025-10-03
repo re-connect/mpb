@@ -50,7 +50,7 @@ class FeatureTest extends KernelTestCase
 
         $feature->addVote(new Vote());
         $feature->addVote(new Vote());
-        
+
         $feature->addComment(new Comment());
         $feature->addComment(new Comment());
 

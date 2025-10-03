@@ -14,5 +14,4 @@ class FeatureLikeTest extends AbstractBrowserKitEndToEndTest
         $user = $this->loginUser();
         $this->assertTrue(true);
     }
-
 }

@@ -38,9 +38,8 @@ class AbstractBrowserKitEndToEndTest extends WebTestCase
     }
 
     /**
-     * @param string $email
-     * @param string $password
      * @param array<string> $roles
+     *
      * @throws \Exception
      */
     protected function loginUser(string $email = 'test@test.com', string $password = 'password', array $roles = [User::ROLE_ADMIN]): User
@@ -71,14 +70,10 @@ class AbstractBrowserKitEndToEndTest extends WebTestCase
     }
 
     /**
-     * @param string $method
-     * @param string $url
      * @param array<string, mixed> $parameters
-     * @return Crawler
      */
     protected function visit(string $method, string $url, array $parameters = []): Crawler
     {
         return $this->client->request($method, $url, $parameters);
     }
-
 }
