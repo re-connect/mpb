@@ -19,12 +19,31 @@ class AbstractBrowserKitEndToEndTest extends WebTestCase
     }
 
     /**
+     * @throws \Exception
+     */
+    public function testUserIsLoggedIn(): void
+    {
+        $user = $this->loginUser();
+        $this->assertNotNull($user);
+
+        $this->assertStringContainsString('/bugs/list', $this->client->getRequest()->getUri());
+
+        $crawler = $this->client->getCrawler();
+        $logoutLink = $crawler->filter('ul.navbar-nav a.nav-link[href="/logout"]');
+        $this->assertGreaterThan(
+            0,
+            $logoutLink->count(),
+            'Le lien "/logout" doit être présent dans la navbar après login.'
+        );
+    }
+
+    /**
      * @param string $email
      * @param string $password
      * @param array<string> $roles
      * @throws \Exception
      */
-    protected function loginUser(string $email = 'test@test.com', string $password = 'password', array $roles = [User::ROLE_ADMIN]): void
+    protected function loginUser(string $email = 'test@test.com', string $password = 'password', array $roles = [User::ROLE_ADMIN]): User
     {
         $user = (new User())
             ->setEmail($email)
@@ -39,23 +58,27 @@ class AbstractBrowserKitEndToEndTest extends WebTestCase
         $em->persist($user);
         $em->flush();
 
-        $this->assertNotNull($user);
-
         $this->client->followRedirects();
 
-        $crawler = $this->visit('/login');
+        $crawler = $this->visit('GET', '/login');
         $form = $crawler->selectButton('Connexion')->form([
             '_username' => $user->getEmail(),
             '_password' => $password,
         ]);
         $this->client->submit($form);
 
-        $this->assertStringContainsString('/bugs/list', $this->client->getRequest()->getUri());
+        return $user;
     }
 
-    protected function visit(string $url): Crawler
+    /**
+     * @param string $method
+     * @param string $url
+     * @param array<string, mixed> $parameters
+     * @return Crawler
+     */
+    protected function visit(string $method, string $url, array $parameters = []): Crawler
     {
-        return $this->client->request('GET', $url);
+        return $this->client->request($method, $url, $parameters);
     }
 
 }
