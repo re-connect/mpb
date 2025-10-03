@@ -11,47 +11,40 @@ class BugTest extends KernelTestCase
 {
     public function testGetLikesWithVotesAndComments(): void
     {
-        $feature = new Bug();
+        $bug = new Bug();
 
-        $vote1 = new Vote();
-        $vote2 = new Vote();
-        $feature->addVote($vote1);
-        $feature->addVote($vote2);
+        $bug->addVote(new Vote());
+        $bug->addVote(new Vote());
 
-        $comment1 = new Comment();
-        $comment2 = new Comment();
-        $feature->addComment($comment1);
-        $feature->addComment($comment2);
+        $bug->addComment(new Comment());
+        $bug->addComment(new Comment());
 
-        $this->assertEquals(2, $feature->getLikes());
+        $this->assertEquals(2, $bug->getLikes());
     }
 
     public function testGetLikesWithOnlyComments(): void
     {
-        $feature = new Bug();
+        $bug = new Bug();
 
-        $comment1 = new Comment();
-        $comment2 = new Comment();
-        $feature->addComment($comment1);
-        $feature->addComment($comment2);
+        $bug->addComment(new Comment());
+        $bug->addComment(new Comment());
 
-        $this->assertEquals(0, $feature->getLikes());
+        $this->assertEquals(0, $bug->getLikes());
     }
 
     public function testGetLikesWithOnlyVotes(): void
     {
-        $feature = new Bug();
+        $bug = new Bug();
 
-        $vote1 = new Vote();
-        $feature->addVote($vote1);
+        $bug->addVote(new Vote());
 
-        $this->assertEquals(1, $feature->getLikes());
+        $this->assertEquals(1, $bug->getLikes());
     }
 
     public function testGetLikesWithoutVotesAndComments(): void
     {
-        $feature = new Bug();
+        $bug = new Bug();
 
-        $this->assertEquals(0, $feature->getLikes());
+        $this->assertEquals(0, $bug->getLikes());
     }
 }
