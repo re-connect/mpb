@@ -48,15 +48,11 @@ class FeatureTest extends KernelTestCase
     {
         $feature = new Feature();
 
-        $vote1 = new Vote();
-        $vote2 = new Vote();
-        $feature->addVote($vote1);
-        $feature->addVote($vote2);
-
-        $comment1 = new Comment();
-        $comment2 = new Comment();
-        $feature->addComment($comment1);
-        $feature->addComment($comment2);
+        $feature->addVote(new Vote());
+        $feature->addVote(new Vote());
+        
+        $feature->addComment(new Comment());
+        $feature->addComment(new Comment());
 
         $this->assertEquals(4, $feature->getLikes());
     }
@@ -64,11 +60,8 @@ class FeatureTest extends KernelTestCase
     public function testGetLikesWithOnlyComments(): void
     {
         $feature = new Feature();
-
-        $comment1 = new Comment();
-        $comment2 = new Comment();
-        $feature->addComment($comment1);
-        $feature->addComment($comment2);
+        $feature->addComment(new Comment());
+        $feature->addComment(new Comment());
 
         $this->assertEquals(2, $feature->getLikes());
     }
@@ -76,9 +69,7 @@ class FeatureTest extends KernelTestCase
     public function testGetLikesWithOnlyVotes(): void
     {
         $feature = new Feature();
-
-        $vote1 = new Vote();
-        $feature->addVote($vote1);
+        $feature->addVote(new Vote());
 
         $this->assertEquals(1, $feature->getLikes());
     }
