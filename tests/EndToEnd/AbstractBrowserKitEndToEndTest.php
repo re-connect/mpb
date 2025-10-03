@@ -3,18 +3,13 @@
 namespace App\Tests\EndToEnd;
 
 use App\Entity\User;
-use App\Tests\Factory\UserFactory;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AbstractBrowserKitEndToEndTest extends WebTestCase
 {
-    private EntityManagerInterface $entityManager;
-
     protected AbstractBrowser $client;
 
     protected function setUp(): void
@@ -24,6 +19,9 @@ class AbstractBrowserKitEndToEndTest extends WebTestCase
     }
 
     /**
+     * @param string $email
+     * @param string $password
+     * @param array<string> $roles
      * @throws \Exception
      */
     protected function loginUser(string $email = 'test@test.com', string $password = 'password', array $roles = [User::ROLE_ADMIN]): void
