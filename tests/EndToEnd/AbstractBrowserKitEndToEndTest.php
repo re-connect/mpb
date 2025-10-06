@@ -12,6 +12,8 @@ class AbstractBrowserKitEndToEndTest extends WebTestCase
 {
     protected AbstractBrowser $client;
 
+    protected User $user;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -44,18 +46,22 @@ class AbstractBrowserKitEndToEndTest extends WebTestCase
      */
     protected function loginUser(string $email = 'test@test.com', string $password = 'password', array $roles = [User::ROLE_ADMIN]): User
     {
-        $user = (new User())
-            ->setEmail($email)
-            ->setPassword($password)
-            ->setRoles($roles);
-
-        $hasher = self::getContainer()->get(UserPasswordHasherInterface::class);
-        $hashedPassword = $hasher->hashPassword($user, $password);
-        $user->setPassword($hashedPassword);
-
         $em = self::getContainer()->get('doctrine')->getManager();
-        $em->persist($user);
-        $em->flush();
+        $userRepository = $em->getRepository(User::class);
+
+        $user = $userRepository->findOneBy(['email' => $email]);
+
+        if (!$user) {
+            $passwordHasher = self::getContainer()->get(UserPasswordHasherInterface::class);
+
+            $user = new User();
+            $user->setEmail($email);
+            $user->setPassword($passwordHasher->hashPassword($user, $password));
+            $user->setRoles($roles);
+
+            $em->persist($user);
+            $em->flush();
+        }
 
         $this->client->followRedirects();
 
