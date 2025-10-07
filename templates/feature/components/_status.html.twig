@@ -1,6 +1,8 @@
 <div class="mt-2">
+    {% if feature.status %}
         <span class="badge status-badge" style="border-color: {{ feature.status.color }}; color: {{ feature.status.color }};">
             <i class="fa fa-{{ feature.status.icon }}"></i>
             {{ feature.status.value|trans }}
         </span>
+    {% endif %}
 </div>
