@@ -69,6 +69,21 @@ symfony console doctrine:migrations:migrate --env=test
 symfony console doctrine:fixtures:load --env=test
 ```
 
+> ⚠️ **Erreur lors de la migration (ou de l’import du dump) :**  
+> `SQLSTATE[42501]: Insufficient privilege: 7 ERROR: permission denied for schema public`
+>
+> 💡 **Solution :** Connectez-vous sur la db `mpb_test` en tant qu’utilisateur `mpb` (ou `postgres`), puis exécutez les commandes suivantes :
+>
+> ```bash
+> # Connexion à la base
+> psql -U <user> -d mpb_test
+> ```
+>
+> ```sql
+> GRANT ALL ON SCHEMA public TO mpb;
+> GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO mpb;
+> ```
+
 * Use phpunit to run tests
 
 ```bash
