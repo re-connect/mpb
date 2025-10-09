@@ -15,8 +15,8 @@
 
 ```postgresql
 CREATE USER mpb WITH PASSWORD 'mpb';
-CREATE DATABASE mpb;
-GRANT ALL PRIVILEGES ON DATABASE "mpb" to mpb;
+CREATE DATABASE mpb_db;
+GRANT ALL PRIVILEGES ON DATABASE "mpb_db" to mpb;
 ```
 
 * Run migrations
@@ -28,11 +28,11 @@ symfony console doctrine:migrations:migrate
 > ⚠️ Erreur lors de la migration (ou de l’import du dump) :  
 > `SQLSTATE[42501]: Insufficient privilege: 7 ERROR: permission denied for schema public`
 >
-> 💡 Solution : Connectez-vous sur la db `mpb` en tant qu’utilisateur `mpb` (ou `postgres`), puis exécutez les commandes suivantes :
+> 💡 Solution : Connectez-vous sur la db `mpb_db` en tant qu’utilisateur `mpb` (ou `postgres`), puis exécutez les commandes suivantes :
 >
 > ```bash
 > # Connexion à la base
-> psql -U <user> -d mpb
+> psql -U <user> -d mpb_db
 > ```
 >
 > ```sql
@@ -58,8 +58,8 @@ npm run dev
 * Create test database
 
 ```postgresql
-CREATE DATABASE mpb_test;
-GRANT ALL PRIVILEGES ON DATABASE "mpb_test" TO mpb;
+CREATE DATABASE mpb_db_test;
+GRANT ALL PRIVILEGES ON DATABASE "mpb_db_test" TO mpb;
 ```
 
 * Load fixtures
@@ -72,11 +72,11 @@ symfony console doctrine:fixtures:load --env=test
 > ⚠️ Erreur lors de la migration (ou de l’import du dump) :  
 > `SQLSTATE[42501]: Insufficient privilege: 7 ERROR: permission denied for schema public`
 >
-> 💡 Solution : Connectez-vous sur la db `mpb_test` en tant qu’utilisateur `mpb` (ou `postgres`), puis exécutez les commandes suivantes :
+> 💡 Solution : Connectez-vous sur la db `mpb_db_test` en tant qu’utilisateur `mpb` (ou `postgres`), puis exécutez les commandes suivantes :
 >
 > ```bash
 > # Connexion à la base
-> psql -U <user> -d mpb_test
+> psql -U <user> -d mpb_db_test
 > ```
 >
 > ```sql
