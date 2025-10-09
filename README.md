@@ -29,6 +29,7 @@ symfony console doctrine:migrations:migrate
 
 ```bash
 symfony composer install
+symfony console assets:install
 symfony serve
 ```
 
