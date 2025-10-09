@@ -25,6 +25,21 @@ GRANT ALL PRIVILEGES ON DATABASE "mpb" to mpb;
 symfony console doctrine:migrations:migrate
 ```
 
+> ⚠️ **Erreur lors de la migration (ou de l’import du dump) :**  
+> `SQLSTATE[42501]: Insufficient privilege: 7 ERROR: permission denied for schema public`
+>
+> 💡 **Solution :** Connectez-vous sur la db `mpb` en tant qu’utilisateur `mpb` (ou `postgres`), puis exécutez les commandes suivantes :
+>
+> ```bash
+> # Connexion à la base
+> psql -U <user> -d mpb
+> ```
+>
+> ```sql
+> GRANT ALL ON SCHEMA public TO mpb;
+> GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO mpb;
+> ```
+
 ## Run
 
 ```bash
