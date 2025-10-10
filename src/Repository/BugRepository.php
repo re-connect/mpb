@@ -20,4 +20,18 @@ class BugRepository extends ServiceEntityRepository implements UserRequestReposi
     {
         parent::__construct($registry, Bug::class);
     }
+
+    /**
+     * @return Bug[]
+     */
+    public function findDraftsToClean(): array
+    {
+        return $this->createQueryBuilder('b')
+            ->where('b.draft = :draft')
+            ->andWhere('(b.title IS NULL OR b.title = \'\')')
+            ->andWhere('(b.content IS NULL OR b.content = \'\')')
+            ->setParameter('draft', true)
+            ->getQuery()
+            ->getResult();
+    }
 }
