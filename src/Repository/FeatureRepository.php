@@ -53,11 +53,22 @@ class FeatureRepository extends ServiceEntityRepository implements UserRequestRe
      */
     public function findDraftsToClean(): array
     {
-        return $this->createQueryBuilder('f')
-            ->where('f.draft = :draft')
-            ->andWhere('(f.title IS NULL OR f.title = \'\')')
-            ->andWhere('(f.content IS NULL OR f.content = \'\')')
-            ->setParameter('draft', true)
+        $qb = $this->createQueryBuilder("f");
+
+        return $qb->where("f.draft = :draft")
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->isNull("f.title"),
+                    $qb->expr()->eq("f.title", "''")
+                )
+            )
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->isNull("f.content"),
+                    $qb->expr()->eq("f.content", "''")
+                )
+            )
+            ->setParameter("draft", true)
             ->getQuery()
             ->getResult();
     }
