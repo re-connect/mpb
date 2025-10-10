@@ -26,22 +26,22 @@ class BugRepository extends ServiceEntityRepository implements UserRequestReposi
      */
     public function findDraftsToClean(): array
     {
-        $qb = $this->createQueryBuilder("b");
+        $qb = $this->createQueryBuilder('b');
 
-        return $qb->where("b.draft = :draft")
+        return $qb->where('b.draft = :draft')
             ->andWhere(
                 $qb->expr()->orX(
-                    $qb->expr()->isNull("b.title"),
-                    $qb->expr()->eq("b.title", "''")
+                    $qb->expr()->isNull('b.title'),
+                    $qb->expr()->eq('b.title', "''")
                 )
             )
             ->andWhere(
                 $qb->expr()->orX(
-                    $qb->expr()->isNull("b.content"),
-                    $qb->expr()->eq("b.content", "''")
+                    $qb->expr()->isNull('b.content'),
+                    $qb->expr()->eq('b.content', "''")
                 )
             )
-            ->setParameter("draft", true)
+            ->setParameter('draft', true)
             ->getQuery()
             ->getResult();
     }
