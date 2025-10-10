@@ -89,7 +89,7 @@ make cs
 
 ## Frequent issues
 
-### 1. `SQLSTATE[42501]: Insufficient privilege: 7 ERROR: permission denied for schema public`
+**1.** `SQLSTATE[42501]: Insufficient privilege: 7 ERROR: permission denied for schema public`
 
 This issue often occurs during Doctrine migrations or when importing a SQL dump.
 It means that the user configured in `.env` doesn't have sufficient privileges on the public schema.
