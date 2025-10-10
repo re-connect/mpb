@@ -4,7 +4,11 @@ namespace App\Command;
 
 use App\Entity\Bug;
 use App\Entity\Feature;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\UserRequest;
+use App\Manager\BugManager;
+use App\Manager\UserRequestManager;
+use App\Service\BugService;
+use App\Service\FeatureService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,26 +21,31 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class CleanDraftRequestCommand extends Command
 {
-    private EntityManagerInterface $entityManager;
+    private BugService $bugService;
+    private FeatureService $featureService;
+
+    private UserRequestManager $userRequestManager;
 
     public function __construct(
-        EntityManagerInterface $entityManager
+        BugService $bugService,
+        FeatureService $featureService,
+        UserRequestManager $userRequestManager,
+
     ) {
         parent::__construct();
 
-        $this->entityManager = $entityManager;
+        $this->bugService = $bugService;
+        $this->featureService = $featureService;
+        $this->userRequestManager = $userRequestManager;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
-        $bugRepository = $this->entityManager->getRepository(Bug::class);
-        $featureRepository = $this->entityManager->getRepository(Feature::class);
-
         $draftUserRequests = array_merge(
-            $bugRepository->findDraftsToClean(),
-            $featureRepository->findDraftsToClean()
+            $this->bugService->getDraftsToClean(),
+            $this->featureService->getDraftsToClean()
         );
 
         $count = count($draftUserRequests);
@@ -50,11 +59,10 @@ class CleanDraftRequestCommand extends Command
         $io->progressStart($count);
 
         foreach ($draftUserRequests as $draft) {
-            $this->entityManager->remove($draft);
+            $this->userRequestManager->remove($draft);
             $io->progressAdvance();
         }
 
-        $this->entityManager->flush();
         $io->progressFinish();
 
         $io->success(sprintf('%d empty draft request(s) successfully deleted.', $count));
