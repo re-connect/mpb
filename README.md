@@ -15,8 +15,8 @@
 
 ```postgresql
 CREATE USER mpb WITH PASSWORD 'mpb';
-CREATE DATABASE mpb;
-GRANT ALL PRIVILEGES ON DATABASE "mpb" to mpb;
+CREATE DATABASE mpb_db;
+GRANT ALL PRIVILEGES ON DATABASE "mpb_db" to mpb;
 ```
 
 * Run migrations
@@ -29,6 +29,7 @@ symfony console doctrine:migrations:migrate
 
 ```bash
 symfony composer install
+symfony console assets:install
 symfony serve
 ```
 
@@ -42,8 +43,8 @@ npm run dev
 * Create test database
 
 ```postgresql
-CREATE DATABASE mpb_test;
-GRANT ALL PRIVILEGES ON DATABASE "mpb_test" TO mpb;
+CREATE DATABASE mpb_db_test;
+GRANT ALL PRIVILEGES ON DATABASE "mpb_db_test" TO mpb;
 ```
 
 * Load fixtures
@@ -83,3 +84,32 @@ make lint
 # Or running all at once
 make cs
 ```
+
+---
+
+## Frequent issues
+
+**1.** `SQLSTATE[42501]: Insufficient privilege: 7 ERROR: permission denied for schema public`
+
+This issue often occurs during Doctrine migrations or when importing a SQL dump.
+It means that the user configured in `.env` doesn't have sufficient privileges on the public schema.
+
+**Solution :**
+
+1. Connect to the database :
+   ```bash
+   psql -U <user> -d <database>
+   ```
+
+2. Execute the following commands :
+   ```sql
+   GRANT ALL ON SCHEMA public TO mpb;
+   GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO mpb;
+   ```
+
+3. Rerun the migration :
+   ```bash
+   symfony console doctrine:migrations:migrate
+   ```
+
+---
