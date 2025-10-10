@@ -25,21 +25,6 @@ GRANT ALL PRIVILEGES ON DATABASE "mpb_db" to mpb;
 symfony console doctrine:migrations:migrate
 ```
 
-> ⚠️ Erreur lors de la migration (ou de l’import du dump) :  
-> `SQLSTATE[42501]: Insufficient privilege: 7 ERROR: permission denied for schema public`
->
-> 💡 Solution : Connectez-vous sur la db `mpb_db` en tant qu’utilisateur `mpb` (ou `postgres`), puis exécutez les commandes suivantes :
->
-> ```bash
-> # Connexion à la base
-> psql -U <user> -d mpb_db
-> ```
->
-> ```sql
-> GRANT ALL ON SCHEMA public TO mpb;
-> GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO mpb;
-> ```
-
 ## Run
 
 ```bash
@@ -68,21 +53,6 @@ GRANT ALL PRIVILEGES ON DATABASE "mpb_db_test" TO mpb;
 symfony console doctrine:migrations:migrate --env=test
 symfony console doctrine:fixtures:load --env=test
 ```
-
-> ⚠️ Erreur lors de la migration (ou de l’import du dump) :  
-> `SQLSTATE[42501]: Insufficient privilege: 7 ERROR: permission denied for schema public`
->
-> 💡 Solution : Connectez-vous sur la db `mpb_db_test` en tant qu’utilisateur `mpb` (ou `postgres`), puis exécutez les commandes suivantes :
->
-> ```bash
-> # Connexion à la base
-> psql -U <user> -d mpb_db_test
-> ```
->
-> ```sql
-> GRANT ALL ON SCHEMA public TO mpb;
-> GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO mpb;
-> ```
 
 * Use phpunit to run tests
 
@@ -114,3 +84,32 @@ make lint
 # Or running all at once
 make cs
 ```
+
+---
+
+## Frequent issues
+
+### 1. `SQLSTATE[42501]: Insufficient privilege: 7 ERROR: permission denied for schema public`
+
+This issue often occurs during Doctrine migrations or when importing a SQL dump.
+It means that the user configured in `.env` doesn't have sufficient privileges on the public schema.
+
+**Solution :**
+
+1. Connect to the database :
+   ```bash
+   psql -U <user> -d <database>
+   ```
+
+2. Execute the following commands :
+   ```sql
+   GRANT ALL ON SCHEMA public TO mpb;
+   GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO mpb;
+   ```
+
+3. Rerun the migration :
+   ```bash
+   symfony console doctrine:migrations:migrate
+   ```
+
+---
