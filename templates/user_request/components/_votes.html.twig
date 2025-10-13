@@ -1,6 +1,6 @@
 <a class="btn btn-{{ app.user.hasVoted(request) ? '' : 'outline-' }}primary btn-sm"
    href="{{ get_vote_path(request) }}"
-        {% if request.votes|length > 0 %}
+        {% if request.likes > 0 %}
             data-bs-toggle="tooltip"
             data-bs-placement="left"
             data-bs-html="true"
@@ -8,5 +8,5 @@
         {% endif %}
 >
     <i class="fa fa-thumbs-up"></i>
-    <span>({{ request.votes|length }})</span>
+    <span>({{ request.likes }})</span>
 </a>
