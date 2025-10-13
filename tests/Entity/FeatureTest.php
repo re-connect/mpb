@@ -43,4 +43,41 @@ class FeatureTest extends KernelTestCase
         // Assert feature having vote and comment has been deleted
         $this->assertEmpty(FeatureFactory::findBy(['id' => $id]));
     }
+
+    public function testGetLikesWithVotesAndComments(): void
+    {
+        $feature = new Feature();
+
+        $feature->addVote(new Vote());
+        $feature->addVote(new Vote());
+
+        $feature->addComment(new Comment());
+        $feature->addComment(new Comment());
+
+        $this->assertEquals(4, $feature->getLikes());
+    }
+
+    public function testGetLikesWithOnlyComments(): void
+    {
+        $feature = new Feature();
+        $feature->addComment(new Comment());
+        $feature->addComment(new Comment());
+
+        $this->assertEquals(2, $feature->getLikes());
+    }
+
+    public function testGetLikesWithOnlyVotes(): void
+    {
+        $feature = new Feature();
+        $feature->addVote(new Vote());
+
+        $this->assertEquals(1, $feature->getLikes());
+    }
+
+    public function testGetLikesWithoutVotesAndComments(): void
+    {
+        $feature = new Feature();
+
+        $this->assertEquals(0, $feature->getLikes());
+    }
 }
