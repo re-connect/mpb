@@ -36,6 +36,17 @@ class BugServiceTest extends KernelTestCase
         $this->assertGreaterThan(count($bugsTeamUser), count($bugsUser));
     }
 
+    public function testGetDraftsToClean(): void
+    {
+        $drafts = $this->service->getDraftsToClean();
+
+        foreach ($drafts as $draft) {
+            $this->assertEmpty($draft->getTitle());
+            $this->assertEmpty($draft->getContent());
+            $this->assertTrue($draft->isDraft());
+        }
+    }
+
     private function loginUser(string $email): void
     {
         $container = static::getContainer();
