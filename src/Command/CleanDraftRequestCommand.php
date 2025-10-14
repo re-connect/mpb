@@ -25,6 +25,14 @@ class CleanDraftRequestCommand extends Command
         parent::__construct();
     }
 
+    private function removeUserRequests(array $userRequests, SymfonyStyle $io): void
+    {
+        foreach ($userRequests as $userRequest) {
+            $this->userRequestManager->remove($userRequest);
+            $io->progressAdvance();
+        }
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
@@ -42,10 +50,7 @@ class CleanDraftRequestCommand extends Command
 
         $io->progressStart($count);
 
-        foreach ($draftUserRequests as $draft) {
-            $this->userRequestManager->remove($draft);
-            $io->progressAdvance();
-        }
+        $this->removeUserRequests($draftUserRequests, $io);
 
         $io->progressFinish();
 
