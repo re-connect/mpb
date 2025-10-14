@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\UserRequest;
 use App\Manager\UserRequestManager;
 use App\Service\BugService;
 use App\Service\FeatureService;
@@ -25,6 +26,9 @@ class CleanDraftRequestCommand extends Command
         parent::__construct();
     }
 
+    /**
+     * @param array<UserRequest> $userRequests
+     */
     private function removeUserRequests(array $userRequests, SymfonyStyle $io): void
     {
         foreach ($userRequests as $userRequest) {
