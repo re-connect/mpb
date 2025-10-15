@@ -49,4 +49,12 @@ class FeatureService extends UserRequestService
 
         return array_unique($centers);
     }
+
+    /**
+     * @return Feature[]
+     */
+    public function getDraftsToClean(): array
+    {
+        return $this->repository->findDraftsToClean();
+    }
 }

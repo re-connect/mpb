@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Bug;
 use App\Entity\UserRequest;
 use App\Form\Model\UserRequestSearch;
 use App\Repository\BugRepository;
@@ -22,5 +23,13 @@ class BugService extends UserRequestService
     public function getAccessible(UserRequestSearch $search): array
     {
         return $this->getAccessibleUserRequests($search, $this->repository);
+    }
+
+    /**
+     * @return Bug[]
+     */
+    public function getDraftsToClean(): array
+    {
+        return $this->repository->findDraftsToClean();
     }
 }
