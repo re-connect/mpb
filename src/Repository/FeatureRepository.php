@@ -47,4 +47,18 @@ class FeatureRepository extends ServiceEntityRepository implements UserRequestRe
             ->where('f.center IS NOT NULL')
             ->getQuery()->getArrayResult();
     }
+
+    /**
+     * @return Feature[]
+     */
+    public function findDraftsToClean(): array
+    {
+        return $this->createQueryBuilder('b')
+            ->where('b.draft = :draft')
+            ->andWhere("(b.title IS NULL OR b.title = '')")
+            ->andWhere("(b.content IS NULL OR b.content = '')")
+            ->setParameter('draft', true)
+            ->getQuery()
+            ->getResult();
+    }
 }

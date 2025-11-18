@@ -26,6 +26,10 @@ class FeatureFixtures extends Fixture implements DependentFixtureInterface
         FeatureFactory::createOne(['draft' => false, 'title' => self::FEATURE_FROM_BASIC_USER]);
         FeatureFactory::createOne(['draft' => true, 'title' => self::DRAFT_FROM_TEAM_USER, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]])]);
         FeatureFactory::createOne(['draft' => false, 'title' => self::FEATURE_FROM_TEAM_USER, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]])]);
+        FeatureFactory::createOne(['draft' => true, 'title' => '', 'content' => '', 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]])]);
+        FeatureFactory::createOne(['draft' => true, 'title' => null, 'content' => null, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]])]);
+        FeatureFactory::createOne(['draft' => true, 'title' => '', 'content' => null, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]])]);
+        FeatureFactory::createOne(['draft' => true, 'title' => null, 'content' => '', 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]])]);
         FeatureFactory::createOne(['title' => self::DONE_WITH_VOTE_FROM_TEAM_USER, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]]), 'done' => true]);
         FeatureFactory::createOne(['title' => self::NOT_DONE_FROM_TEAM_USER, 'user' => UserFactory::createOne(['roles' => [User::ROLE_TEAM]]), 'done' => false]);
     }
